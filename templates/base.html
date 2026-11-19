@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000080">
+  <title>{% block title %}DigiSahay • Independent Citizen Guidance Platform{% endblock %}</title>
+
+  <!-- Google Fonts: Noto Sans (Latin, Devanagari, Gujarati) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Google Material Symbols Outlined -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+
+  <!-- DigiSahay Foundation Stylesheets -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- ====================================================================
+         Desktop Sidebar Navigation
+         ==================================================================== -->
+    <aside class="app-sidebar" aria-label="Main Navigation">
+      <div>
+        <!-- Sidebar Brand Header -->
+        <div class="sidebar-header">
+          <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="DigiSahay Logo" width="40" height="40" class="sidebar-brand-badge">
+          <div>
+            <div class="sidebar-brand-title" data-i18n="brand_title">DigiSahay</div>
+            <div class="sidebar-brand-sub" data-i18n="brand_sub">Independent Citizen Guidance • ડિજિટલ સહાય</div>
+          </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="sidebar-nav-section">
+          <div class="sidebar-section-label" data-i18n="nav_section_label">Citizen Services / નાગરિક સેવાઓ</div>
+          <nav class="sidebar-nav">
+            <a href="/" class="sidebar-link {% if active_page == 'dashboard' or not active_page %}active{% endif %}" data-nav="dashboard">
+              <span class="material-symbols-outlined">grid_view</span>
+              <span data-i18n="nav_dashboard">Dashboard</span>
+            </a>
+            <a href="/services" class="sidebar-link {% if active_page == 'services' %}active{% endif %}" data-nav="services">
+              <span class="material-symbols-outlined">assured_workload</span>
+              <span data-i18n="nav_services">Government Services</span>
+            </a>
+            <a href="/prerequisite-checker" class="sidebar-link {% if active_page == 'prerequisite_checker' %}active{% endif %}" data-nav="prerequisite-checker">
+              <span class="material-symbols-outlined">fact_check</span>
+              <span data-i18n="nav_checker">Prerequisite Checker</span>
+            </a>
+            <a href="/apply" class="sidebar-link {% if active_page == 'apply' %}active{% endif %}" data-nav="apply">
+              <span class="material-symbols-outlined">edit_document</span>
+              <span data-i18n="nav_apply">Apply for Service</span>
+            </a>
+            <a href="/documents" class="sidebar-link {% if active_page == 'documents' %}active{% endif %}" data-nav="documents">
+              <span class="material-symbols-outlined">folder_shared</span>
+              <span data-i18n="nav_documents">My Documents</span>
+            </a>
+            <a href="/applications" class="sidebar-link {% if active_page == 'applications' %}active{% endif %}" data-nav="applications">
+              <span class="material-symbols-outlined">pending_actions</span>
+              <span data-i18n="nav_applications">My Applications</span>
+            </a>
+            <a href="/centers" class="sidebar-link {% if active_page == 'centers' %}active{% endif %}" data-nav="centers">
+              <span class="material-symbols-outlined">storefront</span>
+              <span data-i18n="nav_centers">Service Centres (CSC)</span>
+            </a>
+            <a href="/auth" class="sidebar-link {% if active_page == 'auth' %}active{% endif %}" data-nav="auth">
+              <span class="material-symbols-outlined">account_circle</span>
+              <span data-i18n="nav_signin">Citizen Sign In / પ્રવેશ</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Sidebar Footer Help Desk & Independent Notice -->
+      <div class="sidebar-footer">
+        <div class="helpline-card">
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">support_agent</span>
+          <div>
+            <div class="helpline-card-title" data-i18n="helpline_title">Official Helpdesk Directory</div>
+            <div class="helpline-card-phone" data-i18n="helpline_sub">National & State Portals</div>
+          </div>
+        </div>
+        <div class="sidebar-disclaimer-note" data-i18n="sidebar_disclaimer">
+          Independent citizen guidance platform • Not an official government portal
+        </div>
+      </div>
+    </aside>
+
+    <!-- ====================================================================
+         Mobile Navigation Backdrop & Slide-out Drawer
+         ==================================================================== -->
+    <div id="mobileBackdrop" class="mobile-nav-backdrop" aria-hidden="true"></div>
+    <div id="mobileDrawer" class="mobile-drawer" aria-label="Mobile Navigation" aria-hidden="true">
+      <div class="mobile-drawer-header">
+        <div style="display: flex; align-items: center; gap: var(--space-xs);">
+          <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="DigiSahay Logo" width="32" height="32" style="border-radius: var(--radius-sm);">
+          <span style="font-weight: var(--font-weight-bold); color: var(--color-primary);" data-i18n="brand_title">DigiSahay</span>
+        </div>
+        <button id="mobileDrawerClose" class="mobile-drawer-close" aria-label="Close navigation menu">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Mobile Language Switcher Inside Drawer -->
+      <div style="padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--color-border); background: var(--color-surface-container-low);">
+        <div style="font-size: 11px; font-weight: var(--font-weight-bold); color: var(--color-text-muted); text-transform: uppercase; margin-bottom: 6px;">
+          Choose Language / ભાષા પસંદ કરો
+        </div>
+        <div class="lang-switcher" role="group" aria-label="Mobile language selection" style="width: 100%; display: flex; justify-content: space-between;">
+          <button type="button" class="lang-btn active" data-lang="en" aria-pressed="true" style="flex: 1; text-align: center;">English</button>
+          <button type="button" class="lang-btn" data-lang="hi" aria-pressed="false" style="flex: 1; text-align: center;">हिंदी</button>
+          <button type="button" class="lang-btn" data-lang="gu" aria-pressed="false" style="flex: 1; text-align: center;">ગુજરાતી</button>
+        </div>
+      </div>
+
+      <div class="sidebar-nav-section">
+        <div class="sidebar-section-label" data-i18n="nav_section_label">Citizen Services</div>
+        <nav class="sidebar-nav">
+          <a href="/" class="sidebar-link {% if active_page == 'dashboard' or not active_page %}active{% endif %}">
+            <span class="material-symbols-outlined">grid_view</span>
+            <span data-i18n="nav_dashboard">Dashboard</span>
+          </a>
+          <a href="/services" class="sidebar-link {% if active_page == 'services' %}active{% endif %}">
+            <span class="material-symbols-outlined">assured_workload</span>
+            <span data-i18n="nav_services">Government Services</span>
+          </a>
+          <a href="/prerequisite-checker" class="sidebar-link {% if active_page == 'prerequisite_checker' %}active{% endif %}">
+            <span class="material-symbols-outlined">fact_check</span>
+            <span data-i18n="nav_checker">Prerequisite Checker</span>
+          </a>
+          <a href="/apply" class="sidebar-link {% if active_page == 'apply' %}active{% endif %}">
+            <span class="material-symbols-outlined">edit_document</span>
+            <span data-i18n="nav_apply">Apply for Service</span>
+          </a>
+          <a href="/documents" class="sidebar-link {% if active_page == 'documents' %}active{% endif %}">
+            <span class="material-symbols-outlined">folder_shared</span>
+            <span data-i18n="nav_documents">My Documents</span>
+          </a>
+          <a href="/applications" class="sidebar-link {% if active_page == 'applications' %}active{% endif %}">
+            <span class="material-symbols-outlined">pending_actions</span>
+            <span data-i18n="nav_applications">My Applications</span>
+          </a>
+          <a href="/centers" class="sidebar-link {% if active_page == 'centers' %}active{% endif %}">
+            <span class="material-symbols-outlined">storefront</span>
+            <span data-i18n="nav_centers">Service Centres (CSC)</span>
+          </a>
+          <a href="/auth" class="sidebar-link {% if active_page == 'auth' %}active{% endif %}">
+            <span class="material-symbols-outlined">account_circle</span>
+            <span data-i18n="nav_signin">Citizen Sign In / પ્રવેશ</span>
+          </a>
+        </nav>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="helpline-card">
+          <span class="material-symbols-outlined">support_agent</span>
+          <div>
+            <div class="helpline-card-title" data-i18n="helpline_title">Official Helpdesk Directory</div>
+            <div class="helpline-card-phone" data-i18n="helpline_sub">National & State Portals</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         Top App Header
+         ==================================================================== -->
+    <header class="app-header">
+      <div class="header-left">
+        <button id="mobileMenuTrigger" class="mobile-menu-trigger" aria-label="Open navigation menu" aria-expanded="false">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+        <div class="header-search">
+          <span class="material-symbols-outlined">search</span>
+          <input type="search" placeholder="Search services, forms, requirements... / સેવા અથવા ફોર્મ શોધો..." aria-label="Search services" data-i18n-placeholder="search_placeholder">
+        </div>
+      </div>
+
+      <div class="header-right">
+        <!-- Language Switcher -->
+        <div class="lang-switcher" role="group" aria-label="Language selection">
+          <button type="button" class="lang-btn active" data-lang="en" aria-pressed="true">English</button>
+          <button type="button" class="lang-btn" data-lang="hi" aria-pressed="false">हिंदी</button>
+          <button type="button" class="lang-btn" data-lang="gu" aria-pressed="false">ગુજરાતી</button>
+        </div>
+
+        <!-- Help Link -->
+        <a href="#" class="ds-btn ds-btn-outline ds-btn-sm" style="border: none; padding: 0.375rem 0.5rem;">
+          <span class="material-symbols-outlined" style="font-size: 18px;">help_outline</span>
+          <span style="font-size: var(--font-size-xs);" data-i18n="header_help">Help</span>
+        </a>
+
+        <!-- Citizen Access Indicator / Sign In Link -->
+        <a href="/auth" id="headerProfileLink" class="header-profile" style="text-decoration: none; cursor: pointer;">
+          <div class="header-profile-avatar" aria-hidden="true">
+            <span class="material-symbols-outlined" style="font-size: 20px;">person</span>
+          </div>
+          <div class="header-profile-info">
+            <span id="headerProfileName" class="header-profile-name" data-i18n="header_profile_guest">Citizen Sign In</span>
+            <span id="headerProfileMeta" class="header-profile-meta" data-i18n="header_profile_meta_guest">Guest Mode • પ્રવેશ</span>
+          </div>
+        </a>
+      </div>
+    </header>
+
+    <!-- ====================================================================
+         Main Content Area
+         ==================================================================== -->
+    <main class="app-main">
+      <!-- Statutory Transparency Disclaimer Notice Strip -->
+      <div class="ds-notice-strip" role="note">
+        <div style="display: flex; align-items: center; gap: var(--space-xs);">
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+          <span data-i18n-html="notice_strip_text">
+            <strong>Independent Citizen Guidance Platform:</strong> DigiSahay is not a government agency or official government portal. It provides informational assistance to prepare prerequisites and documents before filing on statutory government portals.
+          </span>
+        </div>
+        <span class="ds-badge ds-badge-neutral" style="font-size: 11px;" data-i18n="notice_strip_badge">
+          Informational Guidance
+        </span>
+      </div>
+
+      <!-- Page Specific Content -->
+      <div class="content-wrapper">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+
+  </div>
+
+  <!-- DigiSahay Translation & Scripts -->
+  <script src="{{ url_for('static', filename='js/translations.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

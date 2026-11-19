@@ -1,0 +1,472 @@
+{% extends "base.html" %}
+
+{% block title %}My Documents Vault • DigiSahay{% endblock %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; gap: var(--space-xl);">
+
+  <!-- ======================================================================
+       Hero Banner - Documents Vault
+       ====================================================================== -->
+  <section class="ds-card" style="background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 70%, var(--color-primary-light) 100%); color: var(--color-on-primary); position: relative; overflow: hidden;">
+    <div style="position: relative; z-index: 2; display: flex; flex-direction: column; gap: var(--space-sm); max-width: 860px;">
+      <div style="display: flex; align-items: center; gap: var(--space-xs); flex-wrap: wrap;">
+        <span class="ds-badge" style="background-color: rgba(255, 255, 255, 0.15); color: #ffffff;">
+          <span class="material-symbols-outlined" style="font-size: 14px;">folder_shared</span>
+          Encrypted Citizen Vault
+        </span>
+        <span class="ds-badge" style="background-color: var(--color-green); color: #ffffff; font-weight: var(--font-weight-bold);">
+          Format Pre-Check Ready
+        </span>
+      </div>
+
+      <h1 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); line-height: var(--line-height-tight); margin: var(--space-2xs) 0 0 0; color: #ffffff;" data-i18n="vault_title">
+        My Documents Vault / મારું દસ્તાવેજ વોલ્ટ
+      </h1>
+
+      <p style="font-size: var(--font-size-base); color: var(--color-primary-fixed); line-height: var(--line-height-relaxed); margin: 0;" data-i18n="vault_desc">
+        Organize, inspect, and pre-validate your identity and address proofs prior to Jan Seva Kendra visits or online statutory portal submissions.
+      </p>
+
+      <div style="display: flex; flex-wrap: wrap; gap: var(--space-lg); padding-top: var(--space-xs); font-size: var(--font-size-xs); color: var(--color-primary-fixed);">
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span class="material-symbols-outlined" style="font-size: 16px; color: var(--color-saffron);">verified_user</span>
+          <span>Max File Size: <strong>5 MB</strong></span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span class="material-symbols-outlined" style="font-size: 16px; color: #72de5c;">description</span>
+          <span>Accepted: PDF, JPG, JPEG, PNG</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       Vault Status / Sign-in Warning Banner (if guest)
+       ====================================================================== -->
+  <div id="vaultAuthPrompt" class="ds-callout ds-callout-gateway" style="display: none; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm);">
+    <div style="display: flex; align-items: center; gap: var(--space-sm);">
+      <span class="material-symbols-outlined" style="font-size: 28px; color: var(--color-saffron);">lock</span>
+      <div>
+        <div style="font-weight: var(--font-weight-bold); font-size: var(--font-size-sm); color: var(--color-text-primary);" data-i18n="vault_auth_prompt_title">
+          Sign In to Access Your Personal Document Vault
+        </div>
+        <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: 2px;" data-i18n="vault_auth_prompt_desc">
+          Sign in with your registered citizen account to securely upload and inspect documents.
+        </div>
+      </div>
+    </div>
+    <a href="/auth" class="ds-btn ds-btn-saffron ds-btn-sm">
+      <span class="material-symbols-outlined" style="font-size: 16px;">login</span>
+      <span data-i18n="nav_signin">Sign In / પ્રવેશ</span>
+    </a>
+  </div>
+
+  <!-- ======================================================================
+       Upload & Document Inspector Section
+       ====================================================================== -->
+  <section class="ds-card">
+    <div class="ds-card-header">
+      <div>
+        <h2 class="ds-card-title" data-i18n="upload_section_title">
+          Upload New Document to Vault
+        </h2>
+        <div class="ds-card-subtitle" data-i18n="upload_section_sub">
+          Files are validated against statutory guidelines (legibility, resolution, and accepted format constraints).
+        </div>
+      </div>
+      <span class="ds-badge ds-badge-neutral">Local Pre-Validation</span>
+    </div>
+
+    <!-- Upload Form -->
+    <form id="vaultUploadForm" onsubmit="handleDocumentUpload(event)" style="display: flex; flex-direction: column; gap: var(--space-md);">
+      
+      <!-- Upload Dropzone -->
+      <div 
+        id="dropzone" 
+        style="border: 2px dashed var(--color-border); border-radius: var(--radius-lg); padding: var(--space-xl); text-align: center; background: var(--color-surface-container-low); cursor: pointer; transition: all var(--transition-fast);"
+        onclick="document.getElementById('vaultFileInput').click()"
+        ondragover="handleDragOver(event)"
+        ondragleave="handleDragLeave(event)"
+        ondrop="handleDrop(event)"
+      >
+        <span class="material-symbols-outlined" style="font-size: 44px; color: var(--color-primary); margin-bottom: var(--space-xs);">cloud_upload</span>
+        <div style="font-weight: var(--font-weight-bold); font-size: var(--font-size-base); color: var(--color-text-primary);" data-i18n="drag_drop_text">
+          Drag &amp; drop document here, or click to browse
+        </div>
+        <div style="font-size: var(--font-size-xs); color: var(--color-text-muted); margin-top: 4px;" data-i18n="drag_drop_sub">
+          Supports PDF, JPEG, JPG, and PNG files up to 5 MB
+        </div>
+        <div id="selectedFileName" style="display: none; font-weight: var(--font-weight-bold); color: var(--color-primary); margin-top: var(--space-sm); font-size: var(--font-size-sm); background: var(--color-surface-container-lowest); padding: 6px 12px; border-radius: var(--radius-md); display: inline-block;"></div>
+        <input type="file" id="vaultFileInput" accept=".pdf,.jpg,.jpeg,.png" style="display: none;" onchange="onFileSelected(this)">
+      </div>
+
+      <!-- Form Inputs Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-md);">
+        
+        <div class="ds-form-group" style="margin-bottom: 0;">
+          <label for="docNameInput" class="ds-label">
+            <span data-i18n="label_doc_name">Document Label / Name</span> <span class="required">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="docNameInput" 
+            class="ds-input" 
+            placeholder="e.g. Aadhaar Card Front & Back, Rent Deed 2026" 
+            required
+          >
+        </div>
+
+        <div class="ds-form-group" style="margin-bottom: 0;">
+          <label for="docTypeSelect" class="ds-label">
+            <span data-i18n="label_doc_category">Statutory Document Category</span> <span class="required">*</span>
+          </label>
+          <select id="docTypeSelect" class="ds-select" required>
+            <option value="" disabled selected>Select category...</option>
+            <option value="DOC-AADHAAR">Aadhaar Card / Letter / e-Aadhaar</option>
+            <option value="DOC-PAN">PAN Card (Permanent Account Number)</option>
+            <option value="DOC-VOTER">Voter ID (EPIC Card)</option>
+            <option value="DOC-BIRTH">Birth Certificate</option>
+            <option value="DOC-PASSPORT">Indian Passport</option>
+            <option value="DOC-DL">Driving Licence</option>
+            <option value="DOC-UTIL">Utility Bill (Electricity / Water / Piped Gas)</option>
+            <option value="DOC-PASSBOOK">Bank / Post Office Passbook</option>
+            <option value="DOC-RENT">Registered Rent / Lease Agreement</option>
+            <option value="DOC-PHOTO">Passport-Size Color Photograph</option>
+            <option value="DOC-OTHER">Other Supporting Document</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Upload Button & Status -->
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm); border-top: 1px solid var(--color-border); padding-top: var(--space-sm);">
+        <span id="uploadStatusMessage" style="font-size: var(--font-size-xs); color: var(--color-text-secondary);"></span>
+        <button type="submit" id="vaultUploadBtn" class="ds-btn ds-btn-primary">
+          <span class="material-symbols-outlined" style="font-size: 18px;">upload_file</span>
+          <span data-i18n="btn_upload_doc">Upload &amp; Inspect Document</span>
+        </button>
+      </div>
+
+    </form>
+  </section>
+
+  <!-- ======================================================================
+       Uploaded Documents List
+       ====================================================================== -->
+  <section class="ds-card">
+    <div class="ds-card-header">
+      <div>
+        <h2 class="ds-card-title" data-i18n="my_saved_docs">
+          My Saved Documents
+        </h2>
+        <div class="ds-card-subtitle" data-i18n="my_saved_docs_sub">
+          Inspected documents stored in your authenticated personal vault.
+        </div>
+      </div>
+      <button type="button" class="ds-btn ds-btn-secondary ds-btn-sm" onclick="fetchVaultDocuments()">
+        <span class="material-symbols-outlined" style="font-size: 16px;">refresh</span>
+        <span data-i18n="btn_refresh_vault">Refresh Vault</span>
+      </button>
+    </div>
+
+    <div id="documentsListContainer" style="display: flex; flex-direction: column; gap: var(--space-sm); margin-top: var(--space-sm);">
+      <div style="text-align: center; padding: var(--space-xl); color: var(--color-text-muted);">
+        <span class="material-symbols-outlined" style="font-size: 36px; color: var(--color-text-muted);">folder_open</span>
+        <div style="margin-top: 4px; font-size: var(--font-size-sm);">Checking saved vault documents...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       Pre-Submission Legibility & Format Checklist
+       ====================================================================== -->
+  <section class="ds-card" style="background: var(--color-surface-container-low);">
+    <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
+      <div style="display: flex; align-items: center; gap: var(--space-xs);">
+        <span class="material-symbols-outlined" style="font-size: 22px; color: var(--color-primary);">checklist</span>
+        <h2 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0;" data-i18n="checklist_title">
+          Pre-Submission Verification Checklist
+        </h2>
+      </div>
+      <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: 0;" data-i18n="checklist_desc">
+        Before submitting documents to Jan Seva Kendras or departmental portals, verify these statutory compliance standards:
+      </p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-sm); margin-top: var(--space-xs);">
+        <div class="ds-tonal-box" style="background: var(--color-surface-container-lowest); display: flex; align-items: flex-start; gap: 8px;">
+          <span class="material-symbols-outlined" style="font-size: 20px; color: var(--color-green);">check_circle</span>
+          <div style="font-size: var(--font-size-xs); color: var(--color-text-primary);">
+            <strong data-i18n="checklist_legibility_title">Legibility:</strong> <span data-i18n="checklist_legibility_desc">Text and photo must be clearly readable. Avoid glare, shadows, or cropped edges.</span>
+          </div>
+        </div>
+
+        <div class="ds-tonal-box" style="background: var(--color-surface-container-lowest); display: flex; align-items: flex-start; gap: 8px;">
+          <span class="material-symbols-outlined" style="font-size: 20px; color: var(--color-green);">check_circle</span>
+          <div style="font-size: var(--font-size-xs); color: var(--color-text-primary);">
+            <strong data-i18n="checklist_validity_title">Recent Validity:</strong> <span data-i18n="checklist_validity_desc">Utility bills and rent agreements must generally be recent (&lt;3 months for PAN/UIDAI).</span>
+          </div>
+        </div>
+
+        <div class="ds-tonal-box" style="background: var(--color-surface-container-lowest); display: flex; align-items: flex-start; gap: 8px;">
+          <span class="material-symbols-outlined" style="font-size: 20px; color: var(--color-green);">check_circle</span>
+          <div style="font-size: var(--font-size-xs); color: var(--color-text-primary);">
+            <strong data-i18n="checklist_name_title">Name Matching:</strong> <span data-i18n="checklist_name_desc">Spelling on address proof must match applicant name on primary identity card.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  checkVaultAuth();
+});
+
+function checkVaultAuth() {
+  const token = localStorage.getItem('digisahay_jwt');
+  const authPrompt = document.getElementById('vaultAuthPrompt');
+  if (!token) {
+    authPrompt.style.display = 'flex';
+    document.getElementById('documentsListContainer').innerHTML = `
+      <div style="text-align: center; padding: 32px; color: var(--color-text-muted);">
+        <span class="material-symbols-outlined" style="font-size: 40px; color: var(--color-saffron-dark);">lock</span>
+        <div style="font-weight: var(--font-weight-bold); font-size: var(--font-size-sm); color: var(--color-text-primary); margin-top: 8px;">
+          Sign in to view your saved vault documents
+        </div>
+        <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: 4px;">
+          Your documents are private and tied to your citizen login.
+        </div>
+        <a href="/auth" class="ds-btn ds-btn-saffron ds-btn-sm" style="margin-top: 12px;">
+          <span class="material-symbols-outlined" style="font-size: 16px;">login</span>
+          <span>Sign In / Create Account</span>
+        </a>
+      </div>
+    `;
+  } else {
+    authPrompt.style.display = 'none';
+    fetchVaultDocuments();
+  }
+}
+
+async function fetchVaultDocuments() {
+  const token = localStorage.getItem('digisahay_jwt');
+  if (!token) return;
+
+  const container = document.getElementById('documentsListContainer');
+  container.innerHTML = '<div style="text-align: center; padding: 24px; color: var(--color-text-muted);"><span class="material-symbols-outlined" style="font-size: 32px; animation: spin 1s linear infinite;">sync</span><div>Fetching documents...</div></div>';
+
+  try {
+    const res = await fetch('/api/documents/', {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    });
+
+    if (res.status === 401) {
+      localStorage.removeItem('digisahay_jwt');
+      checkVaultAuth();
+      return;
+    }
+
+    const data = await res.json();
+    if (data.success && data.documents) {
+      renderVaultDocuments(data.documents);
+    } else {
+      container.innerHTML = '<div style="text-align: center; padding: 24px; color: var(--color-text-muted); font-size: var(--font-size-sm);">No documents uploaded to your vault yet.</div>';
+    }
+  } catch (err) {
+    container.innerHTML = '<div style="padding: 16px; color: var(--color-error); font-size: var(--font-size-sm);">Unable to load documents from vault.</div>';
+  }
+}
+
+function renderVaultDocuments(docs) {
+  const container = document.getElementById('documentsListContainer');
+  if (docs.length === 0) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 32px; color: var(--color-text-muted);">
+        <span class="material-symbols-outlined" style="font-size: 40px;">folder_open</span>
+        <div style="font-weight: var(--font-weight-bold); font-size: var(--font-size-sm); color: var(--color-text-primary); margin-top: 8px;">
+          No documents in your vault
+        </div>
+        <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: 4px;">
+          Upload your Aadhaar, PAN, Voter ID, or utility proofs using the form above.
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  let html = '';
+  docs.forEach(doc => {
+    html += `
+      <div class="ds-tonal-box" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 12px; min-width: 240px;">
+          <div style="width: 40px; height: 40px; border-radius: var(--radius-md); background: var(--color-surface-container-highest); display: flex; align-items: center; justify-content: center; color: var(--color-primary); flex-shrink: 0;">
+            <span class="material-symbols-outlined" style="font-size: 22px;">description</span>
+          </div>
+          <div>
+            <div style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary);">
+              ${escapeHtml(doc.document_name)}
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--color-text-muted); margin-top: 2px;">
+              <span class="ds-badge ds-badge-neutral" style="font-size: 10px; padding: 1px 6px;">${escapeHtml(doc.document_type || doc.document_type_id || 'Document')}</span>
+              <span>${doc.file_size ? (doc.file_size / 1024).toFixed(1) + ' KB' : ''}</span>
+              <span>•</span>
+              <span>${doc.uploaded_at ? new Date(doc.uploaded_at).toLocaleDateString() : ''}</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <a href="/api/documents/${doc.document_id}/download" class="ds-btn ds-btn-secondary ds-btn-sm" title="Download Document">
+            <span class="material-symbols-outlined" style="font-size: 16px;">download</span>
+            <span>Download</span>
+          </a>
+          <button type="button" class="ds-btn ds-btn-sm" style="color: var(--color-error); border: 1px solid var(--color-border);" onclick="deleteDocument('${doc.document_id}')" title="Delete Document">
+            <span class="material-symbols-outlined" style="font-size: 16px;">delete</span>
+          </button>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+function onFileSelected(input) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    const el = document.getElementById('selectedFileName');
+    el.style.display = 'inline-block';
+    el.textContent = 'Selected: ' + file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+  }
+}
+
+function handleDragOver(e) {
+  e.preventDefault();
+  document.getElementById('dropzone').style.borderColor = 'var(--color-primary)';
+  document.getElementById('dropzone').style.backgroundColor = 'var(--color-surface-container)';
+}
+
+function handleDragLeave(e) {
+  e.preventDefault();
+  document.getElementById('dropzone').style.borderColor = 'var(--color-border)';
+  document.getElementById('dropzone').style.backgroundColor = 'var(--color-surface-container-low)';
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  handleDragLeave(e);
+  if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+    const input = document.getElementById('vaultFileInput');
+    input.files = e.dataTransfer.files;
+    onFileSelected(input);
+  }
+}
+
+async function handleDocumentUpload(e) {
+  e.preventDefault();
+  const token = localStorage.getItem('digisahay_jwt');
+  if (!token) {
+    alert('Please sign in to upload documents to your vault.');
+    window.location.href = '/auth';
+    return;
+  }
+
+  const fileInput = document.getElementById('vaultFileInput');
+  if (!fileInput.files || !fileInput.files[0]) {
+    alert('Please select a document file to upload.');
+    return;
+  }
+
+  const file = fileInput.files[0];
+  if (file.size > 5 * 1024 * 1024) {
+    alert('File size exceeds the 5 MB statutory limit. Please choose a smaller file.');
+    return;
+  }
+
+  const docName = document.getElementById('docNameInput').value.trim();
+  const docTypeId = document.getElementById('docTypeSelect').value;
+
+  const btn = document.getElementById('vaultUploadBtn');
+  const msg = document.getElementById('uploadStatusMessage');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 18px; animation: spin 1s linear infinite;">sync</span> Uploading...';
+  msg.textContent = 'Uploading and validating file...';
+  msg.style.color = 'var(--color-text-secondary)';
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('document_name', docName);
+  formData.append('document_type_id', docTypeId);
+
+  try {
+    const res = await fetch('/api/documents/upload', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
+      body: formData
+    });
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      msg.textContent = 'Document successfully saved to vault!';
+      msg.style.color = 'var(--color-green-text)';
+      document.getElementById('vaultUploadForm').reset();
+      document.getElementById('selectedFileName').style.display = 'none';
+      fetchVaultDocuments();
+    } else {
+      msg.textContent = data.message || 'Upload failed.';
+      msg.style.color = 'var(--color-error)';
+    }
+  } catch (err) {
+    msg.textContent = 'Network error during upload. Please try again.';
+    msg.style.color = 'var(--color-error)';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 18px;">upload_file</span> <span>Upload &amp; Inspect Document</span>';
+  }
+}
+
+async function deleteDocument(docId) {
+  if (!confirm('Are you sure you want to remove this document from your vault?')) return;
+  const token = localStorage.getItem('digisahay_jwt');
+  if (!token) return;
+
+  try {
+    const res = await fetch('/api/documents/' + encodeURIComponent(docId), {
+      method: 'DELETE',
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      fetchVaultDocuments();
+    } else {
+      alert(data.message || 'Failed to delete document');
+    }
+  } catch (err) {
+    alert('Network error while deleting document');
+  }
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+  return String(text).replace(/[&<>"']/g, m => map[m]);
+}
+</script>
+<style>
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+</style>
+{% endblock %}

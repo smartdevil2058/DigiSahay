@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}DigiSahay • Independent Citizen Guidance Platform{% endblock %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; gap: var(--space-xl);">
+
+  <!-- ======================================================================
+       Hero Section - Independent Guidance
+       ====================================================================== -->
+  <section class="ds-card" style="background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 65%, var(--color-primary-light) 100%); color: var(--color-on-primary); position: relative; overflow: hidden;">
+    <div style="position: relative; z-index: 2; display: flex; flex-direction: column; gap: var(--space-sm); max-width: 820px;">
+      <div style="display: flex; align-items: center; gap: var(--space-xs); flex-wrap: wrap;">
+        <span class="ds-badge" style="background-color: rgba(255, 255, 255, 0.15); color: var(--color-on-primary);" data-i18n="hero_badge_guidance">
+          Independent Citizen Guidance
+        </span>
+        <span class="ds-badge" style="background-color: var(--color-saffron); color: var(--color-text-primary); font-weight: var(--font-weight-bold);" data-i18n="hero_badge_prep">
+          Self-Service Preparation
+        </span>
+      </div>
+
+      <h1 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); line-height: var(--line-height-tight); margin-top: var(--space-2xs); color: #ffffff;" data-i18n="hero_title">
+        Citizen Services Preparation Guide
+      </h1>
+
+      <p style="font-size: var(--font-size-lg); color: var(--color-primary-fixed); line-height: var(--line-height-relaxed); margin: 0;" data-i18n="hero_desc">
+        तैयारी बिना झंझટ • Informational guidance for Jan Seva Kendra visits, Aadhaar demographic updates, PAN applications, and electoral enrollment.
+      </p>
+
+      <div style="display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-sm);">
+        <a href="/services" class="ds-btn ds-btn-saffron">
+          <span class="material-symbols-outlined" style="font-size: 18px;">explore</span>
+          <span data-i18n="btn_explore_catalogue">Explore Services Catalogue</span>
+        </a>
+        <a href="/prerequisite-checker" class="ds-btn ds-btn-secondary">
+          <span class="material-symbols-outlined" style="font-size: 18px;">fact_check</span>
+          <span data-i18n="btn_check_prereq">Check Prerequisites</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       Core Pillars & Workflow Grid
+       ====================================================================== -->
+  <section>
+    <div style="margin-bottom: var(--space-md);">
+      <h2 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0;" data-i18n="how_digisahay_assists">
+        How DigiSahay Assists Citizens
+      </h2>
+      <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-top: var(--space-2xs);" data-i18n="how_desc">
+        Structured preparation before visiting administrative queues or official statutory portals.
+      </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-md);">
+      
+      <!-- Step 1: Discover -> Services Catalogue -->
+      <a href="/services" class="ds-card ds-card-hover ds-card-link" role="link" tabindex="0" aria-label="1. Services Catalogue" style="display: flex; flex-direction: column; justify-content: space-between; text-decoration: none; color: inherit;">
+        <div>
+          <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background-color: var(--color-surface-container); color: var(--color-primary); display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-md);">
+            <span class="material-symbols-outlined" style="font-size: 24px;">assured_workload</span>
+          </div>
+          <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: var(--space-xs);" data-i18n="step1_title">
+            1. Services Catalogue
+          </h3>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin: 0;" data-i18n="step1_desc">
+            Browse official requirements, responsible authorities, and statutory fee guidelines for central and state citizen services.
+          </p>
+        </div>
+        <div style="margin-top: var(--space-md); padding-top: var(--space-sm); border-top: 1px solid var(--color-border);">
+          <span class="ds-badge ds-badge-neutral" data-i18n="step1_badge">Electoral • Tax • Identity</span>
+        </div>
+      </a>
+
+      <!-- Step 2: Evaluate Eligibility -> Prerequisite Checker -->
+      <a href="/prerequisite-checker" class="ds-card ds-card-hover ds-card-link" role="link" tabindex="0" aria-label="2. Prerequisite Checker" style="display: flex; flex-direction: column; justify-content: space-between; text-decoration: none; color: inherit;">
+        <div>
+          <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background-color: var(--color-saffron-bg); color: var(--color-saffron-dark); display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-md);">
+            <span class="material-symbols-outlined" style="font-size: 24px;">fact_check</span>
+          </div>
+          <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: var(--space-xs);" data-i18n="step2_title">
+            2. Prerequisite Checker
+          </h3>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin: 0;" data-i18n="step2_desc">
+            Review applicant eligibility criteria, age thresholds, and accepted proof options based on published department rules.
+          </p>
+        </div>
+        <div style="margin-top: var(--space-md); padding-top: var(--space-sm); border-top: 1px solid var(--color-border);">
+          <span class="ds-badge ds-badge-in-progress" data-i18n="step2_badge">Criteria Pre-Check</span>
+        </div>
+      </a>
+
+      <!-- Step 3: Organize Documents -> Documents Vault -->
+      <a href="/documents" class="ds-card ds-card-hover ds-card-link" role="link" tabindex="0" aria-label="3. Documents Vault" style="display: flex; flex-direction: column; justify-content: space-between; text-decoration: none; color: inherit;">
+        <div>
+          <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background-color: var(--color-green-bg); color: var(--color-green-text); display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-md);">
+            <span class="material-symbols-outlined" style="font-size: 24px;">folder_shared</span>
+          </div>
+          <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: var(--space-xs);" data-i18n="step3_title">
+            3. Documents Vault
+          </h3>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin: 0;" data-i18n="step3_desc">
+            Organize personal documents (PDF, JPG, PNG) locally with format and legibility checklists prior to formal submission.
+          </p>
+        </div>
+        <div style="margin-top: var(--space-md); padding-top: var(--space-sm); border-top: 1px solid var(--color-border);">
+          <span class="ds-badge ds-badge-verified" data-i18n="step3_badge">Document Readiness</span>
+        </div>
+      </a>
+
+      <!-- Step 4: Locate Kendra -> Service Centres (CSC) -->
+      <a href="/centers" class="ds-card ds-card-hover ds-card-link" role="link" tabindex="0" aria-label="4. Service Centres (CSC)" style="display: flex; flex-direction: column; justify-content: space-between; text-decoration: none; color: inherit;">
+        <div>
+          <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background-color: var(--color-surface-container); color: var(--color-primary); display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-md);">
+            <span class="material-symbols-outlined" style="font-size: 24px;">storefront</span>
+          </div>
+          <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: var(--space-xs);" data-i18n="step4_title">
+            4. Service Centres (CSC)
+          </h3>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin: 0;" data-i18n="step4_desc">
+            Find authorized Common Service Centres and Jan Seva Kendras for in-person biometric capture and physical verification.
+          </p>
+        </div>
+        <div style="margin-top: var(--space-md); padding-top: var(--space-sm); border-top: 1px solid var(--color-border);">
+          <span class="ds-badge ds-badge-neutral" data-i18n="step4_badge">Center Directory</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       Statutory Guidance vs Official Gateway Callout (Split Panel)
+       ====================================================================== -->
+  <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-md);">
+    
+    <!-- DigiSahay Guidance Panel -->
+    <div class="ds-callout ds-callout-guidance">
+      <span class="material-symbols-outlined ds-callout-icon" style="font-size: 28px;">psychology</span>
+      <div>
+        <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-primary); margin: 0 0 var(--space-2xs) 0;" data-i18n="guidance_box_title">
+          Independent Guidance Protocol
+        </h3>
+        <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin: 0;" data-i18n="guidance_box_desc">
+          DigiSahay translates complex civic procedures into plain-language checklists in English, Hindi, and Gujarati. The platform assists citizens in compiling correct proofs before visiting government offices.
+        </p>
+      </div>
+    </div>
+
+    <!-- Official Statutory Gateway Panel -->
+    <div class="ds-callout ds-callout-gateway">
+      <span class="material-symbols-outlined ds-callout-icon" style="font-size: 28px;">gavel</span>
+      <div>
+        <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-saffron-dark); margin: 0 0 var(--space-2xs) 0;" data-i18n="gateway_box_title">
+          Statutory Transparency
+        </h3>
+        <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin: 0;" data-i18n="gateway_box_desc">
+          DigiSahay is an independent informational tool. It does not issue official identity cards, collect statutory application fees, or make legal determinations. All filings must be submitted directly on statutory government portals.
+        </p>
+      </div>
+    </div>
+
+  </section>
+
+</div>
+{% endblock %}

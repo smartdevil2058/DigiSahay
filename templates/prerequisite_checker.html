@@ -1,0 +1,466 @@
+{% extends "base.html" %}
+
+{% block title %}Prerequisite & Eligibility Checker • DigiSahay{% endblock %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; gap: var(--space-xl);">
+
+  <!-- ======================================================================
+       Header & Service Selector Complex
+       ====================================================================== -->
+  <section class="ds-card" style="padding: var(--space-lg);">
+    <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+      
+      <div style="display: flex; flex-direction: column; lg:flex-row; justify-content: space-between; gap: var(--space-md);">
+        <div>
+          <div style="display: flex; align-items: center; gap: var(--space-xs); flex-wrap: wrap; margin-bottom: var(--space-2xs);">
+            <span class="ds-badge ds-badge-primary">
+              <span class="material-symbols-outlined" style="font-size: 14px;">fact_check</span>
+              Citizen Pre-Check Tool
+            </span>
+            <span class="ds-badge ds-badge-neutral">
+              <span class="material-symbols-outlined" style="font-size: 14px; color: var(--color-primary);">account_tree</span>
+              Document Dependency Evaluator
+            </span>
+          </div>
+
+          <h1 style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0; line-height: var(--line-height-tight);" data-i18n="checker_title">
+            Prerequisite &amp; Eligibility Checker / યોગ્યતા તપાસ
+          </h1>
+
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin: var(--space-2xs) 0 0 0; max-width: 760px;" data-i18n="checker_desc">
+            Verify your documentation readiness and statutory criteria before visiting Jan Seva Kendras or submitting applications on official government portals.
+          </p>
+        </div>
+
+        <!-- Service Selector Dropdown -->
+        <div class="ds-tonal-box" style="min-width: 320px; align-self: flex-start;">
+          <label for="serviceSelect" class="ds-label" style="font-size: var(--font-size-xs); text-transform: uppercase; letter-spacing: 0.04em;" data-i18n="target_service_label">
+            Target Official Service
+          </label>
+          <select id="serviceSelect" class="ds-select" onchange="onServiceChanged(this.value)" style="margin-top: 4px; font-weight: var(--font-weight-semibold);">
+            {% for s in services %}
+              <option value="{{ s.service_id }}" {% if s.service_id == selected_service_id %}selected{% endif %}>
+                {{ s.service_name }} ({{ s.service_category }})
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       Live Readiness Telemetry & Gauge Bento
+       ====================================================================== -->
+  <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-md);">
+    
+    <!-- Composite Readiness Gauge Card -->
+    <div class="ds-card" style="background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%); color: var(--color-on-primary); display: flex; flex-direction: column; justify-content: space-between;">
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-sm);">
+        <div>
+          <span style="font-size: var(--font-size-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-primary-fixed); font-weight: var(--font-weight-bold);" data-i18n="readiness_title">
+            Documentation Readiness
+          </span>
+          <div id="readinessScore" style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); margin-top: 4px; color: #ffffff;">
+            100%
+          </div>
+          <div id="readinessSubtext" style="font-size: var(--font-size-xs); color: var(--color-primary-fixed); margin-top: 2px;" data-i18n="readiness_evaluating">
+            Evaluating criteria...
+          </div>
+        </div>
+
+        <div style="width: 56px; height: 56px; border-radius: var(--radius-full); background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;">
+          <span class="material-symbols-outlined" style="font-size: 32px; color: var(--color-saffron);">fact_check</span>
+        </div>
+      </div>
+
+      <div style="background: rgba(255,255,255,0.1); border-radius: var(--radius-md); padding: var(--space-sm); margin-top: var(--space-md);">
+        <div style="display: flex; align-items: center; gap: 6px; font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); color: var(--color-saffron);">
+          <span class="material-symbols-outlined" style="font-size: 16px;">lightbulb</span>
+          <span data-i18n="prep_guidance_title">Preparation Guidance</span>
+        </div>
+        <p id="readinessTip" style="font-size: 11px; line-height: 1.5; color: #ffffff; margin: 4px 0 0 0;" data-i18n="prep_guidance_text">
+          Answer all statutory questions below to verify whether you meet the eligibility criteria for this service.
+        </p>
+      </div>
+    </div>
+
+    <!-- Smart Guidance Alert & Discrepancy Stack -->
+    <div class="ds-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+      <div>
+        <div style="display: flex; align-items: center; gap: var(--space-xs); margin-bottom: var(--space-xs);">
+          <span class="material-symbols-outlined" style="font-size: 22px; color: var(--color-saffron-dark);">sync_problem</span>
+          <h2 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0;" data-i18n="civic_consistency_title">
+            Civic Consistency Advisory
+          </h2>
+        </div>
+        <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin: 0;" data-i18n="civic_consistency_text">
+          Ensure that your <strong>full name, date of birth, and father's/spouse's name</strong> are spelled identically across all documents you present (e.g. Aadhaar, School Leaving Certificate, PAN Card). Minor spelling variations often cause statutory application rejections.
+        </p>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: var(--space-xs); padding-top: var(--space-sm); border-top: 1px solid var(--color-border); font-size: 11px; color: var(--color-text-muted);">
+        <span class="material-symbols-outlined" style="font-size: 16px; color: var(--color-green);">verified_user</span>
+        <span>Independent guidance · All data remains in your local browser session</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ======================================================================
+       Statutory Eligibility Rules Section
+       ====================================================================== -->
+  <section class="ds-card">
+    <div class="ds-card-header">
+      <div>
+        <h2 class="ds-card-title" data-i18n="criteria_section_title">
+          1. Statutory Eligibility Criteria Pre-Check
+        </h2>
+        <div class="ds-card-subtitle" data-i18n="criteria_section_sub">
+          Confirm that you satisfy the statutory requirements laid down by the responsible department.
+        </div>
+      </div>
+      <span id="rulesCountBadge" class="ds-badge ds-badge-neutral">Loading rules...</span>
+    </div>
+
+    <div id="rulesContainer" style="display: flex; flex-direction: column; gap: var(--space-sm); margin-top: var(--space-sm);">
+      <div style="text-align: center; padding: var(--space-lg); color: var(--color-text-muted);">
+        <span class="material-symbols-outlined" style="font-size: 32px; animation: spin 1.5s linear infinite;">sync</span>
+        <div>Loading eligibility rules...</div>
+      </div>
+    </div>
+
+    <!-- Eligibility Outcome Banner -->
+    <div id="eligibilityResultBanner" style="display: none; margin-top: var(--space-md); padding: var(--space-md); border-radius: var(--radius-lg);">
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       Required Documents & Proof Matrix Section
+       ====================================================================== -->
+  <section class="ds-card">
+    <div class="ds-card-header">
+      <div>
+        <h2 class="ds-card-title" data-i18n="proof_section_title">
+          2. Required Documents &amp; Proof Matrix
+        </h2>
+        <div class="ds-card-subtitle" data-i18n="proof_section_sub">
+          Department-accepted document options for each mandatory proof category.
+        </div>
+      </div>
+      <span id="groupsCountBadge" class="ds-badge ds-badge-neutral">Loading requirements...</span>
+    </div>
+
+    <div id="requirementsContainer" style="display: flex; flex-direction: column; gap: var(--space-md); margin-top: var(--space-sm);">
+      <div style="text-align: center; padding: var(--space-lg); color: var(--color-text-muted);">
+        <span class="material-symbols-outlined" style="font-size: 32px; animation: spin 1.5s linear infinite;">sync</span>
+        <div>Loading requirement groups...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       Statutory Disclaimer & Next Step Action
+       ====================================================================== -->
+  <section class="ds-card" style="background-color: var(--color-surface-container-low); border-left: 4px solid var(--color-saffron);">
+    <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
+      <div style="display: flex; align-items: center; gap: var(--space-xs);">
+        <span class="material-symbols-outlined" style="font-size: 20px; color: var(--color-saffron-dark);">gavel</span>
+        <h3 style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0;" data-i18n="statutory_reminder_title">
+          Statutory Transparency &amp; Official Submission Reminder
+        </h3>
+      </div>
+      <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin: 0;" data-i18n="statutory_reminder_text">
+        DigiSahay is an independent self-service preparation portal. It does not submit filings, collect statutory fees, or make binding legal determinations. Final document acceptance remains at the sole discretion of the designated government officer (ERO, AO, UIDAI Registrar).
+      </p>
+      <div style="display: flex; flex-wrap: wrap; gap: var(--space-xs); margin-top: var(--space-xs);">
+        <a id="checkerApplyDirectlyBtn" href="/apply?service_id={{ selected_service_id }}" class="ds-btn ds-btn-saffron ds-btn-sm" style="font-weight: var(--font-weight-bold);">
+          <span class="material-symbols-outlined" style="font-size: 16px;">edit_document</span>
+          <span data-i18n="btn_apply_now">Proceed to Apply Directly</span>
+        </a>
+        <a href="/documents" class="ds-btn ds-btn-primary ds-btn-sm">
+          <span class="material-symbols-outlined" style="font-size: 16px;">folder_shared</span>
+          <span data-i18n="btn_organize_vault">Organize Documents in Vault</span>
+        </a>
+        <a href="/centers" class="ds-btn ds-btn-secondary ds-btn-sm">
+          <span class="material-symbols-outlined" style="font-size: 16px;">storefront</span>
+          <span data-i18n="btn_find_center">Find Nearest Service Centre (CSC)</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<style>
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let currentServiceId = "{{ selected_service_id }}";
+let currentRules = [];
+let ruleAnswers = {};
+
+document.addEventListener('DOMContentLoaded', function() {
+  loadServiceData(currentServiceId);
+});
+
+function onServiceChanged(newId) {
+  currentServiceId = newId;
+  const url = new URL(window.location);
+  url.searchParams.set('service_id', newId);
+  window.history.pushState({}, '', url);
+  const applyBtn = document.getElementById('checkerApplyDirectlyBtn');
+  if (applyBtn) {
+    applyBtn.href = '/apply?service_id=' + encodeURIComponent(newId);
+  }
+  loadServiceData(newId);
+}
+
+async function loadServiceData(serviceId) {
+  ruleAnswers = {};
+  document.getElementById('eligibilityResultBanner').style.display = 'none';
+
+  // Load Rules
+  const rulesContainer = document.getElementById('rulesContainer');
+  rulesContainer.innerHTML = '<div style="text-align: center; padding: 24px; color: var(--color-text-muted);"><span class="material-symbols-outlined" style="font-size: 32px; animation: spin 1.5s linear infinite;">sync</span><div>Loading eligibility rules...</div></div>';
+  
+  try {
+    const rulesRes = await fetch('/api/services/' + encodeURIComponent(serviceId) + '/eligibility-rules');
+    const rulesData = await rulesRes.json();
+    if (rulesData.success && rulesData.eligibility_rules) {
+      currentRules = rulesData.eligibility_rules;
+      renderRules(currentRules);
+    } else {
+      rulesContainer.innerHTML = '<div style="padding: 16px; color: var(--color-text-secondary); font-size: var(--font-size-sm);">No specific statutory eligibility rules registered for this service.</div>';
+      document.getElementById('rulesCountBadge').textContent = '0 Rules';
+    }
+  } catch (err) {
+    rulesContainer.innerHTML = '<div style="padding: 16px; color: var(--color-error); font-size: var(--font-size-sm);">Unable to fetch eligibility rules from server.</div>';
+  }
+
+  // Load Requirements
+  const reqContainer = document.getElementById('requirementsContainer');
+  reqContainer.innerHTML = '<div style="text-align: center; padding: 24px; color: var(--color-text-muted);"><span class="material-symbols-outlined" style="font-size: 32px; animation: spin 1.5s linear infinite;">sync</span><div>Loading requirement groups...</div></div>';
+
+  try {
+    const reqRes = await fetch('/api/services/' + encodeURIComponent(serviceId) + '/requirements');
+    const reqData = await reqRes.json();
+    if (reqData.success && reqData.requirement_groups) {
+      renderRequirements(reqData.requirement_groups);
+    } else {
+      reqContainer.innerHTML = '<div style="padding: 16px; color: var(--color-text-secondary); font-size: var(--font-size-sm);">No document requirements catalogued for this service.</div>';
+      document.getElementById('groupsCountBadge').textContent = '0 Groups';
+    }
+  } catch (err) {
+    reqContainer.innerHTML = '<div style="padding: 16px; color: var(--color-error); font-size: var(--font-size-sm);">Unable to fetch requirement groups from server.</div>';
+  }
+}
+
+function renderRules(rules) {
+  const container = document.getElementById('rulesContainer');
+  document.getElementById('rulesCountBadge').textContent = rules.length + ' Statutory Rules';
+
+  if (rules.length === 0) {
+    container.innerHTML = '<div style="padding: 16px; color: var(--color-text-secondary); font-size: var(--font-size-sm);">No specific statutory eligibility rules registered for this service.</div>';
+    return;
+  }
+
+  let html = '';
+  const lang = localStorage.getItem('digisahay_lang') || 'en';
+  const yesText = (lang === 'hi' ? 'हाँ' : (lang === 'gu' ? 'હા' : 'Yes'));
+  const noText = (lang === 'hi' ? 'नहीं' : (lang === 'gu' ? 'ના' : 'No'));
+
+  rules.forEach((rule, idx) => {
+    const isYesChecked = ruleAnswers[rule.rule_id] === true ? 'checked' : '';
+    const isNoChecked = ruleAnswers[rule.rule_id] === false ? 'checked' : '';
+
+    html += `
+      <div class="ds-tonal-box" style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 240px;">
+            <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: var(--font-weight-bold); color: var(--color-text-muted); text-transform: uppercase;">
+              <span class="material-symbols-outlined" style="font-size: 14px; color: var(--color-primary);">verified</span>
+              <span>Rule ${idx + 1} (${rule.rule_code})</span>
+            </div>
+            <div style="font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); margin-top: 4px;">
+              ${escapeHtml(rule.question_text)}
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <label style="display: flex; align-items: center; gap: 6px; font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); cursor: pointer; color: var(--color-green-text);">
+              <input type="radio" name="rule_${rule.rule_id}" value="yes" ${isYesChecked} onchange="onRuleAnswered('${rule.rule_id}', true)" style="accent-color: var(--color-green); cursor: pointer;">
+              <span>${yesText}</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 6px; font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); cursor: pointer; color: var(--color-error);">
+              <input type="radio" name="rule_${rule.rule_id}" value="no" ${isNoChecked} onchange="onRuleAnswered('${rule.rule_id}', false)" style="accent-color: var(--color-error); cursor: pointer;">
+              <span>${noText}</span>
+            </label>
+          </div>
+        </div>
+        <div id="ruleFeedback_${rule.rule_id}" style="font-size: 11px; display: none;"></div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+  updateReadinessGauge();
+}
+
+window.addEventListener('digisahay:langChange', function() {
+  if (currentRules.length > 0) {
+    renderRules(currentRules);
+  }
+});
+
+function onRuleAnswered(ruleId, ans) {
+  ruleAnswers[ruleId] = ans;
+  const rule = currentRules.find(r => r.rule_id === ruleId);
+  const fb = document.getElementById('ruleFeedback_' + ruleId);
+
+  if (rule) {
+    let cfg = {};
+    try { cfg = JSON.parse(rule.condition_config); } catch (e) {}
+    const expected = (cfg.expected !== undefined) ? cfg.expected : true;
+
+    if (ans === expected) {
+      fb.style.display = 'block';
+      fb.style.color = 'var(--color-green-text)';
+      fb.innerHTML = '<span class="material-symbols-outlined" style="font-size: 12px; vertical-align: middle;">check_circle</span> ' + escapeHtml(rule.outcome_if_true || 'Criteria satisfied');
+    } else {
+      fb.style.display = 'block';
+      fb.style.color = 'var(--color-error)';
+      fb.innerHTML = '<span class="material-symbols-outlined" style="font-size: 12px; vertical-align: middle;">cancel</span> ' + escapeHtml(rule.outcome_if_false || 'Criteria not met');
+    }
+  }
+
+  updateReadinessGauge();
+}
+
+function updateReadinessGauge() {
+  const total = currentRules.length;
+  if (total === 0) {
+    document.getElementById('readinessScore').textContent = '100%';
+    document.getElementById('readinessSubtext').textContent = 'No restrictions identified';
+    return;
+  }
+
+  let answered = 0;
+  let passed = 0;
+  let failed = 0;
+
+  currentRules.forEach(r => {
+    if (ruleAnswers[r.rule_id] !== undefined) {
+      answered++;
+      let cfg = {};
+      try { cfg = JSON.parse(r.condition_config); } catch (e) {}
+      const expected = (cfg.expected !== undefined) ? cfg.expected : true;
+      if (ruleAnswers[r.rule_id] === expected) {
+        passed++;
+      } else {
+        failed++;
+      }
+    }
+  });
+
+  const percentage = Math.round((passed / total) * 100);
+  document.getElementById('readinessScore').textContent = percentage + '%';
+  document.getElementById('readinessSubtext').textContent = passed + ' of ' + total + ' criteria passed (' + (total - answered) + ' pending)';
+
+  const banner = document.getElementById('eligibilityResultBanner');
+  if (answered === total) {
+    banner.style.display = 'block';
+    if (failed === 0) {
+      banner.style.backgroundColor = 'var(--color-green-bg)';
+      banner.style.border = '1px solid var(--color-green-border)';
+      banner.style.color = 'var(--color-green-text)';
+      banner.innerHTML = '<div style="display: flex; align-items: center; gap: 8px; font-weight: var(--font-weight-bold); font-size: var(--font-size-sm);"><span class="material-symbols-outlined">verified</span> Statutory Criteria Pre-Check Passed</div><div style="font-size: var(--font-size-xs); margin-top: 4px;">Based on your responses, you fulfill all published eligibility rules. Proceed to prepare the required documents below.</div>';
+    } else {
+      banner.style.backgroundColor = 'var(--color-error-bg)';
+      banner.style.border = '1px solid var(--color-error-border)';
+      banner.style.color = 'var(--color-error-text)';
+      banner.innerHTML = '<div style="display: flex; align-items: center; gap: 8px; font-weight: var(--font-weight-bold); font-size: var(--font-size-sm);"><span class="material-symbols-outlined">warning</span> Potential Statutory Ineligibility Detected</div><div style="font-size: var(--font-size-xs); margin-top: 4px;">One or more criteria were answered with non-qualifying options. Review the feedback above or consult an authorized Jan Seva Kendra.</div>';
+    }
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
+function renderRequirements(groups) {
+  const container = document.getElementById('requirementsContainer');
+  document.getElementById('groupsCountBadge').textContent = groups.length + ' Proof Categories';
+
+  if (groups.length === 0) {
+    container.innerHTML = '<div style="padding: 16px; color: var(--color-text-secondary); font-size: var(--font-size-sm);">No document requirements catalogued for this service.</div>';
+    return;
+  }
+
+  let html = '';
+  groups.forEach((grp, idx) => {
+    html += `
+      <div class="ds-card" style="padding: var(--space-md); border-left: 4px solid var(--color-primary);">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: var(--space-sm);">
+          <div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span class="ds-badge ds-badge-action" style="font-size: 10px;">Mandatory Proof</span>
+              <span style="font-size: 11px; color: var(--color-text-muted); font-weight: var(--font-weight-semibold);">${grp.selection_mode || 'Choose One'}</span>
+            </div>
+            <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 4px 0 0 0;">
+              ${idx + 1}. ${escapeHtml(grp.group_name)}
+            </h3>
+            <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: 2px 0 0 0;">
+              ${escapeHtml(grp.description || '')}
+            </p>
+          </div>
+          <span class="ds-badge ds-badge-neutral" style="font-size: 11px;">
+            ${grp.documents ? grp.documents.length : 0} Accepted Options
+          </span>
+        </div>
+
+        <div style="margin-top: var(--space-sm);">
+          <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-muted); font-weight: var(--font-weight-bold); margin-bottom: 6px;">
+            Accepted Document Alternatives (Any 1 of the following):
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px;">
+            ${(grp.documents || []).map(doc => `
+              <div style="background: var(--color-surface-container-low); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 8px 12px; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 4px;">
+                    <span style="font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); color: var(--color-text-primary);">
+                      ${escapeHtml(doc.document_name)}
+                    </span>
+                    <span class="material-symbols-outlined" style="font-size: 16px; color: var(--color-green);">check_circle</span>
+                  </div>
+                  <div style="font-size: 11px; color: var(--color-text-secondary); margin-top: 2px;">
+                    ${escapeHtml(doc.official_acceptance_conditions || doc.description || '')}
+                  </div>
+                </div>
+                <div style="margin-top: 6px; padding-top: 4px; border-top: 1px dashed var(--color-border); font-size: 10px; color: var(--color-text-muted); font-family: var(--font-family-mono);">
+                  Constraint: ${escapeHtml(doc.format_or_size_constraints || 'PDF / JPEG <= 2MB')}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+  return String(text).replace(/[&<>"']/g, m => map[m]);
+}
+</script>
+{% endblock %}

@@ -1,0 +1,503 @@
+{% extends "base.html" %}
+
+{% block title %}My Applications Tracker • DigiSahay{% endblock %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; gap: var(--space-xl);">
+
+  <!-- ======================================================================
+       Hero Banner - Applications Tracker
+       ====================================================================== -->
+  <section class="ds-card" style="background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 70%, var(--color-primary-light) 100%); color: var(--color-on-primary); position: relative; overflow: hidden;">
+    <div style="position: relative; z-index: 2; display: flex; flex-direction: column; gap: var(--space-sm); max-width: 860px;">
+      <div style="display: flex; align-items: center; gap: var(--space-xs); flex-wrap: wrap;">
+        <span class="ds-badge" style="background-color: rgba(255, 255, 255, 0.15); color: #ffffff;">
+          <span class="material-symbols-outlined" style="font-size: 14px;">pending_actions</span>
+          Application Milestone Tracker
+        </span>
+        <span class="ds-badge" style="background-color: var(--color-saffron); color: var(--color-text-primary); font-weight: var(--font-weight-bold);">
+          Statutory Lifecycle Stages
+        </span>
+      </div>
+
+      <h1 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); line-height: var(--line-height-tight); margin: var(--space-2xs) 0 0 0; color: #ffffff;" data-i18n="apps_title">
+        My Applications Tracker / અરજી સ્થિતિ ટ્રેકર
+      </h1>
+
+      <p style="font-size: var(--font-size-base); color: var(--color-primary-fixed); line-height: var(--line-height-relaxed); margin: 0;" data-i18n="apps_desc">
+        Monitor the preparation readiness and statutory review progression of your citizen service applications across official government departments.
+      </p>
+
+      <div style="display: flex; flex-wrap: wrap; gap: var(--space-lg); padding-top: var(--space-xs); font-size: var(--font-size-xs); color: var(--color-primary-fixed);">
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span class="material-symbols-outlined" style="font-size: 16px; color: var(--color-saffron);">timeline</span>
+          <span>4-Stage Lifecycle Stepper</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span class="material-symbols-outlined" style="font-size: 16px; color: #72de5c;">history</span>
+          <span>Audit History Trace</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       My Saved Applications List (Authenticated)
+       ====================================================================== -->
+  <section class="ds-card" id="myAppsSection">
+    <div class="ds-card-header">
+      <div>
+        <h2 class="ds-card-title" data-i18n="my_apps_heading">
+          My Saved Citizen Applications
+        </h2>
+        <div class="ds-card-subtitle" data-i18n="my_apps_sub">
+          Dossiers prepared and registered under your citizen profile.
+        </div>
+      </div>
+      <div style="display: flex; gap: var(--space-xs);">
+        <button type="button" class="ds-btn ds-btn-secondary ds-btn-sm" onclick="loadMyApplications()">
+          <span class="material-symbols-outlined" style="font-size: 16px;">refresh</span>
+          <span data-i18n="btn_refresh">Refresh</span>
+        </button>
+        <a href="/apply" class="ds-btn ds-btn-primary ds-btn-sm">
+          <span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+          <span data-i18n="btn_new_application">+ New Application</span>
+        </a>
+      </div>
+    </div>
+
+    <div id="myAppsListContainer" style="display: flex; flex-direction: column; gap: var(--space-sm); margin-top: var(--space-sm);">
+      <div style="text-align: center; padding: var(--space-xl); color: var(--color-text-muted); font-size: var(--font-size-sm);">
+        <span class="material-symbols-outlined" style="font-size: 36px; animation: spin 1s linear infinite;">sync</span>
+        <div style="margin-top: 4px;">Loading your applications...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       Track by Application ID / Reference Number
+       ====================================================================== -->
+  <section class="ds-card">
+    <div class="ds-card-header">
+      <div>
+        <h2 class="ds-card-title" data-i18n="track_specific_title">
+          Track Specific Application
+        </h2>
+        <div class="ds-card-subtitle" data-i18n="track_specific_sub">
+          Enter an Application ID or Reference Number to query current milestone and status history.
+        </div>
+      </div>
+      <span class="ds-badge ds-badge-neutral">Real-Time Query</span>
+    </div>
+
+    <form onsubmit="trackApplication(event)" style="display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: center;">
+      <div style="flex: 1; min-width: 260px;">
+        <input 
+          type="text" 
+          id="appTrackInput" 
+          class="ds-input" 
+          placeholder="Enter Application ID (e.g. APP-2026-0001, DIGI/VOTER/...)..." 
+          data-i18n-placeholder="track_input_placeholder"
+          required
+        >
+      </div>
+      <button type="submit" id="trackSubmitBtn" class="ds-btn ds-btn-primary">
+        <span class="material-symbols-outlined" style="font-size: 18px;">search</span>
+        <span data-i18n="track_btn">Track Status</span>
+      </button>
+    </form>
+
+    <!-- Track Result Area (Hidden by default) -->
+    <div id="trackResultArea" style="display: none; margin-top: var(--space-lg); border-top: 1px solid var(--color-border); padding-top: var(--space-md);">
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       Standard 4-Stage Civic Lifecycle Stepper Guide
+       ====================================================================== -->
+  <section class="ds-card">
+    <div class="ds-card-header">
+      <div>
+        <h2 class="ds-card-title" data-i18n="apps_lifecycle_title">
+          Standard Citizen Application Lifecycle
+        </h2>
+        <div class="ds-card-subtitle" data-i18n="apps_lifecycle_sub">
+          Every statutory service follows this structured verification sequence.
+        </div>
+      </div>
+    </div>
+
+    <div class="ds-stepper">
+      <!-- Step 1 -->
+      <div class="ds-step ds-step-completed">
+        <div class="ds-step-node">1</div>
+        <div class="ds-step-label">
+          <strong data-i18n="step_audit_title">Self-Audit</strong><br>
+          <span style="font-size: 10px; color: var(--color-text-muted);" data-i18n="step_audit_sub">Eligibility &amp; Proofs</span>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="ds-step ds-step-completed">
+        <div class="ds-step-node">2</div>
+        <div class="ds-step-label">
+          <strong data-i18n="step_doc_title">Document Ready</strong><br>
+          <span style="font-size: 10px; color: var(--color-text-muted);" data-i18n="step_doc_sub">Vault Validated</span>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="ds-step ds-step-active">
+        <div class="ds-step-node">3</div>
+        <div class="ds-step-label">
+          <strong data-i18n="step_submit_title">Portal Submission</strong><br>
+          <span style="font-size: 10px; color: var(--color-text-muted);" data-i18n="step_submit_sub">External .gov.in</span>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="ds-step">
+        <div class="ds-step-node">4</div>
+        <div class="ds-step-label">
+          <strong data-i18n="step_decision_title">Authority Decision</strong><br>
+          <span style="font-size: 10px; color: var(--color-text-muted);" data-i18n="step_decision_sub">Approved / Dispatched</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       Statutory Notice
+       ====================================================================== -->
+  <section class="ds-card" style="background: var(--color-surface-container-low); border-left: 4px solid var(--color-saffron);">
+    <div style="display: flex; flex-direction: column; gap: var(--space-xs);">
+      <div style="display: flex; align-items: center; gap: var(--space-xs);">
+        <span class="material-symbols-outlined" style="font-size: 20px; color: var(--color-saffron-dark);">info</span>
+        <h3 style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0;">
+          Statutory Verification Note
+        </h3>
+      </div>
+      <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin: 0;">
+        Application tracking within DigiSahay records preparation milestones and statutory reference IDs. Formal approvals, rejection rationales, and card deliveries are determined strictly by the designated statutory bodies (Election Commission of India, Income Tax Department, UIDAI).
+      </p>
+    </div>
+  </section>
+
+</div>
+
+<!-- Application Details Dossier Modal -->
+<div id="appDossierModal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center; padding: var(--space-md);" onclick="closeAppModal(event)">
+  <div class="ds-card" style="max-width: 640px; width: 100%; max-height: 90vh; overflow-y: auto;" onclick="event.stopPropagation()">
+    <div style="display: flex; align-items: flex-start; justify-content: space-between; border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-sm); margin-bottom: var(--space-md);">
+      <div>
+        <span id="modalAppStatus" class="ds-badge ds-badge-primary"></span>
+        <h2 id="modalAppRef" style="font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 4px 0 0 0; font-family: var(--font-family-mono);"></h2>
+      </div>
+      <button type="button" class="ds-btn ds-btn-secondary ds-btn-sm" onclick="document.getElementById('appDossierModal').style.display='none'">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div id="modalAppBody" style="display: flex; flex-direction: column; gap: var(--space-md);">
+      Loading application details...
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  loadMyApplications();
+
+  // Check URL param ?track_id=
+  const params = new URLSearchParams(window.location.search);
+  const trackId = params.get('track_id');
+  if (trackId) {
+    document.getElementById('appTrackInput').value = trackId;
+    trackApplicationById(trackId);
+  }
+});
+
+async function loadMyApplications() {
+  const container = document.getElementById('myAppsListContainer');
+  const token = localStorage.getItem('digisahay_jwt');
+
+  if (!token) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 24px; color: var(--color-text-muted); background: var(--color-surface-container-low); border-radius: var(--radius-md);">
+        <span class="material-symbols-outlined" style="font-size: 32px; color: var(--color-primary); margin-bottom: 4px;">lock</span>
+        <div style="font-weight: var(--font-weight-bold); color: var(--color-text-primary); font-size: var(--font-size-sm);">Sign In to View Your Applications</div>
+        <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: 4px auto 12px auto; max-width: 400px;">
+          Log in with your citizen account to monitor all your prepared service dossiers.
+        </div>
+        <a href="/auth" class="ds-btn ds-btn-primary ds-btn-sm">Sign In / પ્રવેશ</a>
+      </div>
+    `;
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/applications/me', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const data = await res.json();
+
+    if (res.ok && data.success && data.applications && data.applications.length > 0) {
+      renderMyAppsList(data.applications);
+    } else {
+      container.innerHTML = `
+        <div style="text-align: center; padding: 32px; color: var(--color-text-muted);">
+          <span class="material-symbols-outlined" style="font-size: 40px; color: var(--color-text-muted); margin-bottom: 6px;">assignment_late</span>
+          <div style="font-weight: var(--font-weight-bold); color: var(--color-text-primary); font-size: var(--font-size-base);">No Applications Found</div>
+          <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: 4px 0 16px 0;">
+            You have not initiated any citizen service applications yet.
+          </div>
+          <a href="/apply" class="ds-btn ds-btn-saffron ds-btn-sm">
+            <span class="material-symbols-outlined" style="font-size: 16px;">edit_document</span>
+            <span>Apply for a Service Now</span>
+          </a>
+        </div>
+      `;
+    }
+  } catch(e) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 24px; color: var(--color-error-text); background: var(--color-error-bg); border-radius: var(--radius-md); font-size: var(--font-size-xs);">
+        Unable to load applications. Please check your network connection or sign in again.
+      </div>
+    `;
+  }
+}
+
+function renderMyAppsList(apps) {
+  const container = document.getElementById('myAppsListContainer');
+  container.innerHTML = '';
+
+  apps.forEach(app => {
+    const status = app.application_status || 'DRAFT';
+    let badgeClass = 'ds-badge-neutral';
+    if (status === 'APPROVED') badgeClass = 'ds-badge-verified';
+    else if (status === 'REJECTED') badgeClass = 'ds-badge-action';
+    else if (status === 'UNDER_REVIEW' || status === 'SUBMITTED_EXTERNALLY') badgeClass = 'ds-badge-in-progress';
+    else if (status === 'READY_TO_APPLY') badgeClass = 'ds-badge-saffron';
+
+    const card = document.createElement('article');
+    card.className = 'ds-card ds-card-hover';
+    card.style.padding = 'var(--space-md)';
+    card.style.display = 'flex';
+    card.style.flexDirection = 'column';
+    card.style.gap = 'var(--space-xs)';
+
+    const serviceName = (app.service && app.service.service_name) || 'Government Service';
+    const ref = app.application_reference || app.application_id;
+    const submitted = app.submitted_at ? new Date(app.submitted_at).toLocaleDateString() : 'Draft';
+    const mode = app.application_mode ? app.application_mode.replace('_', ' ') : 'Online Assisted';
+
+    card.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+        <div>
+          <span class="ds-badge ${badgeClass}" style="font-size: 11px;">${escapeHtml(status)}</span>
+          <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 6px 0 2px 0;">
+            ${escapeHtml(serviceName)}
+          </h3>
+          <div style="font-size: var(--font-size-xs); color: var(--color-text-muted); font-family: var(--font-family-mono);">
+            Ref: <strong>${escapeHtml(ref)}</strong> • System ID: ${escapeHtml(app.application_id)}
+          </div>
+        </div>
+        <button type="button" class="ds-btn ds-btn-secondary ds-btn-sm" onclick="openAppDossier('${escapeHtml(app.application_id)}')">
+          <span class="material-symbols-outlined" style="font-size: 16px;">visibility</span>
+          <span>View Dossier</span>
+        </button>
+      </div>
+
+      <div style="display: flex; gap: var(--space-md); font-size: 11px; color: var(--color-text-secondary); margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--color-border); flex-wrap: wrap;">
+        <div>Mode: <strong>${escapeHtml(mode)}</strong></div>
+        <div>Date: <strong>${escapeHtml(submitted)}</strong></div>
+        <div>Attached Proofs: <strong>${(app.attached_documents && app.attached_documents.length) || 0}</strong></div>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+async function openAppDossier(appId) {
+  const modal = document.getElementById('appDossierModal');
+  const body = document.getElementById('modalAppBody');
+  modal.style.display = 'flex';
+  body.innerHTML = '<div style="text-align: center; padding: 24px;"><span class="material-symbols-outlined" style="font-size: 32px; animation: spin 1s linear infinite;">sync</span><div>Loading dossier...</div></div>';
+
+  try {
+    const res = await fetch('/api/applications/' + encodeURIComponent(appId));
+    const data = await res.json();
+    if (res.ok && data.success && data.application) {
+      const app = data.application;
+      document.getElementById('modalAppRef').textContent = app.application_reference || app.application_id;
+      document.getElementById('modalAppStatus').textContent = app.application_status || 'DRAFT';
+
+      const applicant = app.applicant_details || {};
+      const docs = app.attached_documents || [];
+
+      body.innerHTML = `
+        <div class="ds-tonal-box" style="padding: 12px; background: var(--color-surface-container-low);">
+          <div style="font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); font-weight: var(--font-weight-bold);">Target Service</div>
+          <div style="font-weight: var(--font-weight-bold); font-size: var(--font-size-base); color: var(--color-primary); margin-top: 2px;">
+            ${escapeHtml(app.service.service_name)}
+          </div>
+          <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: 2px;">
+            Mode: ${escapeHtml(app.application_mode || 'Online Assisted')} • Submitted: ${app.submitted_at ? new Date(app.submitted_at).toLocaleString() : 'Draft'}
+          </div>
+        </div>
+
+        <div class="ds-tonal-box" style="padding: 12px; background: var(--color-surface-container-lowest); border: 1px solid var(--color-border);">
+          <div style="font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); font-weight: var(--font-weight-bold);">Applicant Information</div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; margin-top: 6px; font-size: var(--font-size-xs);">
+            <div>Name: <strong>${escapeHtml(applicant.full_name || '-')}</strong></div>
+            <div>Guardian: <strong>${escapeHtml(applicant.guardian_name || '-')}</strong></div>
+            <div>DOB: <strong>${escapeHtml(applicant.dob || '-')}</strong></div>
+            <div>Mobile: <strong>${escapeHtml(applicant.mobile || '-')}</strong></div>
+            <div>Email: <strong>${escapeHtml(applicant.email || '-')}</strong></div>
+            <div>District: <strong>${escapeHtml(applicant.district || '-')}</strong></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); font-weight: var(--font-weight-bold); margin-bottom: 6px;">
+            Attached Vault Proofs (${docs.length})
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            ${docs.length === 0 ? '<div style="font-size: var(--font-size-xs); color: var(--color-text-muted);">No documents attached electronically.</div>' : docs.map(d => `
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; background: var(--color-surface-container-low); border-radius: var(--radius-sm); font-size: var(--font-size-xs);">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span class="material-symbols-outlined" style="font-size: 16px; color: var(--color-green);">verified</span>
+                  <span><strong>${escapeHtml(d.document_name)}</strong> (${escapeHtml(d.document_type_id)})</span>
+                </div>
+                <span class="ds-badge ds-badge-neutral" style="font-size: 10px;">${escapeHtml(d.file_type || 'PDF')}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; border-top: 1px solid var(--color-border); padding-top: 10px;">
+          <button type="button" class="ds-btn ds-btn-secondary ds-btn-sm" onclick="window.print()">
+            <span class="material-symbols-outlined" style="font-size: 16px;">print</span>
+            <span>Print Dossier</span>
+          </button>
+        </div>
+      `;
+    }
+  } catch(e) {
+    body.innerHTML = '<div style="color: var(--color-error-text); text-align: center; padding: 16px;">Error loading application details.</div>';
+  }
+}
+
+function closeAppModal(e) {
+  if (e.target.id === 'appDossierModal') {
+    document.getElementById('appDossierModal').style.display = 'none';
+  }
+}
+
+async function trackApplication(e) {
+  e.preventDefault();
+  const appId = document.getElementById('appTrackInput').value.trim();
+  trackApplicationById(appId);
+}
+
+async function trackApplicationById(appId) {
+  if (!appId) return;
+
+  const area = document.getElementById('trackResultArea');
+  const btn = document.getElementById('trackSubmitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 18px; animation: spin 1s linear infinite;">sync</span> Querying...';
+  area.style.display = 'block';
+  area.innerHTML = '<div style="text-align: center; padding: 24px; color: var(--color-text-muted);"><span class="material-symbols-outlined" style="font-size: 32px; animation: spin 1s linear infinite;">sync</span><div>Querying application status...</div></div>';
+
+  try {
+    const res = await fetch('/api/applications/' + encodeURIComponent(appId));
+    const data = await res.json();
+
+    if (res.ok && data.success && data.application) {
+      renderTrackResult(data.application);
+    } else {
+      area.innerHTML = `
+        <div class="ds-tonal-box" style="background: var(--color-error-bg); color: var(--color-error-text); border: 1px solid var(--color-error-border);">
+          <div style="display: flex; align-items: center; gap: 8px; font-weight: var(--font-weight-bold); font-size: var(--font-size-sm);">
+            <span class="material-symbols-outlined">error</span>
+            <span>Application Not Found</span>
+          </div>
+          <div style="font-size: var(--font-size-xs); margin-top: 4px;">
+            ${escapeHtml(data.message || 'No application record found with this ID.')}
+          </div>
+        </div>
+      `;
+    }
+  } catch (err) {
+    area.innerHTML = `
+      <div class="ds-tonal-box" style="background: var(--color-error-bg); color: var(--color-error-text);">
+        Network error while querying application status.
+      </div>
+    `;
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 18px;">search</span> <span>Track Status</span>';
+  }
+}
+
+function renderTrackResult(app) {
+  const area = document.getElementById('trackResultArea');
+  const status = app.application_status || 'UNKNOWN';
+
+  let badgeClass = 'ds-badge-neutral';
+  if (status === 'APPROVED') badgeClass = 'ds-badge-verified';
+  else if (status === 'REJECTED') badgeClass = 'ds-badge-action';
+  else if (status === 'UNDER_REVIEW' || status === 'SUBMITTED_EXTERNALLY') badgeClass = 'ds-badge-in-progress';
+  else if (status === 'READY_TO_APPLY') badgeClass = 'ds-badge-saffron';
+
+  area.innerHTML = `
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+        <div>
+          <span style="font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); font-weight: var(--font-weight-bold);">Application Query Result</span>
+          <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 2px 0 0 0;">
+            ${escapeHtml(app.service ? app.service.service_name : 'Application')}
+          </h3>
+          <div style="font-size: 12px; color: var(--color-text-muted); font-family: var(--font-family-mono);">
+            Reference: <strong>${escapeHtml(app.application_reference || app.application_id)}</strong>
+          </div>
+        </div>
+        <span class="ds-badge ${badgeClass}" style="font-size: 12px; padding: 4px 12px;">
+          ${escapeHtml(status)}
+        </span>
+      </div>
+
+      <div class="ds-tonal-box" style="display: flex; flex-direction: column; gap: 6px;">
+        <div style="font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); font-weight: var(--font-weight-bold);">Recorded Official Source</div>
+        <div style="font-size: var(--font-size-sm); color: var(--color-text-primary);">
+          ${escapeHtml(app.official_status_source || 'DigiSahay Citizen Portal Preparation')}
+        </div>
+        ${app.last_status_updated_at ? `<div style="font-size: 11px; color: var(--color-text-muted);">Last Updated: ${new Date(app.last_status_updated_at).toLocaleString()}</div>` : ''}
+      </div>
+
+      <div style="display: flex; justify-content: flex-end;">
+        <button type="button" class="ds-btn ds-btn-secondary ds-btn-sm" onclick="openAppDossier('${escapeHtml(app.application_id)}')">
+          <span class="material-symbols-outlined" style="font-size: 16px;">visibility</span>
+          <span>View Full Dossier Details</span>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+  return String(text).replace(/[&<>"']/g, m => map[m]);
+}
+</script>
+<style>
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+</style>
+{% endblock %}

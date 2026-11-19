@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none">
+  <!-- Rounded Base Navy Container -->
+  <rect width="48" height="48" rx="10" fill="#000080" />
+  
+  <!-- Subtle Saffron Accent Dot -->
+  <circle cx="38" cy="10" r="3.5" fill="#FF9933" />
+  
+  <!-- Civic Pillar / Public Service Emblem -->
+  <path d="M12 18H36V15H12V18ZM24 9L10 14V16H38V14L24 9Z" fill="#FFFFFF" />
+  <path d="M14 20H17V33H14V20ZM20 20H23V33H20V20ZM26 20H29V33H26V20ZM32 20H35V33H32V20Z" fill="#FFFFFF" opacity="0.9" />
+  <path d="M10 35H38V38H10V35Z" fill="#FFFFFF" />
+</svg>
+

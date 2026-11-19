@@ -1,0 +1,309 @@
+{% extends "base.html" %}
+
+{% block title %}Citizen Authentication • DigiSahay{% endblock %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 70vh; padding: var(--space-md) 0;">
+
+  <div class="ds-card" style="max-width: 480px; width: 100%; padding: var(--space-xl);">
+    
+    <!-- Header -->
+    <div style="text-align: center; margin-bottom: var(--space-lg);">
+      <div style="width: 52px; height: 52px; border-radius: var(--radius-lg); background-color: var(--color-surface-container); display: inline-flex; align-items: center; justify-content: center; color: var(--color-primary); margin-bottom: var(--space-xs);">
+        <span class="material-symbols-outlined" style="font-size: 32px;">account_balance</span>
+      </div>
+      <h1 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-primary); margin: 0;" data-i18n="auth_title">
+        DigiSahay Citizen Portal
+      </h1>
+      <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: 4px 0 0 0;" data-i18n="auth_sub">
+        ડિજિટલ નાગરિક સહાય • Secure Citizen Guidance &amp; Vault Access
+      </p>
+    </div>
+
+    <!-- Auth Tabs (Login / Register) -->
+    <div style="display: flex; border-bottom: 2px solid var(--color-border); margin-bottom: var(--space-lg);">
+      <button 
+        type="button" 
+        id="tabLoginBtn" 
+        onclick="switchAuthTab('login')" 
+        style="flex: 1; padding: 10px; font-weight: var(--font-weight-bold); font-size: var(--font-size-sm); border: none; background: transparent; cursor: pointer; color: var(--color-primary); border-bottom: 2px solid var(--color-primary); margin-bottom: -2px;"
+        data-i18n="tab_signin"
+      >
+        Citizen Sign In / પ્રવેશ
+      </button>
+      <button 
+        type="button" 
+        id="tabRegisterBtn" 
+        onclick="switchAuthTab('register')" 
+        style="flex: 1; padding: 10px; font-weight: var(--font-weight-bold); font-size: var(--font-size-sm); border: none; background: transparent; cursor: pointer; color: var(--color-text-muted); border-bottom: 2px solid transparent; margin-bottom: -2px;"
+        data-i18n="tab_register"
+      >
+        New Registration / નોંધણી
+      </button>
+    </div>
+
+    <!-- Alert / Message Banner -->
+    <div id="authAlert" style="display: none; padding: 10px 14px; border-radius: var(--radius-md); font-size: var(--font-size-xs); margin-bottom: var(--space-md);"></div>
+
+    <!-- Login Form -->
+    <form id="loginForm" onsubmit="handleLogin(event)" style="display: flex; flex-direction: column; gap: var(--space-md);">
+      <div class="ds-form-group">
+        <label for="loginEmail" class="ds-label">
+          <span data-i18n="label_email">Citizen Registered Email</span> <span class="required">*</span>
+        </label>
+        <input 
+          type="email" 
+          id="loginEmail" 
+          class="ds-input" 
+          placeholder="your.email@example.com" 
+          required 
+          autocomplete="email"
+        >
+      </div>
+
+      <div class="ds-form-group">
+        <label for="loginPassword" class="ds-label">
+          <span data-i18n="label_password">Password</span> <span class="required">*</span>
+        </label>
+        <input 
+          type="password" 
+          id="loginPassword" 
+          class="ds-input" 
+          placeholder="Enter your account password" 
+          required 
+          autocomplete="current-password"
+        >
+      </div>
+
+      <button type="submit" id="loginSubmitBtn" class="ds-btn ds-btn-primary ds-btn-lg" style="width: 100%; margin-top: var(--space-xs);">
+        <span class="material-symbols-outlined" style="font-size: 20px;">login</span>
+        <span data-i18n="btn_signin">Sign In to DigiSahay</span>
+      </button>
+    </form>
+
+    <!-- Register Form (Hidden by default) -->
+    <form id="registerForm" onsubmit="handleRegister(event)" style="display: none; flex-direction: column; gap: var(--space-md);">
+      <div class="ds-form-group">
+        <label for="regEmail" class="ds-label">
+          <span data-i18n="label_email">Email Address</span> <span class="required">*</span>
+        </label>
+        <input 
+          type="email" 
+          id="regEmail" 
+          class="ds-input" 
+          placeholder="your.email@example.com" 
+          required 
+          autocomplete="email"
+        >
+      </div>
+
+      <div class="ds-form-group">
+        <label for="regPassword" class="ds-label">
+          <span data-i18n="label_reg_password">Create Password (Min 8 characters)</span> <span class="required">*</span>
+        </label>
+        <input 
+          type="password" 
+          id="regPassword" 
+          class="ds-input" 
+          placeholder="Create a strong password" 
+          minlength="8" 
+          required 
+          autocomplete="new-password"
+        >
+      </div>
+
+      <div class="ds-form-group">
+        <label for="regLang" class="ds-label">
+          <span data-i18n="label_pref_lang">Preferred Language</span>
+        </label>
+        <select id="regLang" class="ds-select">
+          <option value="en">English</option>
+          <option value="hi">हिंदी (Hindi)</option>
+          <option value="gu" selected>ગુજરાતી (Gujarati)</option>
+        </select>
+      </div>
+
+      <button type="submit" id="registerSubmitBtn" class="ds-btn ds-btn-saffron ds-btn-lg" style="width: 100%; margin-top: var(--space-xs);">
+        <span class="material-symbols-outlined" style="font-size: 20px;">person_add</span>
+        <span data-i18n="btn_register">Register Citizen Account</span>
+      </button>
+    </form>
+
+    <!-- Active User Card (Shown when already logged in) -->
+    <div id="alreadyLoggedInCard" style="display: none; flex-direction: column; gap: var(--space-sm); text-align: center; padding: var(--space-md); background: var(--color-surface-container-low); border-radius: var(--radius-lg); margin-top: var(--space-sm);">
+      <div style="font-size: var(--font-size-sm); color: var(--color-green-text); font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <span class="material-symbols-outlined">check_circle</span>
+        <span>You are currently signed in</span>
+      </div>
+      <div id="loggedInUserEmail" style="font-size: var(--font-size-xs); color: var(--color-text-secondary); font-family: var(--font-family-mono);"></div>
+      <div style="display: flex; gap: var(--space-xs); margin-top: var(--space-xs);">
+        <a href="/documents" class="ds-btn ds-btn-primary ds-btn-sm" style="flex: 1;">
+          <span class="material-symbols-outlined" style="font-size: 16px;">folder_shared</span>
+          <span>Go to Vault</span>
+        </a>
+        <button type="button" class="ds-btn ds-btn-secondary ds-btn-sm" onclick="logoutCitizen()" style="flex: 1;">
+          <span class="material-symbols-outlined" style="font-size: 16px;">logout</span>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Statutory Notice Footer -->
+    <div style="margin-top: var(--space-lg); padding-top: var(--space-sm); border-top: 1px solid var(--color-border); text-align: center; font-size: 11px; color: var(--color-text-muted); line-height: 1.4;">
+      DigiSahay is an independent civic advisory platform and is NOT a government portal. Your account securely stores your document checklist preferences.
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  checkExistingAuth();
+});
+
+function checkExistingAuth() {
+  const token = localStorage.getItem('digisahay_jwt');
+  const userJson = localStorage.getItem('digisahay_user');
+  if (token && userJson) {
+    try {
+      const u = JSON.parse(userJson);
+      document.getElementById('loggedInUserEmail').textContent = u.email;
+      document.getElementById('alreadyLoggedInCard').style.display = 'flex';
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('registerForm').style.display = 'none';
+      document.getElementById('tabLoginBtn').style.display = 'none';
+      document.getElementById('tabRegisterBtn').style.display = 'none';
+    } catch (e) {}
+  }
+}
+
+function switchAuthTab(tab) {
+  const loginForm = document.getElementById('loginForm');
+  const regForm = document.getElementById('registerForm');
+  const loginBtn = document.getElementById('tabLoginBtn');
+  const regBtn = document.getElementById('tabRegisterBtn');
+  clearAlert();
+
+  if (tab === 'login') {
+    loginForm.style.display = 'flex';
+    regForm.style.display = 'none';
+    loginBtn.style.color = 'var(--color-primary)';
+    loginBtn.style.borderBottom = '2px solid var(--color-primary)';
+    regBtn.style.color = 'var(--color-text-muted)';
+    regBtn.style.borderBottom = '2px solid transparent';
+  } else {
+    loginForm.style.display = 'none';
+    regForm.style.display = 'flex';
+    regBtn.style.color = 'var(--color-primary)';
+    regBtn.style.borderBottom = '2px solid var(--color-primary)';
+    loginBtn.style.color = 'var(--color-text-muted)';
+    loginBtn.style.borderBottom = '2px solid transparent';
+  }
+}
+
+function showAlert(msg, isError) {
+  const al = document.getElementById('authAlert');
+  al.style.display = 'block';
+  if (isError) {
+    al.style.backgroundColor = 'var(--color-error-bg)';
+    al.style.border = '1px solid var(--color-error-border)';
+    al.style.color = 'var(--color-error-text)';
+  } else {
+    al.style.backgroundColor = 'var(--color-green-bg)';
+    al.style.border = '1px solid var(--color-green-border)';
+    al.style.color = 'var(--color-green-text)';
+  }
+  al.textContent = msg;
+}
+
+function clearAlert() {
+  const al = document.getElementById('authAlert');
+  al.style.display = 'none';
+}
+
+async function handleLogin(e) {
+  e.preventDefault();
+  clearAlert();
+  const btn = document.getElementById('loginSubmitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 20px; animation: spin 1s linear infinite;">sync</span> Signing in...';
+
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      localStorage.setItem('digisahay_jwt', data.access_token);
+      localStorage.setItem('digisahay_user', JSON.stringify(data.user));
+      showAlert('Login successful! Redirecting to Documents Vault...', false);
+      setTimeout(() => {
+        window.location.href = '/documents';
+      }, 1000);
+    } else {
+      showAlert(data.message || 'Invalid email or password', true);
+    }
+  } catch (err) {
+    showAlert('Unable to reach server. Please try again.', true);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 20px;">login</span> <span>Sign In to DigiSahay</span>';
+  }
+}
+
+async function handleRegister(e) {
+  e.preventDefault();
+  clearAlert();
+  const btn = document.getElementById('registerSubmitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 20px; animation: spin 1s linear infinite;">sync</span> Registering...';
+
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  const preferred_language = document.getElementById('regLang').value;
+
+  try {
+    const res = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, preferred_language })
+    });
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      showAlert('Account registered successfully! Please sign in with your credentials.', false);
+      switchAuthTab('login');
+      document.getElementById('loginEmail').value = email;
+    } else {
+      showAlert(data.message || 'Registration failed', true);
+    }
+  } catch (err) {
+    showAlert('Unable to reach server. Please try again.', true);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 20px;">person_add</span> <span>Register Citizen Account</span>';
+  }
+}
+
+function logoutCitizen() {
+  localStorage.removeItem('digisahay_jwt');
+  localStorage.removeItem('digisahay_user');
+  window.location.reload();
+}
+</script>
+<style>
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+</style>
+{% endblock %}

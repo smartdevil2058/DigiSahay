@@ -1,0 +1,1 @@
+/api/services/<service_id>/requirement

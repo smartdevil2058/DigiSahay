@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+
+{% block title %}Service Centres (CSC & Jan Seva Kendras) • DigiSahay{% endblock %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; gap: var(--space-xl);">
+
+  <!-- ======================================================================
+       Hero Banner - Service Centres
+       ====================================================================== -->
+  <section class="ds-card" style="background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 70%, var(--color-primary-light) 100%); color: var(--color-on-primary); position: relative; overflow: hidden;">
+    <div style="position: relative; z-index: 2; display: flex; flex-direction: column; gap: var(--space-sm); max-width: 860px;">
+      <div style="display: flex; align-items: center; gap: var(--space-xs); flex-wrap: wrap;">
+        <span class="ds-badge" style="background-color: rgba(255, 255, 255, 0.15); color: #ffffff;">
+          <span class="material-symbols-outlined" style="font-size: 14px;">storefront</span>
+          Facilitation Centers Directory
+        </span>
+        <span class="ds-badge" style="background-color: var(--color-saffron); color: var(--color-text-primary); font-weight: var(--font-weight-bold);">
+          Gujarat Districts (અમદાવાદ • વડોદરા • સુરત • ગાંધીનગર)
+        </span>
+      </div>
+
+      <h1 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); line-height: var(--line-height-tight); margin: var(--space-2xs) 0 0 0; color: #ffffff;" data-i18n="centers_title">
+        Authorized Service Centres &amp; Jan Seva Kendras
+      </h1>
+
+      <p style="font-size: var(--font-size-base); color: var(--color-primary-fixed); line-height: var(--line-height-relaxed); margin: 0;" data-i18n="centers_desc">
+        Locate verified Aadhaar Seva Kendras (ASK), Electoral Registration Offices (ERO), Post Office Citizen Counters, and TIN Facilitation Centers for in-person biometric capture and physical document submission.
+      </p>
+
+      <div style="display: flex; flex-wrap: wrap; gap: var(--space-lg); padding-top: var(--space-xs); font-size: var(--font-size-xs); color: var(--color-primary-fixed);">
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span class="material-symbols-outlined" style="font-size: 16px; color: var(--color-saffron);">pin_drop</span>
+          <span><strong>{{ centers|length }}</strong> Verified Physical Counters</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span class="material-symbols-outlined" style="font-size: 16px; color: #72de5c;">verified</span>
+          <span>Statutory Authority Authorized</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       Filter Bar & Search
+       ====================================================================== -->
+  <section class="ds-card" style="padding: var(--space-md);">
+    <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+      
+      <div style="display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: center; justify-content: space-between;">
+        <div style="position: relative; flex: 1; min-width: 280px;">
+          <span class="material-symbols-outlined" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted); font-size: 20px;">search</span>
+          <input 
+            type="text" 
+            id="centerSearchInput" 
+            class="ds-input" 
+            placeholder="Search by center name, city, address, or center type..." 
+            data-i18n-placeholder="centers_search_placeholder"
+            style="padding-left: 44px;"
+            oninput="filterCenters()"
+          >
+        </div>
+
+        <div style="display: flex; align-items: center; gap: var(--space-2xs); background: var(--color-surface-container-low); padding: 6px 12px; border-radius: var(--radius-md); font-size: var(--font-size-xs); color: var(--color-text-secondary);">
+          <span class="material-symbols-outlined" style="font-size: 16px; color: var(--color-primary);">verified_user</span>
+          <span>Official Department Directory Records</span>
+        </div>
+      </div>
+
+      <!-- District Filter Pills -->
+      <div style="display: flex; flex-wrap: wrap; gap: var(--space-xs); align-items: center;" id="districtPills">
+        <button type="button" class="ds-btn ds-btn-sm ds-btn-primary district-pill" data-district="ALL" onclick="selectDistrict('ALL', this)">
+          <span data-i18n="dist_all">All Centers</span> ({{ centers|length }})
+        </button>
+        <button type="button" class="ds-btn ds-btn-sm ds-btn-secondary district-pill" data-district="Ahmedabad" onclick="selectDistrict('Ahmedabad', this)">
+          Ahmedabad
+        </button>
+        <button type="button" class="ds-btn ds-btn-sm ds-btn-secondary district-pill" data-district="Vadodara" onclick="selectDistrict('Vadodara', this)">
+          Vadodara
+        </button>
+        <button type="button" class="ds-btn ds-btn-sm ds-btn-secondary district-pill" data-district="Surat" onclick="selectDistrict('Surat', this)">
+          Surat
+        </button>
+        <button type="button" class="ds-btn ds-btn-sm ds-btn-secondary district-pill" data-district="Gandhinagar" onclick="selectDistrict('Gandhinagar', this)">
+          Gandhinagar
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       Centers Grid
+       ====================================================================== -->
+  <section>
+    <div id="centersGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--space-lg);">
+      {% for center in centers %}
+      <article 
+        class="ds-card ds-card-hover center-card"
+        data-district="{{ center.district or center.city }}"
+        data-name="{{ center.center_name|lower }}"
+        data-type="{{ center.center_type|lower }}"
+        data-city="{{ center.city|lower }}"
+        data-address="{{ (center.address_line or '')|lower }}"
+        style="display: flex; flex-direction: column; justify-content: space-between; padding: var(--space-lg);"
+      >
+        <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
+          
+          <!-- Card Header & Badge -->
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-xs);">
+            <div style="width: 44px; height: 44px; border-radius: var(--radius-lg); background-color: var(--color-surface-container); display: flex; align-items: center; justify-content: center; color: var(--color-primary); flex-shrink: 0;">
+              <span class="material-symbols-outlined" style="font-size: 24px;">storefront</span>
+            </div>
+            <span class="ds-badge ds-badge-neutral" style="font-size: 11px;">
+              {{ center.city }}, {{ center.state }}
+            </span>
+          </div>
+
+          <!-- Type -->
+          <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-primary); font-weight: var(--font-weight-bold);">
+            {{ center.center_type }}
+          </div>
+
+          <!-- Title -->
+          <h2 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0; line-height: var(--line-height-tight);">
+            {{ center.center_name }}
+          </h2>
+
+          <!-- Address -->
+          <div style="display: flex; align-items: flex-start; gap: 6px; font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: var(--line-height-relaxed);">
+            <span class="material-symbols-outlined" style="font-size: 16px; color: var(--color-text-muted); flex-shrink: 0; margin-top: 1px;">pin_drop</span>
+            <span>{{ center.address_line }}, {{ center.city }} - {{ center.pincode }}</span>
+          </div>
+
+          <!-- Operating Hours & Contact -->
+          <div class="ds-tonal-box" style="padding: 8px 12px; font-size: 11px; display: flex; flex-direction: column; gap: 4px;">
+            {% if center.operating_hours %}
+            <div style="display: flex; align-items: center; gap: 6px; color: var(--color-text-secondary);">
+              <span class="material-symbols-outlined" style="font-size: 14px; color: var(--color-primary);">schedule</span>
+              <span>Hours: <strong>{{ center.operating_hours }}</strong></span>
+            </div>
+            {% endif %}
+            {% if center.contact_number %}
+            <div style="display: flex; align-items: center; gap: 6px; color: var(--color-text-secondary);">
+              <span class="material-symbols-outlined" style="font-size: 14px; color: var(--color-green);">call</span>
+              <span>Helpline: <strong>{{ center.contact_number }}</strong></span>
+            </div>
+            {% endif %}
+          </div>
+
+        </div>
+
+        <!-- Footer / Action -->
+        <div style="margin-top: var(--space-md); padding-top: var(--space-sm); border-top: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between;">
+          <span class="ds-badge ds-badge-verified" style="font-size: 10px;">
+            <span class="material-symbols-outlined" style="font-size: 12px;">verified</span>
+            <span data-i18n="center_official_counter">Official Counter</span>
+          </span>
+          {% if center.official_source_url %}
+          <a href="{{ center.official_source_url }}" target="_blank" rel="noopener noreferrer" class="ds-btn ds-btn-secondary ds-btn-sm" style="font-size: 11px;">
+            <span data-i18n="center_portal_details">Portal Details</span>
+            <span class="material-symbols-outlined" style="font-size: 12px;">open_in_new</span>
+          </a>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    <!-- Empty State -->
+    <div id="noCentersFound" class="ds-card" style="display: none; text-align: center; padding: var(--space-xl); margin-top: var(--space-md);">
+      <span class="material-symbols-outlined" style="font-size: 48px; color: var(--color-text-muted);">location_off</span>
+      <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: var(--space-xs) 0;" data-i18n="no_centers_found">
+        No Centers Found
+      </h3>
+      <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin: 0 auto var(--space-md) auto; max-width: 440px;" data-i18n="no_centers_desc">
+        No service centers matched your search query or district selection.
+      </p>
+      <button type="button" class="ds-btn ds-btn-secondary" onclick="resetCenterFilters()" data-i18n="btn_reset_filters">
+        Reset Filters
+      </button>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       Official Helpline Directory Box
+       ====================================================================== -->
+  <section class="ds-card" style="background: var(--color-surface-container-low);">
+    <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
+      <div style="display: flex; align-items: center; gap: var(--space-xs);">
+        <span class="material-symbols-outlined" style="font-size: 22px; color: var(--color-primary);">contact_phone</span>
+        <h2 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0;" data-i18n="dept_helplines_title">
+          Official Department Helplines
+        </h2>
+      </div>
+      <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: 0;" data-i18n="dept_helplines_desc">
+        For direct statutory queries, citizens can dial the official national toll-free helplines operated by respective authorities:
+      </p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-sm); margin-top: var(--space-xs);">
+        <div class="ds-tonal-box" style="background: var(--color-surface-container-lowest);">
+          <div style="font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); font-weight: var(--font-weight-bold);">UIDAI Aadhaar Helpline</div>
+          <div style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-primary); margin-top: 2px;">1947</div>
+          <div style="font-size: 11px; color: var(--color-text-muted);">Toll-Free • 24x7</div>
+        </div>
+        <div class="ds-tonal-box" style="background: var(--color-surface-container-lowest);">
+          <div style="font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); font-weight: var(--font-weight-bold);">ECI Voter Helpline</div>
+          <div style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-primary); margin-top: 2px;">1950</div>
+          <div style="font-size: 11px; color: var(--color-text-muted);">Toll-Free • Working hours</div>
+        </div>
+        <div class="ds-tonal-box" style="background: var(--color-surface-container-lowest);">
+          <div style="font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); font-weight: var(--font-weight-bold);">Income Tax / PAN (Protean)</div>
+          <div style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-primary); margin-top: 2px;">020-27218080</div>
+          <div style="font-size: 11px; color: var(--color-text-muted);">Direct TIN Support Line</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let currentDistrict = 'ALL';
+
+function selectDistrict(dist, btn) {
+  currentDistrict = dist;
+  document.querySelectorAll('#districtPills .district-pill').forEach(b => {
+    b.classList.remove('ds-btn-primary');
+    b.classList.add('ds-btn-secondary');
+  });
+  btn.classList.remove('ds-btn-secondary');
+  btn.classList.add('ds-btn-primary');
+  filterCenters();
+}
+
+function filterCenters() {
+  const query = document.getElementById('centerSearchInput').value.toLowerCase().trim();
+  const cards = document.querySelectorAll('.center-card');
+  let visible = 0;
+
+  cards.forEach(card => {
+    const district = card.getAttribute('data-district');
+    const name = card.getAttribute('data-name');
+    const type = card.getAttribute('data-type');
+    const city = card.getAttribute('data-city');
+    const address = card.getAttribute('data-address');
+
+    const matchesDistrict = (currentDistrict === 'ALL' || district.toLowerCase().includes(currentDistrict.toLowerCase()) || city.toLowerCase().includes(currentDistrict.toLowerCase()));
+    const matchesQuery = (!query || name.includes(query) || type.includes(query) || city.includes(query) || address.includes(query));
+
+    if (matchesDistrict && matchesQuery) {
+      card.style.display = 'flex';
+      visible++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  const noFound = document.getElementById('noCentersFound');
+  if (visible === 0) {
+    noFound.style.display = 'block';
+  } else {
+    noFound.style.display = 'none';
+  }
+}
+
+function resetCenterFilters() {
+  document.getElementById('centerSearchInput').value = '';
+  const allBtn = document.querySelector('#districtPills [data-district="ALL"]');
+  selectDistrict('ALL', allBtn);
+}
+</script>
+{% endblock %}
