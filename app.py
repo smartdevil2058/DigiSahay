@@ -19,6 +19,7 @@ from routes.application_document_routes import application_document_bp
 from routes.application_readiness_routes import application_readiness_bp
 from routes.application_status_routes import application_status_bp
 from routes.frontend_routes import frontend_bp
+from routes.survey_routes import survey_bp
 
 load_dotenv()
 app = Flask(__name__)
@@ -58,6 +59,7 @@ app.register_blueprint(application_document_bp)
 app.register_blueprint(application_readiness_bp)
 app.register_blueprint(application_status_bp)
 app.register_blueprint(frontend_bp)
+app.register_blueprint(survey_bp)
 @app.get("/api")
 def api_status():
     return jsonify({

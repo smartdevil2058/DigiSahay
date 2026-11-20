@@ -6,282 +6,316 @@
 <div style="display: flex; flex-direction: column; gap: var(--space-xl);">
 
   <!-- ======================================================================
-       Hero Banner - Services Catalogue
+       VIEW A: PRIMARY DOCUMENT SELECTION (MAIN SERVICES SCREEN)
        ====================================================================== -->
-  <section class="ds-card" style="background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 70%, var(--color-primary-light) 100%); color: var(--color-on-primary); position: relative; overflow: hidden;">
-    <div style="position: relative; z-index: 2; display: flex; flex-direction: column; gap: var(--space-sm); max-width: 860px;">
-      <div style="display: flex; align-items: center; gap: var(--space-xs); flex-wrap: wrap;">
-        <span class="ds-badge" style="background-color: rgba(255, 255, 255, 0.15); color: #ffffff;">
-          <span class="material-symbols-outlined" style="font-size: 14px;">verified</span>
-          Citizen Enablement Desk
-        </span>
-        <span class="ds-badge" style="background-color: var(--color-saffron); color: var(--color-text-primary); font-weight: var(--font-weight-bold);">
-          <span class="material-symbols-outlined" style="font-size: 14px;">location_on</span>
-          Union & Gujarat State Services • ગુજરાત
-        </span>
+  <div id="documentSelectionView" class="services-view-pane" style="display: flex; flex-direction: column; gap: var(--space-xl);">
+    
+    <!-- Hero Banner -->
+    <section class="ds-card" style="background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 70%, var(--color-primary-light) 100%); color: var(--color-on-primary); position: relative; overflow: hidden; border-top: 4px solid var(--color-saffron); border-bottom: 4px solid var(--color-green);">
+      <div style="position: relative; z-index: 2; display: flex; flex-direction: column; gap: var(--space-sm); max-width: 860px;">
+        <div style="display: flex; align-items: center; gap: var(--space-xs); flex-wrap: wrap;">
+          <span class="ds-badge" style="background-color: rgba(255, 255, 255, 0.15); color: #ffffff;">
+            <span class="material-symbols-outlined" style="font-size: 14px;">verified</span>
+            Citizen Services Directory
+          </span>
+          <span class="ds-badge" style="background-color: var(--color-saffron); color: var(--color-text-primary); font-weight: var(--font-weight-bold);">
+            3 Primary Document Portals • ગુજરાત
+          </span>
+        </div>
+
+        <h1 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); line-height: var(--line-height-tight); margin: var(--space-2xs) 0 0 0; color: #ffffff;" data-i18n="services_hero_title">
+          Government Services Catalogue / સરકારી સેવા સૂચિ
+        </h1>
+
+        <p style="font-size: var(--font-size-base); color: var(--color-primary-fixed); line-height: var(--line-height-relaxed); margin: 0;" data-i18n="services_hero_desc">
+          Select a primary document below to open its dedicated citizen services page with complete prerequisites and application dossiers.
+        </p>
+
+        <div style="display: flex; flex-wrap: wrap; gap: var(--space-lg); padding-top: var(--space-xs); font-size: var(--font-size-xs); color: var(--color-primary-fixed);">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span class="material-symbols-outlined" style="font-size: 16px; color: var(--color-saffron);">account_tree</span>
+            <span><strong>3 Core Identity Groups</strong></span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span class="material-symbols-outlined" style="font-size: 16px; color: #72de5c;">checklist</span>
+            <span><strong>{{ services|length }}</strong> Statutory Services</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span class="material-symbols-outlined" style="font-size: 16px; color: #ffffff;">handshake</span>
+            <span>100% Free Informational Assistance</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Document Category Selection Grid -->
+    <section style="display: flex; flex-direction: column; gap: var(--space-md);">
+      <div>
+        <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; color: var(--color-primary); text-transform: uppercase; letter-spacing: 0.05em;">
+          <span class="material-symbols-outlined" style="font-size: 14px; color: var(--color-saffron);">touch_app</span>
+          <span>Step 1 &bull; Choose Document to Enter Services</span>
+        </div>
+        <h2 style="font-size: var(--font-size-xl); font-weight: 700; color: var(--color-text-primary); margin: 2px 0 0 0;">
+          Select a Document Group / મુખ્ય દસ્તાવેજ પસંદ કરો
+        </h2>
       </div>
 
-      <h1 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); line-height: var(--line-height-tight); margin: var(--space-2xs) 0 0 0; color: #ffffff;" data-i18n="services_hero_title">
-        Government Services Catalogue / સરકારી સેવા સૂચિ
-      </h1>
+      {% set cat_defs = [
+        {
+          'id': 'aadhaar',
+          'key': 'Aadhaar Card',
+          'title': 'Aadhaar Card Services',
+          'icon': 'fingerprint',
+          'icon_color': '#000080',
+          'icon_bg': '#fff7ed',
+          'auth': 'UIDAI • Identity & Demographic Authority',
+          'desc': 'Address modification, demographic correction, mobile/email linking, document validation, and fresh enrolment pre-check.',
+          'tags': ['Address Update', 'Name & DOB', 'Mobile Linking', 'Doc Re-validation'],
+          'count': 6,
+          'border': 'var(--color-saffron)'
+        },
+        {
+          'id': 'pan',
+          'key': 'PAN Card',
+          'title': 'PAN Card Services',
+          'icon': 'badge',
+          'icon_color': 'var(--color-primary)',
+          'icon_bg': '#eef2ff',
+          'auth': 'Income Tax Dept • Protean / UTIITSL',
+          'desc': 'New PAN (Form 49A) for 18-year-olds, instant e-KYC PAN, demographic corrections, and reprint of lost cards.',
+          'tags': ['Form 49A Allotment', 'Instant e-PAN', 'Correction', 'Reprint Card'],
+          'count': 4,
+          'border': 'var(--color-primary)'
+        },
+        {
+          'id': 'voter',
+          'key': 'Voter ID',
+          'title': 'Voter ID (EPIC) Services',
+          'icon': 'how_to_vote',
+          'icon_color': 'var(--color-green)',
+          'icon_bg': '#f0fdf4',
+          'auth': 'Election Commission of India (ECI)',
+          'desc': 'Form 6 new voter registration for first-time electors (age 18-19), electoral roll corrections, and replacement cards.',
+          'tags': ['Form 6 New Elector', 'Form 8 Correction', 'Shifting', 'Replacement EPIC'],
+          'count': 6,
+          'border': 'var(--color-green)'
+        }
+      ] %}
 
-      <p style="font-size: var(--font-size-base); color: var(--color-primary-fixed); line-height: var(--line-height-relaxed); margin: 0;" data-i18n="services_hero_desc">
-        Discover verified citizen guidance, statutory eligibility thresholds, and document requirements for essential civic entitlements in Gujarat.
-      </p>
+      <!-- 3 Primary Category Cards -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-lg);">
+        {% for cat in cat_defs %}
+        <article class="category-card" onclick="openDocumentServices('{{ cat.key }}')" tabindex="0" role="button" aria-label="Open {{ cat.title }} page" style="border-top: 4px solid {{ cat.border }}; min-height: 290px;">
+          <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+              <div style="width: 52px; height: 52px; border-radius: var(--radius-lg); background: {{ cat.icon_bg }}; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);">
+                <span class="material-symbols-outlined" style="font-size: 30px; color: {{ cat.icon_color }};">{{ cat.icon }}</span>
+              </div>
+              <span class="ds-badge ds-badge-neutral" style="font-size: 11px; font-weight: 700;">
+                {{ cat.count }} Services
+              </span>
+            </div>
 
-      <div style="display: flex; flex-wrap: wrap; gap: var(--space-lg); padding-top: var(--space-xs); font-size: var(--font-size-xs); color: var(--color-primary-fixed);">
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <span class="material-symbols-outlined" style="font-size: 16px; color: var(--color-saffron);">article</span>
-          <span><strong>{{ services|length }}</strong> <span data-i18n="services_stat_catalogued">Statutory Services Catalogued</span></span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <span class="material-symbols-outlined" style="font-size: 16px; color: #72de5c;">schedule</span>
-          <span data-i18n="services_stat_updated">Official Norms Updated</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <span class="material-symbols-outlined" style="font-size: 16px; color: #ffffff;">handshake</span>
-          <span data-i18n="services_stat_free">100% Free Informational Guidance</span>
+            <div>
+              <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-muted); font-weight: 700;">
+                {{ cat.auth }}
+              </div>
+              <h3 style="font-size: var(--font-size-lg); font-weight: 700; color: var(--color-primary); margin: 3px 0 4px 0;">
+                {{ cat.title }}
+              </h3>
+              <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: 1.5; margin: 0;">
+                {{ cat.desc }}
+              </p>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 4px; padding-top: 4px;">
+              {% for tag in cat.tags %}
+              <span class="ds-badge ds-badge-neutral" style="font-size: 10px;">{{ tag }}</span>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div style="margin-top: var(--space-md); padding-top: var(--space-xs); border-top: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between;">
+            <span style="font-size: 11px; font-weight: 600; color: var(--color-text-muted);">Explore {{ cat.title }}</span>
+            <span style="font-size: 12px; font-weight: 700; color: var(--color-primary); display: flex; align-items: center; gap: 4px;">
+              <span>Open Document Page</span>
+              <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+            </span>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Statutory Transparency Callouts -->
+    <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-md);">
+      <div class="ds-callout ds-callout-guidance">
+        <span class="material-symbols-outlined ds-callout-icon" style="font-size: 24px;">psychology</span>
+        <div>
+          <h4 style="font-size: var(--font-size-xs); font-weight: 700; color: var(--color-primary); margin: 0 0 2px 0;" data-i18n="guidance_box_title">DigiSahay Guidance Protocol</h4>
+          <p style="font-size: 11px; color: var(--color-text-secondary); line-height: 1.5; margin: 0;" data-i18n="guidance_box_desc">DigiSahay prepares citizens with clear checklists, acceptable alternative documents, and verification rules before visiting administrative queues.</p>
         </div>
       </div>
-    </div>
-  </section>
+      <div class="ds-callout ds-callout-gateway">
+        <span class="material-symbols-outlined ds-callout-icon" style="font-size: 24px;">gavel</span>
+        <div>
+          <h4 style="font-size: var(--font-size-xs); font-weight: 700; color: var(--color-saffron-dark); margin: 0 0 2px 0;" data-i18n="gateway_box_title">Statutory Transparency</h4>
+          <p style="font-size: 11px; color: var(--color-text-secondary); line-height: 1.5; margin: 0;" data-i18n="gateway_box_desc">DigiSahay is an independent guidance tool. It does not issue identity cards or collect fees. Official filings are completed on statutory government portals.</p>
+        </div>
+      </div>
+    </section>
+  </div>
 
   <!-- ======================================================================
-       Search & Filter Controls
+       VIEW B: DEDICATED DOCUMENT SERVICES PAGE (INSIDE SAME TAB)
        ====================================================================== -->
-  <section class="ds-card" style="padding: var(--space-md);">
-    <div style="display: flex; flex-direction: column; gap: var(--space-md);">
-      
-      <!-- Search Bar -->
-      <div style="display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: center; justify-content: space-between;">
-        <div style="position: relative; flex: 1; min-width: 280px;">
-          <span class="material-symbols-outlined" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted); font-size: 20px;">search</span>
-          <input 
-            type="text" 
-            id="serviceSearchInput" 
-            class="ds-input" 
-            placeholder="Search by service name, form number (e.g. Form 6, 49A, UIDAI), or keyword..." 
-            data-i18n-placeholder="services_search_placeholder"
-            style="padding-left: 44px;"
-            oninput="filterServices()"
-          >
-        </div>
+  <div id="categoryDetailView" class="services-view-pane" style="display: none; flex-direction: column; gap: var(--space-lg);">
+    
+    <!-- Top Return & Breadcrumb Bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-xs); padding-bottom: var(--space-xs); border-bottom: 1px solid var(--color-border);">
+      <button type="button" class="ds-btn ds-btn-sm ds-btn-secondary" onclick="goBackToDocuments()" style="font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+        <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>
+        <span>&larr; Back to All Documents / પાછા જાઓ</span>
+      </button>
 
-        <div style="display: flex; align-items: center; gap: var(--space-2xs); background: var(--color-surface-container-low); padding: 6px 12px; border-radius: var(--radius-md); font-size: var(--font-size-xs); color: var(--color-text-secondary);">
-          <span class="material-symbols-outlined" style="font-size: 16px; color: var(--color-primary);">shield</span>
-          <span data-i18n="services_jurisdiction">Jurisdiction: Gujarat & Central Portals</span>
-        </div>
+      <div style="font-size: 12px; color: var(--color-text-muted);">
+        <a href="javascript:void(0)" onclick="goBackToDocuments()" style="color: var(--color-text-muted); text-decoration: none;">Government Services</a>
+        <span style="margin: 0 4px;">&gt;</span>
+        <strong id="breadcrumbDocName" style="color: var(--color-primary);">Aadhaar Card Services</strong>
       </div>
-
-      <!-- Category Filter Pills -->
-      <div style="display: flex; flex-wrap: wrap; gap: var(--space-xs); align-items: center;" id="categoryPills">
-        <button type="button" class="ds-btn ds-btn-sm ds-btn-primary category-pill" data-category="ALL" onclick="selectCategory('ALL', this)">
-          <span data-i18n="cat_all">All Services</span> ({{ services|length }})
-        </button>
-        <button type="button" class="ds-btn ds-btn-sm ds-btn-secondary category-pill" data-category="Voter ID" onclick="selectCategory('Voter ID', this)">
-          <span data-i18n="cat_voter">Electoral / Voter ID</span> (6)
-        </button>
-        <button type="button" class="ds-btn ds-btn-sm ds-btn-secondary category-pill" data-category="PAN Card" onclick="selectCategory('PAN Card', this)">
-          <span data-i18n="cat_pan">Identity & Tax / PAN</span> (4)
-        </button>
-        <button type="button" class="ds-btn ds-btn-sm ds-btn-secondary category-pill" data-category="Aadhaar Card" onclick="selectCategory('Aadhaar Card', this)">
-          <span data-i18n="cat_aadhaar">Demographic / Aadhaar</span> (6)
-        </button>
-      </div>
-
-      <!-- Active Count -->
-      <div style="display: flex; align-items: center; justify-content: space-between; font-size: var(--font-size-xs); color: var(--color-text-secondary); border-top: 1px solid var(--color-border); padding-top: var(--space-xs);">
-        <span><span data-i18n="services_showing">Showing</span> <strong id="visibleCount" style="color: var(--color-text-primary);">{{ services|length }}</strong> <span data-i18n="services_of">of</span> {{ services|length }} <span data-i18n="services_available">available services</span></span>
-        <span style="display: flex; align-items: center; gap: 4px;">
-          <span class="material-symbols-outlined" style="font-size: 14px; color: var(--color-green);">sync_saved_locally</span>
-          <span data-i18n="services_synced">Official Rules Synced</span>
-        </span>
-      </div>
-
     </div>
-  </section>
 
-  <!-- ======================================================================
-       Services Grid
-       ====================================================================== -->
-  <section>
+    <!-- Dedicated Document Header Banner with Search -->
+    <section id="detailHeaderCard" class="ds-card" style="padding: var(--space-lg); border-top: 4px solid var(--color-saffron); box-shadow: var(--shadow-sm);">
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-md);">
+        <div style="display: flex; align-items: center; gap: var(--space-md);">
+          <div style="width: 52px; height: 52px; border-radius: var(--radius-lg); background: #fff7ed; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); flex-shrink: 0;">
+            <span id="detailHeaderIcon" class="material-symbols-outlined" style="font-size: 32px; color: #000080;">fingerprint</span>
+          </div>
+          <div>
+            <span id="detailHeaderBadge" class="ds-badge ds-badge-verified" style="font-size: 11px; margin-bottom: 4px;">6 Services In-Scope</span>
+            <h1 id="detailHeaderTitle" style="font-size: var(--font-size-2xl); font-weight: 700; color: var(--color-primary); margin: 0;">Aadhaar Card Services</h1>
+            <p id="detailHeaderAuthority" style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: 2px 0 0 0;">Unique Identification Authority of India (UIDAI)</p>
+          </div>
+        </div>
+
+        <div style="position: relative; min-width: 260px; max-width: 380px; flex: 1;">
+          <span class="material-symbols-outlined" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted); font-size: 18px;">search</span>
+          <input type="text" id="serviceSearchInput" class="ds-input" placeholder="Search in this document..." style="padding-left: 38px; height: 40px; font-size: 12px;" oninput="filterServices()">
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Cards Grid -->
     <div id="servicesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--space-lg);">
-      
       {% for service in services %}
-      <article 
-        class="ds-card ds-card-hover service-card" 
-        data-category="{{ service.service_category }}"
-        data-name="{{ service.service_name|lower }}"
-        data-form="{{ (service.form_name_or_number or '')|lower }}"
-        data-authority="{{ (service.responsible_authority or '')|lower }}"
-        data-desc="{{ (service.description or '')|lower }}"
-        style="display: flex; flex-direction: column; justify-content: space-between; padding: var(--space-lg);"
-      >
+      <article class="ds-card ds-card-hover service-card" data-category="{{ service.service_category }}" data-name="{{ service.service_name|lower }}" data-form="{{ (service.form_name_or_number or '')|lower }}" data-authority="{{ (service.responsible_authority or '')|lower }}" data-desc="{{ (service.description or '')|lower }}" style="display: flex; flex-direction: column; justify-content: space-between; padding: var(--space-lg);">
         <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
           
-          <!-- Card Header & Badges -->
           <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-xs);">
             <div style="width: 44px; height: 44px; border-radius: var(--radius-lg); background-color: var(--color-surface-container); display: flex; align-items: center; justify-content: center; color: var(--color-primary); flex-shrink: 0;">
               {% if service.service_category == 'Voter ID' %}
-                <span class="material-symbols-outlined" style="font-size: 24px;">how_to_vote</span>
+                <span class="material-symbols-outlined" style="font-size: 24px; color: var(--color-green);">how_to_vote</span>
               {% elif service.service_category == 'PAN Card' %}
-                <span class="material-symbols-outlined" style="font-size: 24px;">badge</span>
+                <span class="material-symbols-outlined" style="font-size: 24px; color: var(--color-primary);">badge</span>
               {% else %}
-                <span class="material-symbols-outlined" style="font-size: 24px;">fingerprint</span>
+                <span class="material-symbols-outlined" style="font-size: 24px; color: #000080;">fingerprint</span>
               {% endif %}
             </div>
 
             <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
-              <span class="ds-badge {% if service.service_category == 'Voter ID' %}ds-badge-primary{% elif service.service_category == 'PAN Card' %}ds-badge-in-progress{% else %}ds-badge-verified{% endif %}">
+              <span class="ds-badge {% if service.service_category == 'Voter ID' %}ds-badge-verified{% elif service.service_category == 'PAN Card' %}ds-badge-primary{% else %}ds-badge-in-progress{% endif %}" style="font-size: 11px;">
                 {{ service.service_category }}
               </span>
               {% if service.form_name_or_number %}
-                <span style="font-family: var(--font-family-mono); font-size: 11px; font-weight: var(--font-weight-bold); color: var(--color-text-secondary); background: var(--color-surface-container); padding: 2px 6px; border-radius: var(--radius-sm);">
+                <span style="font-family: var(--font-family-mono); font-size: 10px; font-weight: 700; color: var(--color-text-secondary); background: var(--color-surface-container); padding: 2px 6px; border-radius: var(--radius-sm);">
                   {{ service.form_name_or_number }}
                 </span>
               {% endif %}
             </div>
           </div>
 
-          <!-- Authority -->
-          <div style="font-size: var(--font-size-xs); text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-muted); font-weight: var(--font-weight-semibold);">
+          <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-muted); font-weight: 600;">
             {{ service.responsible_authority }}
           </div>
 
-          <!-- Title -->
-          <h2 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0; line-height: var(--line-height-tight);">
+          <h3 style="font-size: var(--font-size-base); font-weight: 700; color: var(--color-text-primary); margin: 0; line-height: 1.3;">
             {{ service.service_name }}
-          </h2>
+          </h3>
 
-          <!-- Description -->
-          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin: 0; min-height: 48px;">
+          <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: 1.5; margin: 0; min-height: 44px;">
             {{ service.description }}
           </p>
 
-          <!-- Type pill -->
-          <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--color-text-secondary); background: var(--color-surface-container-low); padding: 4px 8px; border-radius: var(--radius-sm);">
-            <span class="material-symbols-outlined" style="font-size: 14px; color: var(--color-primary);">tune</span>
+          <div style="display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--color-text-secondary); background: var(--color-surface-container-low); padding: 4px 8px; border-radius: var(--radius-sm);">
+            <span class="material-symbols-outlined" style="font-size: 13px; color: var(--color-primary);">tune</span>
             <span>Type: <strong>{{ service.application_or_update_type }}</strong></span>
           </div>
-
         </div>
 
-        <!-- Action Tray -->
         <div style="display: flex; flex-direction: column; gap: var(--space-xs); margin-top: var(--space-md); padding-top: var(--space-sm); border-top: 1px solid var(--color-border);">
           <div style="display: flex; gap: var(--space-xs); flex-wrap: wrap;">
-            <a href="/apply?service_id={{ service.service_id }}" class="ds-btn ds-btn-primary ds-btn-sm" style="flex: 1; font-weight: var(--font-weight-bold); background-color: var(--color-saffron); border-color: var(--color-saffron); color: #000000;">
-              <span class="material-symbols-outlined" style="font-size: 16px;">edit_document</span>
+            <a href="/apply?service_id={{ service.service_id }}" class="ds-btn ds-btn-sm" style="flex: 1; font-weight: 700; background-color: var(--color-saffron); border-color: var(--color-saffron); color: #000000; text-decoration: none;">
+              <span class="material-symbols-outlined" style="font-size: 15px;">edit_document</span>
               <span data-i18n="btn_apply_now">Apply Directly</span>
             </a>
-            <a href="/prerequisite-checker?service_id={{ service.service_id }}" class="ds-btn ds-btn-secondary ds-btn-sm">
-              <span class="material-symbols-outlined" style="font-size: 16px;">fact_check</span>
+            <a href="/prerequisite-checker?service_id={{ service.service_id }}" class="ds-btn ds-btn-secondary ds-btn-sm" style="text-decoration: none;">
+              <span class="material-symbols-outlined" style="font-size: 15px;">fact_check</span>
               <span data-i18n="btn_check_eligibility">Check Eligibility</span>
             </a>
             <button type="button" class="ds-btn ds-btn-secondary ds-btn-sm" style="padding: 6px 10px;" onclick="showServiceModal('{{ service.service_id }}', '{{ service.service_name|escape }}', '{{ service.service_category|escape }}', '{{ service.responsible_authority|escape }}', '{{ (service.form_name_or_number or '')|escape }}', '{{ service.description|escape }}', '{{ (service.official_service_url or '')|escape }}')">
-              <span class="material-symbols-outlined" style="font-size: 16px;">info</span>
-              <span data-i18n="btn_details">Details</span>
+              <span class="material-symbols-outlined" style="font-size: 15px;">info</span>
             </button>
           </div>
 
           {% if service.official_service_url %}
           <div style="display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--color-text-muted); margin-top: 2px;">
             <span data-i18n="statutory_filing_label">Statutory Filing:</span>
-            <a href="{{ service.official_service_url }}" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); text-decoration: none; display: flex; align-items: center; gap: 2px; font-weight: var(--font-weight-medium);">
-              <span data-i18n="official_portal_link">Official Portal</span>
+            <a href="{{ service.official_service_url }}" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); text-decoration: none; display: flex; align-items: center; gap: 2px; font-weight: 600;">
+              <span>Official Portal</span>
               <span class="material-symbols-outlined" style="font-size: 12px;">open_in_new</span>
             </a>
           </div>
           {% endif %}
         </div>
-
       </article>
       {% endfor %}
-
     </div>
 
-    <!-- Empty State for Search -->
+    <!-- Empty Search State -->
     <div id="noServicesFound" class="ds-card" style="display: none; text-align: center; padding: var(--space-xl); margin-top: var(--space-md);">
-      <span class="material-symbols-outlined" style="font-size: 48px; color: var(--color-text-muted);">manage_search</span>
-      <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: var(--space-xs) 0;">
-        No Services Match Your Search
-      </h3>
-      <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin: 0 auto var(--space-md) auto; max-width: 440px;">
-        Try searching for broader keywords like "Voter", "PAN", "Aadhaar", or clear the filter.
-      </p>
-      <button type="button" class="ds-btn ds-btn-secondary" onclick="resetFilters()">
-        Reset Filters
-      </button>
+      <span class="material-symbols-outlined" style="font-size: 44px; color: var(--color-text-muted);">manage_search</span>
+      <h3 style="font-size: var(--font-size-base); font-weight: 700; color: var(--color-text-primary); margin: var(--space-xs) 0;">No matching services in this document</h3>
+      <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: 0 auto var(--space-md) auto; max-width: 400px;">Try clearing your query or checking other documents.</p>
+      <button type="button" class="ds-btn ds-btn-secondary ds-btn-sm" onclick="clearServiceSearch()">Clear Search</button>
     </div>
-  </section>
-
-  <!-- ======================================================================
-       Statutory Transparency Split Panel
-       ====================================================================== -->
-  <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-md);">
-    <div class="ds-callout ds-callout-guidance">
-      <span class="material-symbols-outlined ds-callout-icon" style="font-size: 26px;">psychology</span>
-      <div>
-        <h3 style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-primary); margin: 0 0 4px 0;" data-i18n="guidance_box_title">
-          DigiSahay Guidance Protocol
-        </h3>
-        <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin: 0;" data-i18n="guidance_box_desc">
-          DigiSahay prepares citizens with clear checklists, acceptable alternative documents, and verification rules in Gujarati and English before they visit administrative queues.
-        </p>
-      </div>
-    </div>
-
-    <div class="ds-callout ds-callout-gateway">
-      <span class="material-symbols-outlined ds-callout-icon" style="font-size: 26px;">gavel</span>
-      <div>
-        <h3 style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-saffron-dark); margin: 0 0 4px 0;" data-i18n="gateway_box_title">
-          Statutory Filing Portals
-        </h3>
-        <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin: 0;" data-i18n="gateway_box_desc">
-          DigiSahay is an independent guidance tool and does NOT issue identity documents or process payments. When your documents are ready, file exclusively via official government domains (.gov.in, NSDL/Protean, UTIITSL).
-        </p>
-      </div>
-    </div>
-  </section>
+  </div>
 
 </div>
 
 <!-- Service Details Modal -->
 <div id="serviceDetailsModal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center; padding: var(--space-md);" onclick="closeServiceModal(event)">
-  <div class="ds-card" style="max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative;" onclick="event.stopPropagation()">
-    <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-sm); border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-sm); margin-bottom: var(--space-md);">
+  <div class="ds-card" style="max-width: 580px; width: 100%; max-height: 90vh; overflow-y: auto;" onclick="event.stopPropagation()">
+    <div style="display: flex; align-items: flex-start; justify-content: space-between; border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-sm); margin-bottom: var(--space-md);">
       <div>
         <span id="modalCategory" class="ds-badge ds-badge-primary"></span>
-        <h2 id="modalTitle" style="font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 6px 0 0 0;"></h2>
+        <h3 id="modalTitle" style="font-size: var(--font-size-base); font-weight: 700; color: var(--color-text-primary); margin: 6px 0 0 0;"></h3>
       </div>
-      <button type="button" class="ds-btn ds-btn-secondary ds-btn-sm" onclick="hideServiceModal()" style="padding: 4px; min-height: 32px;">
-        <span class="material-symbols-outlined">close</span>
-      </button>
+      <button type="button" class="ds-btn ds-btn-secondary ds-btn-sm" onclick="hideServiceModal()" style="padding: 4px; min-height: 32px;"><span class="material-symbols-outlined">close</span></button>
     </div>
-
     <div style="display: flex; flex-direction: column; gap: var(--space-md);">
       <div class="ds-tonal-box">
-        <div style="font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); font-weight: var(--font-weight-bold);">Responsible Authority</div>
-        <div id="modalAuthority" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); margin-top: 2px;"></div>
+        <div style="font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); font-weight: 700;">Responsible Authority</div>
+        <div id="modalAuthority" style="font-size: var(--font-size-xs); font-weight: 600; color: var(--color-text-primary); margin-top: 2px;"></div>
       </div>
-
       <div>
-        <div style="font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">Service Scope & Description</div>
-        <p id="modalDesc" style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin: 0;"></p>
+        <div style="font-size: 11px; font-weight: 700; color: var(--color-text-primary); margin-bottom: 4px;">Service Scope &amp; Description</div>
+        <p id="modalDesc" style="font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: 1.5; margin: 0;"></p>
       </div>
-
       <div style="display: flex; flex-wrap: wrap; gap: var(--space-xs); border-top: 1px solid var(--color-border); padding-top: var(--space-sm);">
-        <a id="modalApplyLink" href="#" class="ds-btn ds-btn-saffron" style="flex: 1; font-weight: var(--font-weight-bold);">
-          <span class="material-symbols-outlined" style="font-size: 18px;">edit_document</span>
-          <span data-i18n="btn_apply_now">Apply Directly</span>
-        </a>
-        <a id="modalEligibilityLink" href="#" class="ds-btn ds-btn-primary" style="flex: 1;">
-          <span class="material-symbols-outlined" style="font-size: 18px;">fact_check</span>
-          <span data-i18n="btn_check_eligibility">Start Eligibility Pre-Check</span>
-        </a>
-        <a id="modalOfficialLink" href="#" target="_blank" rel="noopener noreferrer" class="ds-btn ds-btn-secondary" style="flex: 1;">
-          <span class="material-symbols-outlined" style="font-size: 18px;">open_in_new</span>
-          <span data-i18n="official_portal_link">Visit Official Portal</span>
-        </a>
+        <a id="modalApplyLink" href="#" class="ds-btn ds-btn-sm" style="flex: 1; font-weight: 700; background: var(--color-saffron); color: #000; text-decoration: none;">Apply Directly</a>
+        <a id="modalEligibilityLink" href="#" class="ds-btn ds-btn-primary ds-btn-sm" style="flex: 1; text-decoration: none;">Check Eligibility</a>
+        <a id="modalOfficialLink" href="#" target="_blank" rel="noopener noreferrer" class="ds-btn ds-btn-secondary ds-btn-sm" style="flex: 1; text-decoration: none;">Official Portal ↗</a>
       </div>
     </div>
   </div>
@@ -289,86 +323,5 @@
 {% endblock %}
 
 {% block extra_js %}
-<script>
-let currentCategory = 'ALL';
-
-function selectCategory(cat, btn) {
-  currentCategory = cat;
-  document.querySelectorAll('#categoryPills .category-pill').forEach(b => {
-    b.classList.remove('ds-btn-primary');
-    b.classList.add('ds-btn-secondary');
-  });
-  btn.classList.remove('ds-btn-secondary');
-  btn.classList.add('ds-btn-primary');
-  filterServices();
-}
-
-function filterServices() {
-  const query = document.getElementById('serviceSearchInput').value.toLowerCase().trim();
-  const cards = document.querySelectorAll('.service-card');
-  let visible = 0;
-
-  cards.forEach(card => {
-    const category = card.getAttribute('data-category');
-    const name = card.getAttribute('data-name');
-    const form = card.getAttribute('data-form');
-    const authority = card.getAttribute('data-authority');
-    const desc = card.getAttribute('data-desc');
-
-    const matchesCategory = (currentCategory === 'ALL' || category === currentCategory);
-    const matchesQuery = (!query || name.includes(query) || form.includes(query) || authority.includes(query) || desc.includes(query));
-
-    if (matchesCategory && matchesQuery) {
-      card.style.display = 'flex';
-      visible++;
-    } else {
-      card.style.display = 'none';
-    }
-  });
-
-  document.getElementById('visibleCount').textContent = visible;
-  const noFound = document.getElementById('noServicesFound');
-  if (visible === 0) {
-    noFound.style.display = 'block';
-  } else {
-    noFound.style.display = 'none';
-  }
-}
-
-function resetFilters() {
-  document.getElementById('serviceSearchInput').value = '';
-  const allBtn = document.querySelector('#categoryPills [data-category="ALL"]');
-  selectCategory('ALL', allBtn);
-}
-
-function showServiceModal(id, name, category, authority, form, desc, url) {
-  document.getElementById('modalTitle').textContent = name + (form ? ' (' + form + ')' : '');
-  document.getElementById('modalCategory').textContent = category;
-  document.getElementById('modalAuthority').textContent = authority;
-  document.getElementById('modalDesc').textContent = desc;
-  document.getElementById('modalEligibilityLink').href = '/prerequisite-checker?service_id=' + encodeURIComponent(id);
-  document.getElementById('modalApplyLink').href = '/apply?service_id=' + encodeURIComponent(id);
-  
-  const offLink = document.getElementById('modalOfficialLink');
-  if (url) {
-    offLink.href = url;
-    offLink.style.display = 'inline-flex';
-  } else {
-    offLink.style.display = 'none';
-  }
-
-  const modal = document.getElementById('serviceDetailsModal');
-  modal.style.display = 'flex';
-}
-
-function hideServiceModal() {
-  document.getElementById('serviceDetailsModal').style.display = 'none';
-}
-
-function closeServiceModal(e) {
-  if (e.target.id === 'serviceDetailsModal') {
-    hideServiceModal();
-  }
-}
-</script>
+<script src="{{ url_for('static', filename='js/services.js') }}"></script>
 {% endblock %}

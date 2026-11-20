@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block title %}Citizen Profile • DigiSahay{% endblock %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; gap: var(--space-xl); max-width: 860px; margin: 0 auto;">
+
+  <!-- Hero Header -->
+  <section class="ds-card" style="background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 70%, #0F3820 100%); color: var(--color-on-primary); position: relative; overflow: hidden; border-top: 4px solid var(--color-saffron); border-bottom: 4px solid var(--color-green);">
+    <div style="position: relative; z-index: 2; display: flex; flex-direction: column; gap: var(--space-sm);">
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-xs);">
+        <span class="ds-badge" style="background-color: rgba(255, 255, 255, 0.15); color: #ffffff;">
+          <span class="material-symbols-outlined" style="font-size: 14px;">badge</span>
+          <span data-i18n="profile_badge">Citizen Profile &amp; Auto-Fill Dossier</span>
+        </span>
+        <button type="button" id="btnFillSampleProfile" class="ds-btn ds-btn-sm" style="background: var(--color-saffron); color: #000; font-weight: 700; border: none;">
+          ⚡ <span data-i18n="profile_fill_demo">Fill Sample Details (Demo)</span>
+        </button>
+      </div>
+
+      <h1 style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); line-height: var(--line-height-tight); margin: 0; color: #ffffff;" data-i18n="profile_title">
+        Citizen Personal Particulars
+      </h1>
+
+      <p style="font-size: var(--font-size-sm); color: var(--color-primary-fixed); line-height: var(--line-height-relaxed); margin: 0;" data-i18n="profile_subtitle">
+        Your verified identity details are securely stored in your browser session to auto-fill government service applications, prerequisite evaluations, and CSC appointment tokens.
+      </p>
+    </div>
+  </section>
+
+  <!-- Statutory Exclusion Notice -->
+  <div class="ds-card" style="border-left: 6px solid var(--color-saffron); background-color: var(--color-surface); padding: var(--space-md);">
+    <div style="display: flex; align-items: flex-start; gap: var(--space-sm);">
+      <span class="material-symbols-outlined" style="color: var(--color-saffron); font-size: 24px; flex-shrink: 0;">warning</span>
+      <div style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-normal);">
+        <strong style="color: var(--color-text-primary);" data-i18n="profile_statutory_heading">Statutory Exclusion Notice:</strong>
+        <span data-i18n="profile_statutory_text">
+          DigiSahay does not support biometric updates (fingerprints, iris scans, Aadhaar photographs). These must be completed in-person at an official Aadhaar Seva Kendra. Passport services are also outside the platform's operational scope.
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Form Card -->
+  <div class="ds-card" style="border-top: 4px solid var(--color-saffron); border-bottom: 4px solid var(--color-green);">
+    <form id="citizenProfileForm" style="display: flex; flex-direction: column; gap: var(--space-lg);">
+
+      <!-- Photo & Avatar Row -->
+      <div style="display: flex; align-items: center; gap: var(--space-lg); padding-bottom: var(--space-md); border-bottom: 1px solid var(--color-border); flex-wrap: wrap;">
+        <img 
+          id="profileAvatarPreview" 
+          src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFF7ED'/><text x='50' y='55' font-family='sans-serif' font-size='32' text-anchor='middle' fill='%23FF671F'>👤</text></svg>" 
+          alt="Citizen Avatar Preview" 
+          style="width: 88px; height: 88px; border-radius: 50%; object-fit: cover; border: 3px solid var(--color-saffron); box-shadow: var(--shadow-sm);"
+        >
+        <div>
+          <label for="profilePhotoInput" style="font-weight: var(--font-weight-semibold); font-size: var(--font-size-sm); display: block; margin-bottom: 4px;" data-i18n="profile_photo_label">
+            Citizen Photograph (Optional)
+          </label>
+          <input type="file" id="profilePhotoInput" accept="image/*" class="ds-input" style="font-size: var(--font-size-xs); max-width: 300px;">
+          <div style="font-size: 11px; color: var(--color-text-muted); margin-top: 4px;" data-i18n="profile_photo_hint">
+            Accepted: JPG, PNG. Used for local dossier previews.
+          </div>
+        </div>
+      </div>
+
+      <!-- Full Name as per Aadhaar -->
+      <div>
+        <label for="fullNameInput" style="display: block; font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); margin-bottom: 6px;">
+          <span data-i18n="profile_name_label">Full Name (as per Aadhaar Card)</span> <span style="color: #b91c1c;">*</span>
+        </label>
+        <input type="text" id="fullNameInput" class="ds-input" placeholder="e.g. Aarav K. Patel" required style="width: 100%;">
+        <div style="font-size: 11px; color: var(--color-text-muted); margin-top: 4px;" data-i18n="profile_name_hint">
+          Must match spelling on your School Leaving Certificate or Aadhaar Card.
+        </div>
+      </div>
+
+      <!-- DOB & Gender -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-md);">
+        <div>
+          <label for="dobInput" style="display: block; font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); margin-bottom: 6px;">
+            <span data-i18n="profile_dob_label">Date of Birth</span> <span style="color: #b91c1c;">*</span>
+          </label>
+          <input type="date" id="dobInput" class="ds-input" required style="width: 100%;">
+          <div style="font-size: 11px; color: var(--color-text-muted); margin-top: 4px;" data-i18n="profile_dob_hint">
+            Target demographic: 18–19 years (born ~2006–2008).
+          </div>
+        </div>
+
+        <div>
+          <label for="genderSelect" style="display: block; font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); margin-bottom: 6px;">
+            <span data-i18n="profile_gender_label">Gender</span> <span style="color: #b91c1c;">*</span>
+          </label>
+          <select id="genderSelect" class="ds-select" required style="width: 100%;">
+            <option value="" data-i18n="profile_gender_select">-- Select Gender --</option>
+            <option value="Male" data-i18n="profile_gender_male">Male / પુરૂષ</option>
+            <option value="Female" data-i18n="profile_gender_female">Female / સ્ત્રી</option>
+            <option value="Transgender" data-i18n="profile_gender_trans">Transgender</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Mobile & Email -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-md);">
+        <div>
+          <label for="mobileInput" style="display: block; font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); margin-bottom: 6px;">
+            <span data-i18n="profile_phone_label">Mobile Number (10 Digits)</span> <span style="color: #b91c1c;">*</span>
+          </label>
+          <input type="tel" id="mobileInput" class="ds-input" placeholder="9876543210" pattern="[6-9][0-9]{9}" maxlength="10" required style="width: 100%;">
+          <div style="font-size: 11px; color: var(--color-text-muted); margin-top: 4px;" data-i18n="profile_phone_hint">
+            Indian mobile number starting with 6, 7, 8, or 9.
+          </div>
+        </div>
+
+        <div>
+          <label for="emailInput" style="display: block; font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); margin-bottom: 6px;">
+            <span data-i18n="profile_email_label">Email Address</span> <span style="color: #b91c1c;">*</span>
+          </label>
+          <input type="email" id="emailInput" class="ds-input" placeholder="aarav.patel@example.com" required style="width: 100%;">
+          <div style="font-size: 11px; color: var(--color-text-muted); margin-top: 4px;" data-i18n="profile_email_hint">
+            For receiving appointment notifications and token receipts.
+          </div>
+        </div>
+      </div>
+
+      <!-- District / Location -->
+      <div>
+        <label for="districtSelect" style="display: block; font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); margin-bottom: 6px;">
+          <span data-i18n="profile_district_label">Residential District</span> <span style="color: #b91c1c;">*</span>
+        </label>
+        <select id="districtSelect" class="ds-select" required style="width: 100%;">
+          <option value="Ahmedabad">Ahmedabad / અમદાવાદ</option>
+          <option value="Gandhinagar">Gandhinagar / ગાંધીનગર</option>
+          <option value="Vadodara">Vadodara / વડોદરા</option>
+          <option value="Surat">Surat / સુરત</option>
+          <option value="Rajkot">Rajkot / રાજકોટ</option>
+        </select>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; align-items: center; gap: var(--space-md); margin-top: var(--space-xs); flex-wrap: wrap;">
+        <button type="submit" class="ds-btn ds-btn-primary" style="background: var(--color-green); border-color: var(--color-green);">
+          <span class="material-symbols-outlined" style="font-size: 18px;">save</span>
+          <span data-i18n="profile_save_btn">Save Citizen Particulars</span>
+        </button>
+        <a href="/dashboard" class="ds-btn ds-btn-outline" data-i18n="profile_cancel_btn">Return to Dashboard</a>
+        <span id="profileSuccessAlert" style="display: none; font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-green);">
+          ✅ <span data-i18n="profile_saved_toast">Profile saved successfully!</span>
+        </span>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const STORAGE_KEY = "digisahay_user_profile";
+    const form = document.getElementById("citizenProfileForm");
+    const nameInput = document.getElementById("fullNameInput");
+    const dobInput = document.getElementById("dobInput");
+    const genderSelect = document.getElementById("genderSelect");
+    const mobileInput = document.getElementById("mobileInput");
+    const emailInput = document.getElementById("emailInput");
+    const districtSelect = document.getElementById("districtSelect");
+    const avatarPreview = document.getElementById("profileAvatarPreview");
+    const photoInput = document.getElementById("profilePhotoInput");
+    const successAlert = document.getElementById("profileSuccessAlert");
+    const sampleBtn = document.getElementById("btnFillSampleProfile");
+
+    // Load existing profile
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const data = JSON.parse(saved);
+        if (data.name) nameInput.value = data.name;
+        if (data.dob) dobInput.value = data.dob;
+        if (data.gender) genderSelect.value = data.gender;
+        if (data.phone) mobileInput.value = data.phone;
+        if (data.email) emailInput.value = data.email;
+        if (data.district) districtSelect.value = data.district;
+        if (data.photo) avatarPreview.src = data.photo;
+      } catch(e) { console.error("Profile load error", e); }
+    }
+
+    // Photo preview
+    photoInput.addEventListener("change", function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          avatarPreview.src = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Sample details button
+    sampleBtn.addEventListener("click", function() {
+      nameInput.value = "Aarav K. Patel";
+      dobInput.value = "2007-04-15";
+      genderSelect.value = "Male";
+      mobileInput.value = "9876543210";
+      emailInput.value = "aarav.patel@example.com";
+      districtSelect.value = "Ahmedabad";
+    });
+
+    // Save profile
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const profile = {
+        name: nameInput.value.trim(),
+        dob: dobInput.value,
+        gender: genderSelect.value,
+        phone: mobileInput.value.trim(),
+        email: emailInput.value.trim(),
+        district: districtSelect.value,
+        photo: avatarPreview.src,
+        updated_at: new Date().toISOString()
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+
+      // Also update header user name if available
+      const headerName = document.getElementById("headerProfileName");
+      const headerMeta = document.getElementById("headerProfileMeta");
+      if (headerName) headerName.textContent = profile.name;
+      if (headerMeta) headerMeta.textContent = "Verified Applicant • અમદાવાદ";
+
+      successAlert.style.display = "inline";
+      setTimeout(function() { successAlert.style.display = "none"; }, 3500);
+    });
+  });
+</script>
+{% endblock %}

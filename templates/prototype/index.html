@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login &bull; DigiSahay Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='prototype/css/style.css') }}">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header-placeholder"></div>
+
+  <main id="main-content">
+    <div class="container" style="max-width: 520px;">
+      
+      <!-- Welcome Intro Banner -->
+      <div style="text-align: center; margin-bottom: 24px;">
+        <span class="badge badge-saffron" style="font-size: 12px; margin-bottom: 8px;">Indian Citizen Assistance Prototype</span>
+        <h1 style="font-size: 26px; font-weight: 700; color: var(--navy);">Sign In to DigiSahay</h1>
+        <p style="font-size: 13px; color: var(--text-muted);">
+          Your unified digital desk for central and state government document facilitation.
+        </p>
+      </div>
+
+      <!-- Login Form Card with Tricolour Border -->
+      <div class="card" style="border-top: 4px solid var(--saffron-bright); border-bottom: 4px solid var(--green);">
+        <form id="login-form">
+          <div class="form-group">
+            <label for="email">Citizen Email Address <span style="color:#B91C1C;">*</span></label>
+            <input type="email" id="email" class="form-control" placeholder="e.g. aarav.patel@example.com" value="aarav.patel@example.com" required autocomplete="email">
+            <div class="form-hint">Sample demo login (no password stored).</div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Portal Password <span style="color:#B91C1C;">*</span></label>
+            <input type="password" id="password" class="form-control" placeholder="Enter any demo password" value="DemoPass123" required autocomplete="current-password">
+            <div class="form-hint">Front-end only: passwords are never transmitted or saved.</div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+            Secure Citizen Sign In &rarr;
+          </button>
+        </form>
+      </div>
+
+      <!-- Mandatory Biometric & Passport Warning Note (Directly Below Form) -->
+      <div id="login-biometric-note"></div>
+
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="{{ url_for('static', filename='prototype/js/data.js') }}"></script>
+  <script src="{{ url_for('static', filename='prototype/js/app.js') }}"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      APP.initLogin();
+    });
+  </script>
+</body>
+</html>

@@ -5,19 +5,23 @@
 {% block content %}
 <div style="display: flex; flex-direction: column; gap: var(--space-xl);">
 
-  <!-- ======================================================================
-       Hero Banner - Service Centres
-       ====================================================================== -->
-  <section class="ds-card" style="background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 70%, var(--color-primary-light) 100%); color: var(--color-on-primary); position: relative; overflow: hidden;">
+  <!-- Hero Banner - Service Centres -->
+  <section class="ds-card" style="background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 70%, var(--color-primary-light) 100%); color: var(--color-on-primary); position: relative; overflow: hidden; border-top: 4px solid var(--color-saffron); border-bottom: 4px solid var(--color-green);">
     <div style="position: relative; z-index: 2; display: flex; flex-direction: column; gap: var(--space-sm); max-width: 860px;">
-      <div style="display: flex; align-items: center; gap: var(--space-xs); flex-wrap: wrap;">
-        <span class="ds-badge" style="background-color: rgba(255, 255, 255, 0.15); color: #ffffff;">
-          <span class="material-symbols-outlined" style="font-size: 14px;">storefront</span>
-          Facilitation Centers Directory
-        </span>
-        <span class="ds-badge" style="background-color: var(--color-saffron); color: var(--color-text-primary); font-weight: var(--font-weight-bold);">
-          Gujarat Districts (અમદાવાદ • વડોદરા • સુરત • ગાંધીનગર)
-        </span>
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-xs);">
+        <div style="display: flex; align-items: center; gap: var(--space-xs); flex-wrap: wrap;">
+          <span class="ds-badge" style="background-color: rgba(255, 255, 255, 0.15); color: #ffffff;">
+            <span class="material-symbols-outlined" style="font-size: 14px;">storefront</span>
+            Facilitation Centers Directory
+          </span>
+          <span class="ds-badge" style="background-color: var(--color-saffron); color: var(--color-text-primary); font-weight: var(--font-weight-bold);">
+            Gujarat Districts (અમદાવાદ • વડોદરા • સુરત • ગાંધીનગર)
+          </span>
+        </div>
+        <a href="https://www.google.com/maps/search/Jan+Seva+Kendra+Aadhaar+Seva+Kendra+Gujarat" target="_blank" rel="noopener noreferrer" class="ds-btn ds-btn-sm" style="background: var(--color-saffron); color: #000; font-weight: 700; border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+          <span class="material-symbols-outlined" style="font-size: 16px;">map</span>
+          <span>Google Maps Overview ↗</span>
+        </a>
       </div>
 
       <h1 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); line-height: var(--line-height-tight); margin: var(--space-2xs) 0 0 0; color: #ffffff;" data-i18n="centers_title">
@@ -41,26 +45,14 @@
     </div>
   </section>
 
-  <!-- ======================================================================
-       Filter Bar & Search
-       ====================================================================== -->
+  <!-- Filter Bar & Search -->
   <section class="ds-card" style="padding: var(--space-md);">
     <div style="display: flex; flex-direction: column; gap: var(--space-md);">
-      
       <div style="display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: center; justify-content: space-between;">
         <div style="position: relative; flex: 1; min-width: 280px;">
           <span class="material-symbols-outlined" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted); font-size: 20px;">search</span>
-          <input 
-            type="text" 
-            id="centerSearchInput" 
-            class="ds-input" 
-            placeholder="Search by center name, city, address, or center type..." 
-            data-i18n-placeholder="centers_search_placeholder"
-            style="padding-left: 44px;"
-            oninput="filterCenters()"
-          >
+          <input type="text" id="centerSearchInput" class="ds-input" placeholder="Search by center name, city, address, or center type..." data-i18n-placeholder="centers_search_placeholder" style="padding-left: 44px;" oninput="filterCenters()">
         </div>
-
         <div style="display: flex; align-items: center; gap: var(--space-2xs); background: var(--color-surface-container-low); padding: 6px 12px; border-radius: var(--radius-md); font-size: var(--font-size-xs); color: var(--color-text-secondary);">
           <span class="material-symbols-outlined" style="font-size: 16px; color: var(--color-primary);">verified_user</span>
           <span>Official Department Directory Records</span>
@@ -72,38 +64,20 @@
         <button type="button" class="ds-btn ds-btn-sm ds-btn-primary district-pill" data-district="ALL" onclick="selectDistrict('ALL', this)">
           <span data-i18n="dist_all">All Centers</span> ({{ centers|length }})
         </button>
-        <button type="button" class="ds-btn ds-btn-sm ds-btn-secondary district-pill" data-district="Ahmedabad" onclick="selectDistrict('Ahmedabad', this)">
-          Ahmedabad
-        </button>
-        <button type="button" class="ds-btn ds-btn-sm ds-btn-secondary district-pill" data-district="Vadodara" onclick="selectDistrict('Vadodara', this)">
-          Vadodara
-        </button>
-        <button type="button" class="ds-btn ds-btn-sm ds-btn-secondary district-pill" data-district="Surat" onclick="selectDistrict('Surat', this)">
-          Surat
-        </button>
-        <button type="button" class="ds-btn ds-btn-sm ds-btn-secondary district-pill" data-district="Gandhinagar" onclick="selectDistrict('Gandhinagar', this)">
-          Gandhinagar
-        </button>
+        <button type="button" class="ds-btn ds-btn-sm ds-btn-secondary district-pill" data-district="Ahmedabad" onclick="selectDistrict('Ahmedabad', this)">Ahmedabad</button>
+        <button type="button" class="ds-btn ds-btn-sm ds-btn-secondary district-pill" data-district="Vadodara" onclick="selectDistrict('Vadodara', this)">Vadodara</button>
+        <button type="button" class="ds-btn ds-btn-sm ds-btn-secondary district-pill" data-district="Surat" onclick="selectDistrict('Surat', this)">Surat</button>
+        <button type="button" class="ds-btn ds-btn-sm ds-btn-secondary district-pill" data-district="Gandhinagar" onclick="selectDistrict('Gandhinagar', this)">Gandhinagar</button>
       </div>
-
     </div>
   </section>
 
-  <!-- ======================================================================
-       Centers Grid
-       ====================================================================== -->
+  <!-- Centers Grid -->
   <section>
     <div id="centersGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--space-lg);">
       {% for center in centers %}
-      <article 
-        class="ds-card ds-card-hover center-card"
-        data-district="{{ center.district or center.city }}"
-        data-name="{{ center.center_name|lower }}"
-        data-type="{{ center.center_type|lower }}"
-        data-city="{{ center.city|lower }}"
-        data-address="{{ (center.address_line or '')|lower }}"
-        style="display: flex; flex-direction: column; justify-content: space-between; padding: var(--space-lg);"
-      >
+      {% set map_url = ('https://www.google.com/maps/search/?api=1&query=' ~ center.latitude ~ ',' ~ center.longitude) if (center.latitude and center.longitude) else ('https://www.google.com/maps/search/?api=1&query=' ~ (center.center_name ~ ' ' ~ center.address_line ~ ' ' ~ center.city)|urlencode) %}
+      <article class="ds-card ds-card-hover center-card" data-district="{{ center.district or center.city }}" data-name="{{ center.center_name|lower }}" data-type="{{ center.center_type|lower }}" data-city="{{ center.city|lower }}" data-address="{{ (center.address_line or '')|lower }}" style="display: flex; flex-direction: column; justify-content: space-between; padding: var(--space-lg); border-top: 3px solid var(--color-primary-light);">
         <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
           
           <!-- Card Header & Badge -->
@@ -111,9 +85,7 @@
             <div style="width: 44px; height: 44px; border-radius: var(--radius-lg); background-color: var(--color-surface-container); display: flex; align-items: center; justify-content: center; color: var(--color-primary); flex-shrink: 0;">
               <span class="material-symbols-outlined" style="font-size: 24px;">storefront</span>
             </div>
-            <span class="ds-badge ds-badge-neutral" style="font-size: 11px;">
-              {{ center.city }}, {{ center.state }}
-            </span>
+            <span class="ds-badge ds-badge-neutral" style="font-size: 11px;">{{ center.city }}, {{ center.state }}</span>
           </div>
 
           <!-- Type -->
@@ -126,11 +98,11 @@
             {{ center.center_name }}
           </h2>
 
-          <!-- Address -->
-          <div style="display: flex; align-items: flex-start; gap: 6px; font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: var(--line-height-relaxed);">
-            <span class="material-symbols-outlined" style="font-size: 16px; color: var(--color-text-muted); flex-shrink: 0; margin-top: 1px;">pin_drop</span>
-            <span>{{ center.address_line }}, {{ center.city }} - {{ center.pincode }}</span>
-          </div>
+          <!-- Address (Clickable link to Google Maps) -->
+          <a href="{{ map_url }}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: flex; align-items: flex-start; gap: 6px; font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: var(--line-height-relaxed);" title="Open location on Google Maps">
+            <span class="material-symbols-outlined" style="font-size: 16px; color: #ea4335; flex-shrink: 0; margin-top: 1px;">pin_drop</span>
+            <span style="border-bottom: 1px dashed var(--color-border); hover: color: var(--color-primary);">{{ center.address_line }}, {{ center.city }} - {{ center.pincode }}</span>
+          </a>
 
           <!-- Operating Hours & Contact -->
           <div class="ds-tonal-box" style="padding: 8px 12px; font-size: 11px; display: flex; flex-direction: column; gap: 4px;">
@@ -147,21 +119,29 @@
             </div>
             {% endif %}
           </div>
-
         </div>
 
-        <!-- Footer / Action -->
-        <div style="margin-top: var(--space-md); padding-top: var(--space-sm); border-top: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between;">
+        <!-- Footer / Action Buttons including Direct Map Button -->
+        <div style="margin-top: var(--space-md); padding-top: var(--space-sm); border-top: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px;">
           <span class="ds-badge ds-badge-verified" style="font-size: 10px;">
             <span class="material-symbols-outlined" style="font-size: 12px;">verified</span>
             <span data-i18n="center_official_counter">Official Counter</span>
           </span>
-          {% if center.official_source_url %}
-          <a href="{{ center.official_source_url }}" target="_blank" rel="noopener noreferrer" class="ds-btn ds-btn-secondary ds-btn-sm" style="font-size: 11px;">
-            <span data-i18n="center_portal_details">Portal Details</span>
-            <span class="material-symbols-outlined" style="font-size: 12px;">open_in_new</span>
-          </a>
-          {% endif %}
+
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <!-- Dedicated Google Maps Navigation Button -->
+            <a href="{{ map_url }}" target="_blank" rel="noopener noreferrer" class="ds-btn ds-btn-sm" style="background: #ffffff; color: var(--color-primary); border: 1.5px solid #ea4335; font-size: 11px; padding: 4px 10px; display: inline-flex; align-items: center; gap: 4px; text-decoration: none; border-radius: var(--radius-sm); font-weight: var(--font-weight-semibold);" title="Direct to this location on Google Maps">
+              <span class="material-symbols-outlined" style="font-size: 15px; color: #ea4335;">map</span>
+              <span data-i18n="center_view_map">Google Maps</span>
+              <span class="material-symbols-outlined" style="font-size: 12px; color: var(--color-text-muted);">open_in_new</span>
+            </a>
+
+            {% if center.official_source_url %}
+            <a href="{{ center.official_source_url }}" target="_blank" rel="noopener noreferrer" class="ds-btn ds-btn-secondary ds-btn-sm" style="font-size: 11px; padding: 4px 8px;" title="Official portal details">
+              <span class="material-symbols-outlined" style="font-size: 13px;">public</span>
+            </a>
+            {% endif %}
+          </div>
         </div>
       </article>
       {% endfor %}
@@ -170,32 +150,20 @@
     <!-- Empty State -->
     <div id="noCentersFound" class="ds-card" style="display: none; text-align: center; padding: var(--space-xl); margin-top: var(--space-md);">
       <span class="material-symbols-outlined" style="font-size: 48px; color: var(--color-text-muted);">location_off</span>
-      <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: var(--space-xs) 0;" data-i18n="no_centers_found">
-        No Centers Found
-      </h3>
-      <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin: 0 auto var(--space-md) auto; max-width: 440px;" data-i18n="no_centers_desc">
-        No service centers matched your search query or district selection.
-      </p>
-      <button type="button" class="ds-btn ds-btn-secondary" onclick="resetCenterFilters()" data-i18n="btn_reset_filters">
-        Reset Filters
-      </button>
+      <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: var(--space-xs) 0;" data-i18n="no_centers_found">No Centers Found</h3>
+      <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin: 0 auto var(--space-md) auto; max-width: 440px;" data-i18n="no_centers_desc">No service centers matched your search query or district selection.</p>
+      <button type="button" class="ds-btn ds-btn-secondary" onclick="resetCenterFilters()" data-i18n="btn_reset_filters">Reset Filters</button>
     </div>
   </section>
 
-  <!-- ======================================================================
-       Official Helpline Directory Box
-       ====================================================================== -->
+  <!-- Official Helpline Directory Box -->
   <section class="ds-card" style="background: var(--color-surface-container-low);">
     <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
       <div style="display: flex; align-items: center; gap: var(--space-xs);">
         <span class="material-symbols-outlined" style="font-size: 22px; color: var(--color-primary);">contact_phone</span>
-        <h2 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0;" data-i18n="dept_helplines_title">
-          Official Department Helplines
-        </h2>
+        <h2 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0;" data-i18n="dept_helplines_title">Official Department Helplines</h2>
       </div>
-      <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: 0;" data-i18n="dept_helplines_desc">
-        For direct statutory queries, citizens can dial the official national toll-free helplines operated by respective authorities:
-      </p>
+      <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: 0;" data-i18n="dept_helplines_desc">For direct statutory queries, citizens can dial the official national toll-free helplines operated by respective authorities:</p>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-sm); margin-top: var(--space-xs);">
         <div class="ds-tonal-box" style="background: var(--color-surface-container-lowest);">
           <div style="font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); font-weight: var(--font-weight-bold);">UIDAI Aadhaar Helpline</div>
@@ -240,11 +208,11 @@ function filterCenters() {
   let visible = 0;
 
   cards.forEach(card => {
-    const district = card.getAttribute('data-district');
-    const name = card.getAttribute('data-name');
-    const type = card.getAttribute('data-type');
-    const city = card.getAttribute('data-city');
-    const address = card.getAttribute('data-address');
+    const district = card.getAttribute('data-district') || '';
+    const name = card.getAttribute('data-name') || '';
+    const type = card.getAttribute('data-type') || '';
+    const city = card.getAttribute('data-city') || '';
+    const address = card.getAttribute('data-address') || '';
 
     const matchesDistrict = (currentDistrict === 'ALL' || district.toLowerCase().includes(currentDistrict.toLowerCase()) || city.toLowerCase().includes(currentDistrict.toLowerCase()));
     const matchesQuery = (!query || name.includes(query) || type.includes(query) || city.includes(query) || address.includes(query));

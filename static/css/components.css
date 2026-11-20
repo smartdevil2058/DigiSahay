@@ -205,6 +205,47 @@
   transform: translateY(-1px);
 }
 
+/* Document Category Selector Cards */
+.category-card {
+  cursor: pointer;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg);
+  transition: all var(--transition-normal);
+  background-color: var(--color-surface-container-lowest);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary-light);
+}
+.category-card.active {
+  border-color: var(--color-primary);
+  background: linear-gradient(180deg, #ffffff 0%, var(--color-surface-container-low) 100%);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 128, 0.15);
+}
+.category-card.active::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-saffron) 0%, var(--color-primary) 50%, var(--color-green) 100%);
+}
+.services-fade-in {
+  animation: servicesFadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes servicesFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .ds-card-header {
   display: flex;
   align-items: center;

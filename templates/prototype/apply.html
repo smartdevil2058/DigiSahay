@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apply &bull; DigiSahay Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='prototype/css/style.css') }}">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header-placeholder"></div>
+
+  <main id="main-content">
+    <div class="container" style="max-width: 860px;">
+      <!-- Selected Document Header Card -->
+      <div class="card" style="border-top: 4px solid var(--saffron-bright); border-left: 6px solid var(--green); margin-bottom: 20px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div id="apply-doc-icon" style="font-size: 38px; line-height: 1;" aria-hidden="true">🆔</div>
+            <div>
+              <span class="badge badge-saffron">Government Citizen Desk</span>
+              <h1 id="apply-doc-title" style="font-size: 24px; font-weight: 700; color: var(--navy); margin: 2px 0;">Document</h1>
+              <p id="apply-doc-desc" style="font-size: 13px; color: var(--text-muted);"></p>
+            </div>
+          </div>
+          <a href="{{ url_for('frontend.prototype_home') }}" class="btn btn-sm btn-outline">&larr; Change Document</a>
+        </div>
+      </div>
+
+      <!-- Persistent Biometric & Passport Warning Note -->
+      <div id="apply-biometric-note"></div>
+
+      <!-- Four Service Option Tabs -->
+      <div style="display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap;" role="tablist" aria-label="Application Options">
+        <button type="button" class="btn btn-saffron option-tab-btn" data-option="new" onclick="APPLY.switchOption('new')">➕ New Apply</button>
+        <button type="button" class="btn btn-outline option-tab-btn" data-option="update" onclick="APPLY.switchOption('update')">✏️ Update Record</button>
+        <button type="button" class="btn btn-outline option-tab-btn" data-option="missing" onclick="APPLY.switchOption('missing')">❓ Missing? Apply Again</button>
+        <button type="button" class="btn btn-outline option-tab-btn" data-option="track" onclick="APPLY.switchOption('track')">🔍 Track Status</button>
+      </div>
+
+      <!-- 3-STEP WIZARD (For New, Update, Missing) -->
+      <div id="apply-wizard-wrapper">
+        <div class="stepper" aria-label="Application Progress">
+          <div class="step-item active" id="stepper-item-1"><div class="step-circle">1</div><div class="step-label">Details &amp; Proofs</div></div>
+          <div class="step-item" id="stepper-item-2"><div class="step-circle">2</div><div class="step-label">Center &amp; Slot</div></div>
+          <div class="step-item" id="stepper-item-3"><div class="step-circle">3</div><div class="step-label">Token Receipt</div></div>
+        </div>
+
+        <!-- Step 1: Form & Requirements -->
+        <div id="step-pane-1" class="step-pane active">
+          <div id="required-docs-alert" class="alert-box" style="margin-bottom: 20px;"></div>
+          <div class="card" style="border-top: 4px solid var(--saffron-bright);">
+            <form id="step-1-form">
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px;">
+                <h3 style="font-size: 16px; font-weight: 700; color: var(--navy);">Applicant Particulars</h3>
+                <span class="form-hint" style="font-size: 11px;">Auto-filled from saved profile</span>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+                <div class="form-group">
+                  <label for="app-name">Full Name <span style="color:#B91C1C;">*</span></label>
+                  <input type="text" id="app-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="app-dob">Date of Birth <span style="color:#B91C1C;">*</span></label>
+                  <input type="date" id="app-dob" class="form-control" required>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+                <div class="form-group">
+                  <label for="app-phone">Mobile Number <span style="color:#B91C1C;">*</span></label>
+                  <input type="tel" id="app-phone" class="form-control" pattern="[6-9][0-9]{9}" required>
+                </div>
+                <div class="form-group">
+                  <label for="app-email">Email Address <span style="color:#B91C1C;">*</span></label>
+                  <input type="email" id="app-email" class="form-control" required>
+                </div>
+              </div>
+              <div id="extra-option-fields"></div>
+              <div class="form-group" style="margin-top: 10px; padding-top: 14px; border-top: 1px dashed var(--border);">
+                <label for="app-proof-file">Supporting Proof Upload <span style="color:#B91C1C;">*</span></label>
+                <input type="file" id="app-proof-file" class="form-control" accept=".pdf,image/*" required>
+                <div class="form-hint">Accepted: PDF, JPG, PNG up to 5MB.</div>
+              </div>
+              <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                <button type="submit" class="btn btn-green">Proceed to Center Selection &rarr;</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Step 2: Center Map & Slot Booking -->
+        <div id="step-pane-2" class="step-pane">
+          <div class="card" style="margin-bottom: 20px; border-top: 4px solid var(--saffron-bright);">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+              <div>
+                <h3 style="font-size: 16px; font-weight: 700; color: var(--navy);">Select Authorized Facilitation Center</h3>
+                <p style="font-size: 13px; color: var(--text-muted);">Verified centers in Ahmedabad serving this service.</p>
+              </div>
+              <span class="badge badge-navy" id="center-count-badge">Centers</span>
+            </div>
+            <div id="map"></div>
+            <div id="centers-list" style="margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px;"></div>
+          </div>
+          <div id="slot-picker-card" class="card" style="display: none; border-top: 4px solid var(--green);">
+            <h3 style="font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 12px;">Book Appointment Slot</h3>
+            <div id="selected-center-summary" style="margin-bottom: 14px; padding: 10px; background: var(--green-light); border-radius: var(--radius-sm); font-size: 13px; color: var(--navy); border: 1px solid var(--border);"></div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 16px;">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="slot-date">Appointment Date <span style="color:#B91C1C;">*</span></label>
+                <input type="date" id="slot-date" class="form-control" required>
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="slot-time">Time Slot <span style="color:#B91C1C;">*</span></label>
+                <select id="slot-time" class="form-control" required>
+                  <option value="">-- Choose Slot --</option>
+                  <option value="10:00 AM - 11:00 AM">10:00 AM - 11:00 AM</option>
+                  <option value="11:30 AM - 12:30 PM">11:30 AM - 12:30 PM</option>
+                  <option value="02:00 PM - 03:00 PM">02:00 PM - 03:00 PM</option>
+                  <option value="03:30 PM - 04:30 PM">03:30 PM - 04:30 PM</option>
+                </select>
+              </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+              <button type="button" class="btn btn-outline btn-sm" onclick="APPLY.goToStep(1)">&larr; Back to Step 1</button>
+              <button type="button" class="btn btn-green" onclick="APPLY.confirmBooking()">Confirm &amp; Generate Token &rarr;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Token Booking Confirmation -->
+        <div id="step-pane-3" class="step-pane">
+          <div class="card" style="border-top: 5px solid var(--green); text-align: center; padding: 32px 24px;">
+            <div style="font-size: 48px; line-height: 1; margin-bottom: 10px;" aria-hidden="true">🎉</div>
+            <span class="badge badge-green" style="font-size: 13px;">Booking Confirmed</span>
+            <h2 style="font-size: 24px; font-weight: 800; color: var(--navy); margin: 8px 0;">Application Token Issued</h2>
+            <p style="font-size: 13px; color: var(--text-muted); max-width: 480px; margin: 0 auto 20px;">
+              Present this token number at the center helpdesk counter.
+            </p>
+            <div style="background: var(--surface-alt); border: 2px dashed var(--saffron-bright); border-radius: var(--radius); padding: 20px; max-width: 440px; margin: 0 auto 24px; text-align: left;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Token Reference ID</div>
+              <div id="receipt-token" style="font-size: 26px; font-weight: 800; color: var(--saffron-bright); letter-spacing: 1px; margin: 4px 0 12px;">DGS-88421</div>
+              <div style="font-size: 13px; line-height: 1.6; color: var(--text-main);" id="receipt-details"></div>
+            </div>
+            <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+              <a href="{{ url_for('frontend.prototype_home') }}" class="btn btn-primary">&larr; Back to Services</a>
+              <button type="button" class="btn btn-outline" onclick="window.print()">🖨️ Print Token Slip</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRACK STATUS PANE -->
+      <div id="apply-track-wrapper" style="display: none;">
+        <div class="card" style="border-top: 4px solid var(--navy); margin-bottom: 24px;">
+          <h3 style="font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 6px;">Check Live Application Status</h3>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+            Enter your token or application reference number to track progress.
+          </p>
+          <div style="display: flex; gap: 10px; max-width: 480px; flex-wrap: wrap;">
+            <input type="text" id="track-input" class="form-control" placeholder="e.g. DGS-2026-0842" style="flex: 1; min-width: 200px;">
+            <button type="button" class="btn btn-navy" onclick="APPLY.runTrack()">Track Now &rarr;</button>
+          </div>
+        </div>
+        <div id="track-result-card" class="card" style="display: none; border-left: 6px solid var(--green);">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <span class="badge badge-navy" id="track-status-badge">Status</span>
+              <h3 id="track-service-name" style="font-size: 18px; font-weight: 700; color: var(--navy); margin-top: 4px;">Service</h3>
+            </div>
+            <span style="font-size: 12px; color: var(--text-muted);" id="track-date"></span>
+          </div>
+          <div class="tracker-steps" id="tracker-visual">
+            <div class="tracker-node done"><div class="tracker-dot">✓</div><div class="tracker-name">Submitted</div></div>
+            <div class="tracker-node active"><div class="tracker-dot">●</div><div class="tracker-name">Prerequisites Verified</div></div>
+            <div class="tracker-node"><div class="tracker-dot">○</div><div class="tracker-name">Center Review</div></div>
+            <div class="tracker-node"><div class="tracker-dot">○</div><div class="tracker-name">Approved / Issued</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="{{ url_for('static', filename='prototype/js/data.js') }}"></script>
+  <script src="{{ url_for('static', filename='prototype/js/app.js') }}"></script>
+  <script src="{{ url_for('static', filename='prototype/js/apply.js') }}"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      APP.checkAuth();
+      APP.renderHeader("apply");
+      APPLY.init();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+/* DigiSahay Stylesheet | Patriotic Indian Flag Palette: Saffron (#FF671F / #FF9933), Green (#138808), Navy (#000080) */
+:root {
+  --saffron: #FF9933; --saffron-bright: #FF671F; --saffron-tint: #FFF7ED; --saffron-dark: #9A3412;
+  --green: #138808; --green-bright: #16A34A; --green-tint: #F0FDF4; --green-dark: #0F5132;
+  --navy: #000080; --navy-tint: #EEF2FF; --navy-dark: #0B1953;
+  --text-main: #1A202C; --text-muted: #64748B;
+  --bg-page: #F8FAFC; --card-bg: #FFFFFF; --border: #E2E8F0;
+  --shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 10px 25px rgba(255, 103, 31, 0.16);
+  --radius: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-page); color: var(--text-main);
+  line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column;
+}
+
+/* Accessibility & Focus */
+.skip-link {
+  position: absolute; top: -50px; left: 10px; background: var(--navy);
+  color: #fff; padding: 8px 16px; z-index: 1000; border-radius: 4px; text-decoration: none;
+}
+.skip-link:focus { top: 10px; }
+:focus-visible { outline: 3px solid var(--saffron-bright); outline-offset: 2px; }
+
+/* Tricolour Stripes & Containers */
+.container { width: 100%; max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+.tricolour-stripe {
+  height: 8px; width: 100%;
+  background: linear-gradient(to right, #FF671F 0% 33.3%, #FFFFFF 33.3% 66.6%, #138808 66.6% 100%);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+}
+
+/* Header & Navigation */
+.site-header { background: #FFFFFF; border-bottom: 2px solid var(--border); box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
+.header-inner { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; flex-wrap: wrap; gap: 12px; }
+.brand-link { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.brand-chakra {
+  width: 42px; height: 42px; border: 3px solid var(--navy); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; color: var(--navy);
+  font-weight: 700; font-size: 20px; background: radial-gradient(circle, #fff 55%, var(--navy-tint) 100%);
+  box-shadow: 0 0 0 2px var(--saffron-bright), 0 0 0 4px var(--green);
+}
+.brand-title { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.1; }
+.brand-title .brand-orange { color: var(--saffron-bright); }
+.brand-title .brand-green { color: var(--green); }
+.brand-sub { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+.main-nav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.nav-link {
+  padding: 8px 14px; font-size: 14px; font-weight: 600; color: var(--text-main);
+  text-decoration: none; border-radius: 6px; transition: all 0.2s;
+}
+.nav-link:hover { background: var(--saffron-tint); color: var(--saffron-dark); }
+.nav-link.active { background: var(--green-tint); color: var(--green); border-bottom: 3px solid var(--green); }
+.nav-btn-logout {
+  background: none; border: 1px solid #FCA5A5; padding: 6px 12px;
+  border-radius: 6px; font-size: 13px; color: #DC2626; cursor: pointer; font-family: inherit; font-weight: 600;
+}
+.nav-btn-logout:hover { background: #FEE2E2; }
+main { flex: 1; padding: 24px 0 36px; }
+
+/* High-Visibility Notes */
+.note-box {
+  display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px;
+  border-radius: var(--radius); margin: 18px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.note-box .note-icon { font-size: 26px; line-height: 1; flex-shrink: 0; margin-top: 2px; }
+.note-box .note-content { font-size: 14px; line-height: 1.5; }
+.note-box .note-content strong { display: block; margin-bottom: 2px; font-size: 15px; }
+.note-warning { border-left: 8px solid var(--saffron-bright); background: var(--saffron-tint); color: #7C2D12; }
+.note-info { border-left: 8px solid var(--navy); background: var(--navy-tint); color: #1E1B4B; }
+.note-success { border-left: 8px solid var(--green); background: var(--green-tint); color: #14532D; }
+
+/* Cards & Tricolour Accents */
+.card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+.card-saffron-top { border-top: 4px solid var(--saffron-bright); }
+.card-green-top { border-top: 4px solid var(--green); }
+.card-tricolour-top { border-top: 4px solid var(--saffron-bright); border-bottom: 4px solid var(--green); }
+.card-hover { transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; cursor: pointer; text-decoration: none; color: inherit; display: flex; flex-direction: column; }
+.card-hover:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--saffron-bright); }
+
+/* Buttons in Indian Flag Themes */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 18px; font-size: 14px; font-weight: 600; font-family: inherit;
+  border-radius: 8px; cursor: pointer; border: none; text-decoration: none; transition: all 0.2s;
+}
+.btn:hover { filter: brightness(1.05); transform: translateY(-1px); }
+.btn-primary, .btn-saffron {
+  background: linear-gradient(135deg, var(--saffron-bright) 0%, var(--saffron) 100%);
+  color: #FFF; box-shadow: 0 3px 10px rgba(255, 103, 31, 0.28);
+}
+.btn-green {
+  background: linear-gradient(135deg, var(--green-bright) 0%, var(--green) 100%);
+  color: #FFF; box-shadow: 0 3px 10px rgba(19, 136, 8, 0.28);
+}
+.btn-navy { background: var(--navy); color: #FFF; }
+.btn-outline { background: transparent; border: 2px solid var(--navy); color: var(--navy); font-weight: 600; }
+.btn-outline-saffron { background: transparent; border: 2px solid var(--saffron-bright); color: var(--saffron-dark); font-weight: 600; }
+.btn-outline-green { background: transparent; border: 2px solid var(--green); color: var(--green); font-weight: 600; }
+.btn-sm { padding: 6px 12px; font-size: 12px; border-radius: 6px; }
+.btn-danger { background: #EF4444; color: #FFF; }
+
+/* Forms, Inputs & Badges */
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+.form-control {
+  width: 100%; padding: 10px 14px; font-size: 14px; font-family: inherit;
+  border: 1.5px solid var(--border); border-radius: 8px; background: #FFF;
+}
+.form-control:focus { border-color: var(--saffron-bright); box-shadow: 0 0 0 3px var(--saffron-tint); }
+.form-hint { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+.badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; }
+.badge-saffron { background: var(--saffron-tint); color: var(--saffron-dark); border: 1px solid var(--saffron); }
+.badge-green { background: var(--green-tint); color: var(--green-dark); border: 1px solid var(--green); }
+.badge-navy { background: var(--navy-tint); color: var(--navy); border: 1px solid #C7D2FE; }
+
+/* Document Cards Grid */
+.doc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-top: 16px; }
+.doc-card { display: flex; flex-direction: column; justify-content: space-between; }
+.doc-card-icon { font-size: 34px; margin-bottom: 8px; }
+
+/* Stepper Progress Bar (Tricolour Connector) */
+.stepper { display: flex; justify-content: space-between; align-items: center; position: relative; margin: 20px 0 28px; }
+.stepper::before {
+  content: ""; position: absolute; top: 18px; left: 10%; right: 10%; height: 4px;
+  background: linear-gradient(to right, #FF671F 0%, #000080 50%, #138808 100%); z-index: 1; border-radius: 2px;
+}
+.step-item { position: relative; z-index: 2; text-align: center; flex: 1; }
+.step-circle {
+  width: 38px; height: 38px; border-radius: 50%; background: #FFF; border: 3px solid var(--border);
+  display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px;
+  margin: 0 auto 6px; color: var(--text-muted); box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.step-label { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+.step-item.active .step-circle { border-color: var(--saffron-bright); background: var(--saffron-bright); color: #FFF; }
+.step-item.active .step-label { color: var(--saffron-dark); font-weight: 700; }
+.step-item.completed .step-circle { border-color: var(--green); background: var(--green); color: #FFF; }
+.step-item.completed .step-label { color: var(--green); font-weight: 700; }
+
+/* Status Tracker (Tricolour Progression) */
+.status-tracker { display: flex; justify-content: space-between; margin: 20px 0; position: relative; }
+.status-tracker::before {
+  content: ""; position: absolute; top: 16px; left: 8%; right: 8%; height: 4px;
+  background: linear-gradient(to right, #FF671F 0%, #000080 50%, #138808 100%); z-index: 1; border-radius: 2px;
+}
+.status-step { position: relative; z-index: 2; text-align: center; flex: 1; }
+.status-dot {
+  width: 34px; height: 34px; border-radius: 50%; background: #FFF; border: 3px solid var(--border);
+  margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--text-muted);
+}
+.status-step.done .status-dot { background: var(--green); border-color: var(--green); color: #fff; }
+.status-step.current .status-dot { background: var(--saffron-bright); border-color: var(--saffron-bright); color: #fff; }
+
+/* Map & Centers */
+#center-map { width: 100%; height: 300px; border-radius: var(--radius); border: 2px solid var(--border); margin-bottom: 14px; z-index: 10; }
+.center-card { padding: 12px 14px; border: 2px solid var(--border); border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 10px; background: #FFF; }
+.center-card.selected { border-color: var(--green); background: var(--green-tint); box-shadow: 0 0 0 2px var(--green); }
+
+/* Footer */
+.site-footer { background: #FFFFFF; border-top: 1px solid var(--border); padding: 22px 0 18px; margin-top: auto; font-size: 13px; color: var(--text-muted); text-align: center; }
+.footer-line { height: 6px; background: linear-gradient(to right, #FF671F 33.3%, #000080 33.3% 66.6%, #138808 66.6%); width: 100%; margin-bottom: 16px; }
+
+/* Responsive Mobile */
+@media (max-width: 640px) {
+  .header-inner { flex-direction: column; align-items: flex-start; }
+  .stepper::before, .status-tracker::before { display: none; }
+  .stepper, .status-tracker { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .step-item, .status-step { display: flex; align-items: center; gap: 10px; }
+  .step-circle, .status-dot { margin: 0; }
+  .center-card { flex-direction: column; align-items: flex-start; }
+}

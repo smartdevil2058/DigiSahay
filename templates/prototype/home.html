@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home &bull; DigiSahay Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='prototype/css/style.css') }}">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header-placeholder"></div>
+
+  <main id="main-content">
+    <div class="container">
+
+      <!-- Hero Greeting Banner (Tricolour Border & Badge) -->
+      <div style="background: linear-gradient(135deg, #0B1953 0%, #172554 60%, #0F3820 100%); color: #FFF; padding: 28px 24px; border-radius: var(--radius); margin-bottom: 24px; box-shadow: var(--shadow); border-top: 5px solid var(--saffron-bright); border-bottom: 5px solid var(--green);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <span class="badge badge-saffron" style="margin-bottom: 8px;">🇮🇳 Citizen Services Assistance Prototype &bull; Age 18–19</span>
+            <h1 style="font-size: 28px; font-weight: 800; color: #FFF; margin: 4px 0;">Welcome to <span style="color:var(--saffron-bright)">Digi</span><span style="color:var(--green-bright)">Sahay</span></h1>
+            <p style="font-size: 14px; color: #E0E7FF; max-width: 640px; margin-top: 4px;">
+              Apply for new government documents, book verified center appointments in Ahmedabad, update non-biometric records, and securely store proofs in your digital locker.
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <a href="{{ url_for('frontend.prototype_profile') }}" class="btn btn-saffron btn-sm">👤 My Profile</a>
+            <a href="#upload-section" class="btn btn-green btn-sm">📁 Document Vault</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Biometric & Passport Warning Note -->
+      <div id="home-biometric-note"></div>
+
+      <!-- SECTION A: UPLOAD DOCS -->
+      <section id="upload-section" style="margin-bottom: 36px;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 700; color: var(--navy);"><span style="color: var(--green);">●</span> Section A: Upload Documents Locker</h2>
+            <p style="font-size: 13px; color: var(--text-muted);">Keep your supporting identity and address proofs ready before applying.</p>
+          </div>
+          <span class="badge badge-green">Client Document Vault</span>
+        </div>
+
+        <div class="card" style="border-top: 4px solid var(--green); border-left: 6px solid var(--saffron-bright);">
+          <form id="doc-upload-form" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) auto; gap: 12px; align-items: flex-end;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="upload-doc-type">Document Type <span style="color:#B91C1C;">*</span></label>
+              <select id="upload-doc-type" class="form-control" required>
+                <option value="">-- Choose Document Type --</option>
+                <option value="10th Standard Marksheet (DOB Proof)">10th Standard Marksheet (DOB Proof)</option>
+                <option value="12th Standard Marksheet">12th Standard Marksheet</option>
+                <option value="Birth Certificate">Birth Certificate</option>
+                <option value="School Leaving Certificate">School Leaving Certificate</option>
+                <option value="Electricity / Utility Bill (Address Proof)">Electricity / Utility Bill (Address Proof)</option>
+                <option value="Ration Card (Family Proof)">Ration Card (Family Proof)</option>
+                <option value="Parent Income Affidavit / ITR">Parent Income Affidavit / ITR</option>
+                <option value="Passport Size Photo">Passport Size Photo</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="upload-file-picker">Select File (PDF / JPG / PNG) <span style="color:#B91C1C;">*</span></label>
+              <input type="file" id="upload-file-picker" class="form-control" accept=".pdf,image/*" required>
+            </div>
+            <button type="submit" class="btn btn-green" style="height: 44px;">📁 Upload Proof</button>
+          </form>
+
+          <div style="margin-top: 20px;">
+            <h3 style="font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 10px;">Your Uploaded Documents</h3>
+            <div id="uploaded-docs-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION B: APPLY FOR DOCUMENTS -->
+      <section id="apply-section">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 700; color: var(--navy);"><span style="color: var(--saffron-bright);">●</span> Section B: Government Document Services</h2>
+            <p style="font-size: 13px; color: var(--text-muted);">Choose a document to begin a new application, non-biometric update, lost copy replacement, or track status.</p>
+          </div>
+          <span class="badge badge-saffron">6 Services Available</span>
+        </div>
+
+        <!-- 6 Document Cards Grid -->
+        <div id="apply-cards-grid" class="doc-grid"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="{{ url_for('static', filename='prototype/js/data.js') }}"></script>
+  <script src="{{ url_for('static', filename='prototype/js/app.js') }}"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      APP.checkAuth();
+      APP.renderHeader("home");
+      APP.renderDocCards();
+      APP.renderUploadedDocs();
+      APP.initDocUpload();
+    });
+  </script>
+</body>
+</html>

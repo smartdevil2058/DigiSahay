@@ -60,3 +60,31 @@ def centers_page():
 @frontend_bp.get("/login")
 def auth_page():
     return render_template("auth.html", active_page="auth")
+
+
+@frontend_bp.get("/profile")
+def profile_page():
+    return render_template("profile.html", active_page="profile")
+
+
+# ==============================================================================
+# Prototype Routes (Rendered from templates/prototype/)
+# ==============================================================================
+@frontend_bp.get("/prototype")
+def prototype_index():
+    return render_template("prototype/index.html")
+
+
+@frontend_bp.get("/prototype/home")
+def prototype_home():
+    return render_template("prototype/home.html")
+
+
+@frontend_bp.get("/prototype/profile")
+def prototype_profile():
+    return render_template("prototype/profile.html")
+
+
+@frontend_bp.get("/prototype/apply")
+def prototype_apply():
+    return render_template("prototype/apply.html")
