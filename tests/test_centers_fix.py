@@ -31,6 +31,13 @@ class TestServiceCenterFix(unittest.TestCase):
             self.assertIn(f"https://www.google.com/maps?q={c['latitude']},{c['longitude']}", c["google_maps_url"])
 
     def test_html_view(self):
+        with self.app.app_context():
+            from model import User
+            from flask_jwt_extended import create_access_token
+            user = User.query.first()
+            token = create_access_token(identity=user.user_id)
+        self.client.set_cookie("access_token_cookie", token)
+
         res = self.client.get("/centers")
         self.assertEqual(res.status_code, 200)
         html = res.text

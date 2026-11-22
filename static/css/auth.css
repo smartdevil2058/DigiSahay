@@ -1,0 +1,99 @@
+/**
+ * DigiSahay Dedicated Authentication Portal Styles
+ */
+
+body.auth-portal-body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f0f4f8 0%, #ffffff 100%);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-family-sans, 'Noto Sans', sans-serif);
+  color: var(--color-text-primary, #1e293b);
+}
+
+.auth-tricolor {
+  height: 4px;
+  width: 100%;
+  background: linear-gradient(90deg, #ff9933 0%, #ff9933 33.3%, #ffffff 33.3%, #ffffff 66.6%, #138808 66.6%);
+}
+
+.auth-header {
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.auth-logo-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--color-primary, #000080);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 128, 0.2);
+}
+
+.auth-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md) var(--space-sm) var(--space-xl);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 450px;
+  background: #ffffff;
+  border-radius: var(--radius-xl, 16px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 128, 0.08);
+  border-top: 4px solid var(--color-saffron, #ff9933);
+  padding: var(--space-xl);
+  box-sizing: border-box;
+}
+
+.auth-tabs {
+  display: flex;
+  border-bottom: 2px solid var(--color-border, #e2e8f0);
+  margin-bottom: var(--space-lg);
+}
+
+.auth-tab-btn {
+  flex: 1;
+  padding: 12px 8px;
+  background: transparent;
+  border: none;
+  font-size: var(--font-size-sm, 14px);
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--color-text-muted, #64748b);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.auth-tab-btn.active {
+  color: var(--color-primary, #000080);
+  border-bottom-color: var(--color-primary, #000080);
+}
+
+.auth-footer {
+  padding: var(--space-md);
+  text-align: center;
+  font-size: 11px;
+  color: var(--color-text-muted, #64748b);
+}

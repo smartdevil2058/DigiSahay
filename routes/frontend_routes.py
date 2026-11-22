@@ -122,12 +122,14 @@ def logout():
 
 
 @frontend_bp.get("/services")
+@citizen_login_required
 def services_page():
     services = Service.query.order_by(Service.service_name).all()
     return render_template("services.html", services=services, active_page="services")
 
 
 @frontend_bp.get("/prerequisite-checker")
+@citizen_login_required
 def prerequisite_checker_page():
     services = Service.query.order_by(Service.service_name).all()
     selected_service_id = request.args.get("service_id", "SVC-VOTER-NEW")
@@ -165,6 +167,7 @@ def applications_page():
 
 
 @frontend_bp.get("/centers")
+@citizen_login_required
 def centers_page():
     centers = ServiceCenter.query.order_by(ServiceCenter.center_name).all()
     return render_template("centers.html", centers=centers, active_page="centers")
