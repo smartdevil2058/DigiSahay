@@ -12,7 +12,8 @@ from model import (
     User,
     ApplicationStatusHistory,
     ApplicationDocument,
-    UserDocument
+    UserDocument,
+    Requirement
 )
 
 application_bp = Blueprint("application", __name__)
@@ -255,6 +256,10 @@ def create_application():
         if doc_id:
             user_doc = UserDocument.query.filter_by(document_id=doc_id, is_active=True).first()
             if user_doc:
+                if req_opt_id:
+                    valid_req = Requirement.query.filter_by(option_id=req_opt_id).first()
+                    if not valid_req:
+                        req_opt_id = None
                 app_doc = ApplicationDocument(
                     application_document_id=f"ADOC-{uuid4().hex[:12].upper()}",
                     application_id=application_id,

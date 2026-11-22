@@ -1,0 +1,98 @@
+<!-- STEP 4: Review Dossier & Statutory Declaration -->
+<div id="stepContainer4" class="wizard-step" style="display: none;">
+  <div class="ds-card-header" style="margin-bottom: var(--space-md);">
+    <div>
+      <h2 class="ds-card-title" data-i18n="step4_heading">
+        Review Dossier &amp; Confirm Submission
+      </h2>
+      <div class="ds-card-subtitle" data-i18n="step4_sub">
+        Verify all application particulars and attached proof documents before generating your official DigiSahay dossier record.
+      </div>
+    </div>
+    <span class="ds-badge ds-badge-neutral">Step 4 of 4</span>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+    
+    <!-- Summary Review Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-md);">
+      
+      <!-- Service Summary -->
+      <div class="ds-tonal-box" style="padding: var(--space-md); background: var(--color-surface-container-low);">
+        <div style="font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); font-weight: var(--font-weight-bold);" data-i18n="label_selected_service">
+          Selected Service
+        </div>
+        <div id="reviewServiceName" style="font-weight: var(--font-weight-bold); font-size: var(--font-size-base); color: var(--color-primary); margin-top: 4px;">
+          -
+        </div>
+        <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: 4px;">
+          <span data-i18n="label_filing_mode">Filing Mode:</span> <strong id="reviewMode">-</strong>
+        </div>
+      </div>
+
+      <!-- Applicant Summary -->
+      <div class="ds-tonal-box" style="padding: var(--space-md); background: var(--color-surface-container-low);">
+        <div style="font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); font-weight: var(--font-weight-bold);" data-i18n="label_applicant_summary">
+          Applicant Particulars
+        </div>
+        <div id="reviewApplicantName" style="font-weight: var(--font-weight-bold); font-size: var(--font-size-sm); color: var(--color-text-primary); margin-top: 4px;">
+          -
+        </div>
+        <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: 2px;">
+          DOB: <span id="reviewDob">-</span> • Gender: <span id="reviewGender">-</span>
+        </div>
+        <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: 2px;">
+          Mobile: <span id="reviewMobile">-</span> • Email: <span id="reviewEmail">-</span>
+        </div>
+        <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: 2px;">
+          Address: <span id="reviewAddress">-</span>, <span id="reviewDistrict">-</span> - <span id="reviewPincode">-</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Attached Documents Review Box -->
+    <div class="ds-tonal-box" style="padding: var(--space-md); background: var(--color-surface-container-lowest); border: 1px solid var(--color-border);">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+        <div style="font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); font-weight: var(--font-weight-bold);" data-i18n="label_attached_proofs">
+          Attached Proof Documents Mapped to Requirements
+        </div>
+        <span id="reviewDocsTallyBadge" class="ds-badge ds-badge-verified" style="font-size: 11px;">
+          0 Documents Verified
+        </span>
+      </div>
+      <div id="reviewAttachedDocsList" style="display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-size: var(--font-size-xs); color: var(--color-text-muted);">None selected.</span>
+      </div>
+    </div>
+
+    <!-- Statutory Declaration Box -->
+    <div class="ds-callout ds-callout-gateway" style="padding: var(--space-md);">
+      <label style="display: flex; align-items: flex-start; gap: var(--space-xs); cursor: pointer;">
+        <input type="checkbox" id="statutoryDeclarationCheck" required style="margin-top: 3px;">
+        <div style="font-size: var(--font-size-xs); color: var(--color-text-primary); line-height: var(--line-height-relaxed);">
+          <strong data-i18n="decl_title">Citizen Statutory Declaration:</strong>
+          <span data-i18n="decl_text">
+            I hereby declare that the particulars provided above and attached proofs are true, authentic, and complete to the best of my knowledge. I understand that DigiSahay is an independent citizen assistance platform that prepares my application dossier, and that final statutory acceptance or rejection rests solely with the competent government authority (such as the ERO, Income Tax AO, or UIDAI Registrar).
+          </span>
+        </div>
+      </label>
+    </div>
+
+    <!-- Submission Status & Alert -->
+    <div id="applySubmitAlert" style="display: none; padding: 12px; border-radius: var(--radius-md); font-size: var(--font-size-xs);"></div>
+
+    <!-- Step 4 Actions -->
+    <div style="display: flex; justify-content: space-between; margin-top: var(--space-md); border-top: 1px solid var(--color-border); padding-top: var(--space-md);">
+      <button type="button" class="ds-btn ds-btn-secondary" onclick="goToStep(3)">
+        <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>
+        <span data-i18n="btn_back">Back to Proof Documents</span>
+      </button>
+      <button type="button" id="submitApplicationBtn" class="ds-btn ds-btn-primary ds-btn-lg" onclick="submitCitizenApplication()">
+        <span class="material-symbols-outlined" style="font-size: 20px;">send</span>
+        <span data-i18n="btn_submit_application">Submit Application / અરજી સબમિટ કરો</span>
+      </button>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,130 @@
+<!-- STEP 3: Proof Documents Attachment & Prerequisite Requirements Mapping -->
+<div id="stepContainer3" class="wizard-step" style="display: none;">
+  <div class="ds-card-header" style="margin-bottom: var(--space-md); flex-wrap: wrap; gap: var(--space-sm);">
+    <div>
+      <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+        <span class="ds-badge ds-badge-action" style="font-size: 11px;">
+          <span class="material-symbols-outlined" style="font-size: 13px;">fact_check</span>
+          Statutory Document Mapping
+        </span>
+        <span class="ds-badge ds-badge-verified" style="font-size: 11px;">
+          Single Source of Truth
+        </span>
+      </div>
+      <h2 class="ds-card-title" data-i18n="step3_heading">
+        Attach Verified Proof Documents / જરૂરી પુરાવા દસ્તાવેજો
+      </h2>
+      <div class="ds-card-subtitle" data-i18n="step3_sub">
+        Upload or attach official documents required for your target service. Each statutory requirement must be fulfilled before application submission.
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <a id="step3CheckerLink" href="/prerequisite-checker" target="_blank" rel="noopener noreferrer" class="ds-btn ds-btn-outline ds-btn-sm" style="font-size: 12px; font-weight: var(--font-weight-semibold); color: var(--color-saffron-dark);">
+        <span class="material-symbols-outlined" style="font-size: 16px;">rule</span>
+        <span>Open Prerequisite Checker ↗</span>
+      </a>
+      <span class="ds-badge ds-badge-neutral">Step 3 of 4</span>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+
+    <!-- Service Header & Dynamic Documentation Readiness Telemetry -->
+    <div class="ds-tonal-box" style="padding: var(--space-md); background: linear-gradient(135deg, var(--color-surface-container-low) 0%, var(--color-surface-container-lowest) 100%); border: 1px solid var(--color-border); border-radius: var(--radius-lg);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: var(--space-sm);">
+        <div>
+          <div style="font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); font-weight: var(--font-weight-bold); letter-spacing: 0.04em;">
+            Applying For Official Service
+          </div>
+          <div id="step3TargetServiceName" style="font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-primary); margin-top: 2px;">
+            Loading Service Requirements...
+          </div>
+          <div id="step3TargetCategory" style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: 2px;">
+            Statutory requirements retrieved from DigiSahay Rules Engine
+          </div>
+        </div>
+
+        <!-- Telemetry Badges -->
+        <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+          <span id="totalReqBadge" class="ds-badge ds-badge-action" style="font-size: 11px;">
+            0 Required
+          </span>
+          <span id="totalOptBadge" class="ds-badge ds-badge-neutral" style="font-size: 11px;">
+            0 Optional
+          </span>
+          <span id="totalAttachedBadge" class="ds-badge ds-badge-verified" style="font-size: 11px;">
+            0 Attached
+          </span>
+        </div>
+      </div>
+
+      <!-- Dynamic Progress Indicator -->
+      <div style="margin-top: var(--space-md); padding-top: var(--space-xs); border-top: 1px solid var(--color-border);">
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: var(--font-size-xs); margin-bottom: 6px;">
+          <span style="font-weight: var(--font-weight-semibold); color: var(--color-text-primary);">
+            Documentation Completion Progress / દસ્તાવેજ પૂર્ણતા:
+          </span>
+          <strong id="docsProgressText" style="color: var(--color-primary); font-family: var(--font-family-mono);">
+            0 of 0 uploaded (0%)
+          </strong>
+        </div>
+        <div style="height: 10px; width: 100%; border-radius: 5px; background: var(--color-surface-container-highest, #e2e8f0); overflow: hidden;">
+          <div id="docsProgressBar" style="width: 0%; height: 100%; background: var(--color-saffron); transition: width 0.3s ease, background 0.3s ease; border-radius: 5px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pre-Submission Missing Documents Warning Banner -->
+    <div id="missingDocsAlert" style="display: none; padding: 12px 16px; border-radius: var(--radius-md); background: #ffebee; border: 1px solid #ef9a9a; color: #c62828;">
+      <div style="display: flex; align-items: center; gap: 8px; font-weight: var(--font-weight-bold); font-size: var(--font-size-sm);">
+        <span class="material-symbols-outlined" style="font-size: 20px;">error</span>
+        <span>Incomplete Documentation / અપૂર્ણ દસ્તાવેજો</span>
+      </div>
+      <div style="font-size: var(--font-size-xs); margin-top: 4px; line-height: 1.5;">
+        <span id="missingCountText">1</span> required document(s) are still missing. Please upload or link documents for the highlighted sections below before proceeding to Review &amp; Submit.
+      </div>
+    </div>
+
+    <!-- Required Documents Overview Checklist -->
+    <div class="ds-tonal-box" style="padding: 12px var(--space-md); background: var(--color-surface-container-low); border-radius: var(--radius-md);">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px;">
+        <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: var(--font-weight-bold); color: var(--color-text-primary);">
+          <span class="material-symbols-outlined" style="font-size: 16px; color: var(--color-primary);">checklist</span>
+          <span>Required Documents Checklist / જરૂરી પુરાવાઓની યાદી</span>
+        </div>
+        <span style="font-size: 11px; color: var(--color-text-muted);">Matches Prerequisite Checker rules</span>
+      </div>
+      <div id="requirementsChecklist" style="display: flex; flex-wrap: wrap; gap: 8px;">
+        <!-- Checklist items populated via JS -->
+      </div>
+    </div>
+
+    <!-- Dedicated Requirement Upload Slots Container -->
+    <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
+      <div style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); display: flex; align-items: center; gap: 6px;">
+        <span class="material-symbols-outlined" style="font-size: 18px; color: var(--color-primary);">upload_file</span>
+        <span>Individual Requirement Upload Areas / વ્યક્તિગત અપલોડ વિભાગ</span>
+      </div>
+      <div id="requirementSlotsContainer" style="display: flex; flex-direction: column; gap: var(--space-md);">
+        <!-- Dedicated slots dynamically rendered via JS from /api/services/<id>/requirements -->
+        <div style="text-align: center; padding: 28px; color: var(--color-text-muted); font-size: var(--font-size-xs);">
+          <span class="material-symbols-outlined" style="font-size: 28px; animation: spin 1.5s linear infinite;">sync</span>
+          <div style="margin-top: 8px;">Fetching statutory requirements from Prerequisite Rules Engine...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 Navigation Actions -->
+    <div style="display: flex; justify-content: space-between; margin-top: var(--space-md); border-top: 1px solid var(--color-border); padding-top: var(--space-md);">
+      <button type="button" class="ds-btn ds-btn-secondary" onclick="goToStep(2)">
+        <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>
+        <span data-i18n="btn_back">Back</span>
+      </button>
+      <button type="button" class="ds-btn ds-btn-primary" onclick="prepareReviewAndGoToStep(4)">
+        <span data-i18n="btn_next_review">Next: Review &amp; Submit</span>
+        <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+      </button>
+    </div>
+
+  </div>
+</div>

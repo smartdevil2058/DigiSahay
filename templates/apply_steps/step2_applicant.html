@@ -1,0 +1,168 @@
+<!-- STEP 2: Applicant Information -->
+<div id="stepContainer2" class="wizard-step" style="display: none;">
+  <div class="ds-card-header" style="margin-bottom: var(--space-md);">
+    <div>
+      <h2 class="ds-card-title" data-i18n="step2_heading">
+        Citizen Applicant Information
+      </h2>
+      <div class="ds-card-subtitle" data-i18n="step2_sub">
+        Enter particulars exactly as they appear on your primary statutory identity documents.
+      </div>
+    </div>
+    <span class="ds-badge ds-badge-neutral">Step 2 of 4</span>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-md);">
+      <!-- Full Name -->
+      <div class="ds-form-group" style="margin-bottom: 0;">
+        <label for="applicantName" class="ds-label">
+          <span data-i18n="label_applicant_name">Full Name (as on official ID)</span> <span class="required">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="applicantName" 
+          class="ds-input" 
+          placeholder="e.g. Rameshchandra Somabhai Patel" 
+          required
+        >
+      </div>
+
+      <!-- Father / Guardian Name -->
+      <div class="ds-form-group" style="margin-bottom: 0;">
+        <label for="applicantGuardian" class="ds-label">
+          <span data-i18n="label_guardian_name">Father's / Guardian's / Spouse's Name</span> <span class="required">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="applicantGuardian" 
+          class="ds-input" 
+          placeholder="e.g. Somabhai Patel" 
+          required
+        >
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-md);">
+      <!-- DOB -->
+      <div class="ds-form-group" style="margin-bottom: 0;">
+        <label for="applicantDob" class="ds-label">
+          <span data-i18n="label_dob">Date of Birth</span> <span class="required">*</span>
+        </label>
+        <input 
+          type="date" 
+          id="applicantDob" 
+          class="ds-input" 
+          required
+        >
+      </div>
+
+      <!-- Gender -->
+      <div class="ds-form-group" style="margin-bottom: 0;">
+        <label for="applicantGender" class="ds-label">
+          <span data-i18n="label_gender">Gender</span> <span class="required">*</span>
+        </label>
+        <select id="applicantGender" class="ds-select" required>
+          <option value="Male">Male / પુરુષ</option>
+          <option value="Female">Female / સ્ત્રી</option>
+          <option value="Third Gender">Third Gender / અન્ય</option>
+        </select>
+      </div>
+
+      <!-- Mobile -->
+      <div class="ds-form-group" style="margin-bottom: 0;">
+        <label for="applicantMobile" class="ds-label">
+          <span data-i18n="label_mobile">Mobile Number (10 Digits)</span> <span class="required">*</span>
+        </label>
+        <input 
+          type="tel" 
+          id="applicantMobile" 
+          class="ds-input" 
+          placeholder="e.g. 9876543210" 
+          pattern="[0-9]{10}" 
+          required
+        >
+      </div>
+
+      <!-- Email -->
+      <div class="ds-form-group" style="margin-bottom: 0;">
+        <label for="applicantEmail" class="ds-label">
+          <span data-i18n="label_email">Citizen Email Address</span> <span class="required">*</span>
+        </label>
+        <input 
+          type="email" 
+          id="applicantEmail" 
+          class="ds-input" 
+          placeholder="your.email@example.com" 
+          required
+        >
+      </div>
+    </div>
+
+    <!-- Residential Address -->
+    <div class="ds-form-group" style="margin-bottom: 0;">
+      <label for="applicantAddress" class="ds-label">
+        <span data-i18n="label_residential_address">Full Residential Address</span> <span class="required">*</span>
+      </label>
+      <textarea 
+        id="applicantAddress" 
+        class="ds-input" 
+        rows="2" 
+        placeholder="House/Flat number, Society/Building, Street, Landmark, Village/City" 
+        required
+      ></textarea>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-md);">
+      <!-- District -->
+      <div class="ds-form-group" style="margin-bottom: 0;">
+        <label for="applicantDistrict" class="ds-label">
+          <span data-i18n="label_district">Gujarat District</span> <span class="required">*</span>
+        </label>
+        <select id="applicantDistrict" class="ds-select" required>
+          <option value="Ahmedabad" selected>Ahmedabad (અમદાવાદ)</option>
+          <option value="Vadodara">Vadodara (વડોદરા)</option>
+          <option value="Surat">Surat (સુરત)</option>
+          <option value="Gandhinagar">Gandhinagar (ગાંધીનગર)</option>
+          <option value="Rajkot">Rajkot (રાજકોટ)</option>
+          <option value="Bhavnagar">Bhavnagar (ભાવનગર)</option>
+          <option value="Jamnagar">Jamnagar (જામનગર)</option>
+          <option value="Junagadh">Junagadh (જૂનાગઢ)</option>
+          <option value="Anand">Anand (આણંદ)</option>
+          <option value="Kutch">Kutch (કચ્છ)</option>
+          <option value="Mehsana">Mehsana (મહેસાણા)</option>
+          <option value="Other">Other Gujarat District</option>
+        </select>
+      </div>
+
+      <!-- Pincode -->
+      <div class="ds-form-group" style="margin-bottom: 0;">
+        <label for="applicantPincode" class="ds-label">
+          <span data-i18n="label_pincode">Pincode (6 digits)</span> <span class="required">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="applicantPincode" 
+          class="ds-input" 
+          placeholder="e.g. 380001" 
+          pattern="[0-9]{6}" 
+          required
+        >
+      </div>
+    </div>
+
+    <!-- Step 2 Actions -->
+    <div style="display: flex; justify-content: space-between; margin-top: var(--space-md); border-top: 1px solid var(--color-border); padding-top: var(--space-md);">
+      <button type="button" class="ds-btn ds-btn-secondary" onclick="goToStep(1)">
+        <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>
+        <span data-i18n="btn_back">Back</span>
+      </button>
+      <button type="button" class="ds-btn ds-btn-primary" onclick="validateAndGoToStep(3)">
+        <span data-i18n="btn_next_proofs">Next: Attach Proof Documents</span>
+        <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+      </button>
+    </div>
+
+  </div>
+</div>

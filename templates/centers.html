@@ -76,7 +76,7 @@
   <section>
     <div id="centersGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--space-lg);">
       {% for center in centers %}
-      {% set map_url = ('https://www.google.com/maps/search/?api=1&query=' ~ center.latitude ~ ',' ~ center.longitude) if (center.latitude and center.longitude) else ('https://www.google.com/maps/search/?api=1&query=' ~ (center.center_name ~ ' ' ~ center.address_line ~ ' ' ~ center.city)|urlencode) %}
+      {% set map_url = center.google_maps_url %}
       <article class="ds-card ds-card-hover center-card" data-district="{{ center.district or center.city }}" data-name="{{ center.center_name|lower }}" data-type="{{ center.center_type|lower }}" data-city="{{ center.city|lower }}" data-address="{{ (center.address_line or '')|lower }}" style="display: flex; flex-direction: column; justify-content: space-between; padding: var(--space-lg); border-top: 3px solid var(--color-primary-light);">
         <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
           
@@ -98,11 +98,18 @@
             {{ center.center_name }}
           </h2>
 
-          <!-- Address (Clickable link to Google Maps) -->
-          <a href="{{ map_url }}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: flex; align-items: flex-start; gap: 6px; font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: var(--line-height-relaxed);" title="Open location on Google Maps">
+          <!-- Address (Clickable link to Google Maps if coordinates valid) -->
+          {% if center.has_valid_coordinates %}
+          <a href="{{ map_url }}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: flex; align-items: flex-start; gap: 6px; font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: var(--line-height-relaxed);" title="Open location on Google Maps ({{ center.latitude }}, {{ center.longitude }})">
             <span class="material-symbols-outlined" style="font-size: 16px; color: #ea4335; flex-shrink: 0; margin-top: 1px;">pin_drop</span>
-            <span style="border-bottom: 1px dashed var(--color-border); hover: color: var(--color-primary);">{{ center.address_line }}, {{ center.city }} - {{ center.pincode }}</span>
+            <span style="border-bottom: 1px dashed var(--color-border);">{{ center.address_line }}, {{ center.city }} - {{ center.pincode }}</span>
           </a>
+          {% else %}
+          <div style="display: flex; align-items: flex-start; gap: 6px; font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: var(--line-height-relaxed);">
+            <span class="material-symbols-outlined" style="font-size: 16px; color: var(--color-text-muted); flex-shrink: 0; margin-top: 1px;">pin_drop</span>
+            <span>{{ center.address_line }}, {{ center.city }} - {{ center.pincode }}</span>
+          </div>
+          {% endif %}
 
           <!-- Operating Hours & Contact -->
           <div class="ds-tonal-box" style="padding: 8px 12px; font-size: 11px; display: flex; flex-direction: column; gap: 4px;">
@@ -129,12 +136,20 @@
           </span>
 
           <div style="display: flex; align-items: center; gap: 6px;">
+            {% if center.has_valid_coordinates %}
             <!-- Dedicated Google Maps Navigation Button -->
-            <a href="{{ map_url }}" target="_blank" rel="noopener noreferrer" class="ds-btn ds-btn-sm" style="background: #ffffff; color: var(--color-primary); border: 1.5px solid #ea4335; font-size: 11px; padding: 4px 10px; display: inline-flex; align-items: center; gap: 4px; text-decoration: none; border-radius: var(--radius-sm); font-weight: var(--font-weight-semibold);" title="Direct to this location on Google Maps">
+            <a href="{{ map_url }}" target="_blank" rel="noopener noreferrer" class="ds-btn ds-btn-sm" style="background: #ffffff; color: var(--color-primary); border: 1.5px solid #ea4335; font-size: 11px; padding: 4px 10px; display: inline-flex; align-items: center; gap: 4px; text-decoration: none; border-radius: var(--radius-sm); font-weight: var(--font-weight-semibold);" title="Direct to this location on Google Maps ({{ center.latitude }}, {{ center.longitude }})">
               <span class="material-symbols-outlined" style="font-size: 15px; color: #ea4335;">map</span>
-              <span data-i18n="center_view_map">Google Maps</span>
+              <span data-i18n="center_view_map">Open in Google Maps</span>
               <span class="material-symbols-outlined" style="font-size: 12px; color: var(--color-text-muted);">open_in_new</span>
             </a>
+            {% else %}
+            <!-- Fallback when coordinates are missing or unverified -->
+            <span class="ds-badge ds-badge-neutral" style="font-size: 11px; padding: 4px 8px;" title="Geographic coordinates pending official verification">
+              <span class="material-symbols-outlined" style="font-size: 13px; color: var(--color-text-muted);">location_disabled</span>
+              <span>Coordinates Pending</span>
+            </span>
+            {% endif %}
 
             {% if center.official_source_url %}
             <a href="{{ center.official_source_url }}" target="_blank" rel="noopener noreferrer" class="ds-btn ds-btn-secondary ds-btn-sm" style="font-size: 11px; padding: 4px 8px;" title="Official portal details">

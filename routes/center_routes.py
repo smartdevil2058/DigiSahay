@@ -20,6 +20,8 @@ def center_to_dict(center):
         "pincode": center.pincode,
         "latitude": center.latitude,
         "longitude": center.longitude,
+        "has_valid_coordinates": center.has_valid_coordinates,
+        "google_maps_url": center.google_maps_url,
         "contact_number": center.contact_number,
         "operating_hours": center.operating_hours,
         "official_source_url": center.official_source_url,

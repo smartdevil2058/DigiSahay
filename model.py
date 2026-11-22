@@ -508,6 +508,27 @@ class ServiceCenter(db.Model):
         Text, nullable=True
     )
 
+    @property
+    def has_valid_coordinates(self) -> bool:
+        """Validate that both latitude and longitude exist and are within valid geographic bounds."""
+        if self.latitude is None or self.longitude is None:
+            return False
+        try:
+            lat = float(self.latitude)
+            lng = float(self.longitude)
+            return -90.0 <= lat <= 90.0 and -180.0 <= lng <= 180.0
+        except (ValueError, TypeError):
+            return False
+
+    @property
+    def google_maps_url(self) -> str | None:
+        """Generate authoritative Google Maps direct pinpoint URL using exact coordinates."""
+        if not self.has_valid_coordinates:
+            return None
+        from urllib.parse import quote_plus
+        label = quote_plus(str(self.center_name or "Service Center").strip())
+        return f"https://www.google.com/maps?q={self.latitude},{self.longitude}+({label})"
+
 
 
 

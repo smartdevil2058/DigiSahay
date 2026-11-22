@@ -43,6 +43,12 @@ database_url = URL.create(
 
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+    "pool_size": 2,
+    "max_overflow": 1,
+    "pool_recycle": 280,
+    "pool_pre_ping": True,
+}
 db.init_app(app)
 import model
 

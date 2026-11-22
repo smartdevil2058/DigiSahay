@@ -135,7 +135,7 @@ const APPLY = {
     cardsContainer.innerHTML = "";
     eligibleCenters.forEach((center) => {
       const marker = L.marker([center.lat, center.lng]).addTo(this.markersGroup);
-      marker.bindPopup(`<b>${APP.escapeHtml(center.name)}</b><br><small>${APP.escapeHtml(center.type)}</small><br>${APP.escapeHtml(center.address)}<div style="margin-top:6px;"><a href="https://www.google.com/maps/search/?api=1&query=${center.lat},${center.lng}" target="_blank" rel="noopener noreferrer" style="font-size:11px; color:#000080; font-weight:600; text-decoration:none;">🗺️ Open in Google Maps ↗</a></div>`);
+      marker.bindPopup(`<b>${APP.escapeHtml(center.name)}</b><br><small>${APP.escapeHtml(center.type)}</small><br>${APP.escapeHtml(center.address)}<div style="margin-top:6px;"><a href="https://www.google.com/maps?q=${center.lat},${center.lng}+(${encodeURIComponent(center.name)})" target="_blank" rel="noopener noreferrer" style="font-size:11px; color:#000080; font-weight:600; text-decoration:none;">🗺️ Open in Google Maps ↗</a></div>`);
       const card = document.createElement("div");
       card.className = "center-card";
       card.id = `center-${center.id}`;
@@ -148,7 +148,7 @@ const APPLY = {
         </div>
         <div style="display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap;">
           <button type="button" class="btn btn-sm btn-outline-green select-center-btn" onclick="APPLY.selectCenter('${center.id}')" style="flex: 1;">Select Center</button>
-          <a href="https://www.google.com/maps/search/?api=1&query=${center.lat},${center.lng}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline" style="text-decoration: none; font-size: 11px; display: inline-flex; align-items: center; gap: 4px;" title="Open in Google Maps">📍 Map ↗</a>
+          <a href="https://www.google.com/maps?q=${center.lat},${center.lng}+(${encodeURIComponent(center.name)})" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline" style="text-decoration: none; font-size: 11px; display: inline-flex; align-items: center; gap: 4px;" title="Open in Google Maps">📍 Map ↗</a>
         </div>`;
       cardsContainer.appendChild(card);
     });

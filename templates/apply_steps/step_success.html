@@ -1,0 +1,58 @@
+<!-- SUCCESS CONFIRMATION SCREEN (Shown after submission) -->
+<div id="applySuccessScreen" style="display: none; flex-direction: column; align-items: center; text-align: center; padding: var(--space-xl) var(--space-md); gap: var(--space-md);">
+  
+  <div style="width: 64px; height: 64px; border-radius: 50%; background: #e8f5e9; color: var(--color-green); display: flex; align-items: center; justify-content: center;">
+    <span class="material-symbols-outlined" style="font-size: 40px;">check_circle</span>
+  </div>
+
+  <div>
+    <span class="ds-badge ds-badge-verified" style="margin-bottom: var(--space-xs);" data-i18n="badge_dossier_ready">
+      Application Dossier Successfully Prepared
+    </span>
+    <h2 style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: var(--space-2xs) 0;" data-i18n="success_title">
+      Citizen Application Registered
+    </h2>
+    <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); max-width: 540px; margin: 0 auto;" data-i18n="success_desc">
+      Your service application has been recorded in the DigiSahay system. You can track its milestone progress in My Applications or print your preparation dossier.
+    </p>
+  </div>
+
+  <!-- Generated Reference Card -->
+  <div class="ds-tonal-box" style="max-width: 480px; width: 100%; padding: var(--space-md); text-align: left; background: var(--color-surface-container-lowest); border: 1px solid var(--color-border); border-radius: var(--radius-lg);">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--color-border); padding-bottom: 8px; margin-bottom: 8px;">
+      <span style="font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); font-weight: var(--font-weight-bold);" data-i18n="label_app_ref">
+        Application Reference Number
+      </span>
+      <span id="successAppStatus" class="ds-badge ds-badge-saffron" style="font-size: 11px;">
+        READY_TO_APPLY
+      </span>
+    </div>
+
+    <div id="successAppRef" style="font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-primary); font-family: var(--font-family-mono);">
+      DIGI/VOTER/20261102/XXXXXX
+    </div>
+    <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: 6px;">
+      System ID: <strong id="successAppId">APP-2026-XXXX</strong>
+    </div>
+    <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: 2px;">
+      Service: <strong id="successServiceName">-</strong>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div style="display: flex; gap: var(--space-sm); flex-wrap: wrap; justify-content: center; margin-top: var(--space-sm);">
+    <a id="successTrackLink" href="/applications" class="ds-btn ds-btn-primary">
+      <span class="material-symbols-outlined" style="font-size: 18px;">track_changes</span>
+      <span data-i18n="btn_track_applications">View in My Applications</span>
+    </a>
+    <button type="button" class="ds-btn ds-btn-secondary" onclick="window.print()">
+      <span class="material-symbols-outlined" style="font-size: 18px;">print</span>
+      <span data-i18n="btn_print_dossier">Print Application Dossier</span>
+    </button>
+    <a href="/centers" class="ds-btn ds-btn-outline">
+      <span class="material-symbols-outlined" style="font-size: 18px;">storefront</span>
+      <span data-i18n="btn_find_csc">Locate Jan Seva Kendra</span>
+    </a>
+  </div>
+
+</div>

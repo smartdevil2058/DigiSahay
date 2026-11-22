@@ -1,0 +1,113 @@
+<!-- STEP 1: Service Selection & Submission Mode -->
+<div id="stepContainer1" class="wizard-step">
+  <div class="ds-card-header" style="margin-bottom: var(--space-md);">
+    <div>
+      <h2 class="ds-card-title" data-i18n="step1_heading">
+        Select Official Service &amp; Filing Method
+      </h2>
+      <div class="ds-card-subtitle" data-i18n="step1_sub">
+        Choose the statutory government service you wish to prepare and apply for.
+      </div>
+    </div>
+    <span class="ds-badge ds-badge-neutral">Step 1 of 4</span>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+    
+    <!-- Service Selector -->
+    <div class="ds-form-group">
+      <label for="applyServiceSelect" class="ds-label">
+        <span data-i18n="label_target_service">Target Government Service</span> <span class="required">*</span>
+      </label>
+      <select id="applyServiceSelect" class="ds-select" onchange="onServiceSelectionChanged()" required>
+        {% for s in services %}
+        <option 
+          value="{{ s.service_id }}" 
+          data-authority="{{ s.responsible_authority or 'Government Department' }}"
+          data-fee="{{ s.fee_amount or '₹0 (Free / Statutory)' }}"
+          data-tat="{{ s.statutory_timeline_days or '15-30 days' }}"
+          data-portal="{{ s.official_service_url or '' }}"
+          {% if s.service_id == selected_service_id %}selected{% endif %}
+        >
+          {{ s.service_name }} ({{ s.service_code or s.service_id }})
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Service Overview Card -->
+    <div id="serviceDetailsBox" class="ds-tonal-box" style="padding: var(--space-md); border-radius: var(--radius-lg); background: var(--color-surface-container-low);">
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm);">
+        <div>
+          <div style="font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); font-weight: var(--font-weight-bold);" data-i18n="label_admin_authority">
+            Responsible Statutory Authority
+          </div>
+          <div id="boxAuthority" style="font-weight: var(--font-weight-bold); font-size: var(--font-size-base); color: var(--color-primary); margin-top: 2px;">
+            Election Commission of India (ECI)
+          </div>
+        </div>
+        <div style="display: flex; gap: var(--space-md); font-size: var(--font-size-xs);">
+          <div>
+            <div style="color: var(--color-text-muted);" data-i18n="label_statutory_fee">Statutory Fee</div>
+            <strong id="boxFee" style="color: var(--color-green-text);">₹0 (Free)</strong>
+          </div>
+          <div>
+            <div style="color: var(--color-text-muted);" data-i18n="label_statutory_timeline">Govt. Timeline</div>
+            <strong id="boxTimeline">15-30 Days</strong>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: var(--space-sm); padding-top: var(--space-xs); border-top: 1px solid var(--color-border); font-size: var(--font-size-xs); color: var(--color-text-secondary); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+        <span>Official Department Link: <a id="boxPortalLink" href="#" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); text-decoration: underline;">Open Portal</a></span>
+        <a href="/prerequisite-checker?service_id={{ selected_service_id }}" id="boxPrereqLink" style="font-weight: var(--font-weight-bold); color: var(--color-saffron-dark); display: flex; align-items: center; gap: 4px;">
+          <span class="material-symbols-outlined" style="font-size: 16px;">fact_check</span>
+          <span data-i18n="btn_check_eligibility">Check Eligibility Criteria</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Application Mode Selection -->
+    <div class="ds-form-group">
+      <label class="ds-label">
+        <span data-i18n="label_submission_mode">Preferred Submission Mode</span> <span class="required">*</span>
+      </label>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-sm); margin-top: 6px;">
+        
+        <label class="mode-card" style="border: 2px solid var(--color-primary); background: var(--color-surface-container-lowest); padding: var(--space-md); border-radius: var(--radius-lg); cursor: pointer; display: flex; gap: var(--space-sm); align-items: flex-start;">
+          <input type="radio" name="applyMode" value="ONLINE_ASSISTED" checked style="margin-top: 4px;">
+          <div>
+            <div style="font-weight: var(--font-weight-bold); color: var(--color-primary); font-size: var(--font-size-sm);" data-i18n="mode_online_title">
+              Online Assisted Preparation
+            </div>
+            <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: 2px;" data-i18n="mode_online_desc">
+              Compile full dossier and document attachments digitally for immediate online filing.
+            </div>
+          </div>
+        </label>
+
+        <label class="mode-card" style="border: 1px solid var(--color-border); background: var(--color-surface-container-lowest); padding: var(--space-md); border-radius: var(--radius-lg); cursor: pointer; display: flex; gap: var(--space-sm); align-items: flex-start;">
+          <input type="radio" name="applyMode" value="JAN_SEVA_KENDRA" style="margin-top: 4px;">
+          <div>
+            <div style="font-weight: var(--font-weight-bold); color: var(--color-text-primary); font-size: var(--font-size-sm);" data-i18n="mode_jsk_title">
+              Jan Seva Kendra / Physical Counter
+            </div>
+            <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: 2px;" data-i18n="mode_jsk_desc">
+              Prepare standardized print dossier for in-person submission and biometric verification.
+            </div>
+          </div>
+        </label>
+
+      </div>
+    </div>
+
+    <!-- Step 1 Actions -->
+    <div style="display: flex; justify-content: flex-end; margin-top: var(--space-md); border-top: 1px solid var(--color-border); padding-top: var(--space-md);">
+      <button type="button" class="ds-btn ds-btn-primary" onclick="goToStep(2)">
+        <span data-i18n="btn_next_applicant">Next: Applicant Details</span>
+        <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+      </button>
+    </div>
+
+  </div>
+</div>
