@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from functools import wraps
 from flask import (
     Blueprint,
@@ -16,15 +15,10 @@ from flask_jwt_extended import (
 from jwt.exceptions import ExpiredSignatureError
 from extension import db
 from model import User, Service, ServiceCenter
-=======
-from flask import Blueprint, render_template, request
-from model import Service, ServiceCenter
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
 
 frontend_bp = Blueprint("frontend", __name__)
 
 
-<<<<<<< HEAD
 def get_authenticated_user():
     """
     Checks if current request contains a valid, non-expired JWT.
@@ -127,14 +121,6 @@ def logout():
     return resp
 
 
-=======
-@frontend_bp.get("/")
-@frontend_bp.get("/dashboard")
-def index():
-    return render_template("index.html", active_page="dashboard")
-
-
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
 @frontend_bp.get("/services")
 def services_page():
     services = Service.query.order_by(Service.service_name).all()
@@ -154,10 +140,7 @@ def prerequisite_checker_page():
 
 
 @frontend_bp.get("/apply")
-<<<<<<< HEAD
 @citizen_login_required
-=======
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
 def apply_page():
     services = Service.query.order_by(Service.service_name).all()
     selected_service_id = request.args.get("service_id", "SVC-VOTER-NEW")
@@ -170,19 +153,13 @@ def apply_page():
 
 
 @frontend_bp.get("/documents")
-<<<<<<< HEAD
 @citizen_login_required
-=======
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
 def documents_page():
     return render_template("documents.html", active_page="documents")
 
 
 @frontend_bp.get("/applications")
-<<<<<<< HEAD
 @citizen_login_required
-=======
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
 def applications_page():
     return render_template("applications.html", active_page="applications")
 
@@ -193,18 +170,8 @@ def centers_page():
     return render_template("centers.html", centers=centers, active_page="centers")
 
 
-<<<<<<< HEAD
 @frontend_bp.get("/profile")
 @citizen_login_required
-=======
-@frontend_bp.get("/auth")
-@frontend_bp.get("/login")
-def auth_page():
-    return render_template("auth.html", active_page="auth")
-
-
-@frontend_bp.get("/profile")
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
 def profile_page():
     return render_template("profile.html", active_page="profile")
 

@@ -5,7 +5,6 @@
 {% block content %}
 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 70vh; padding: var(--space-md) 0;">
 
-<<<<<<< HEAD
   <div class="ds-card" style="max-width: 460px; width: 100%; padding: var(--space-xl); box-shadow: var(--shadow-md); border-top: 4px solid var(--color-saffron);">
     
     <!-- Portal Header -->
@@ -18,25 +17,10 @@
       </h1>
       <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: 4px 0 0 0;">
         ડિજિટલ નાગરિક સહાય • Secure Citizen Guidance &amp; Application Vault
-=======
-  <div class="ds-card" style="max-width: 480px; width: 100%; padding: var(--space-xl);">
-    
-    <!-- Header -->
-    <div style="text-align: center; margin-bottom: var(--space-lg);">
-      <div style="width: 52px; height: 52px; border-radius: var(--radius-lg); background-color: var(--color-surface-container); display: inline-flex; align-items: center; justify-content: center; color: var(--color-primary); margin-bottom: var(--space-xs);">
-        <span class="material-symbols-outlined" style="font-size: 32px;">account_balance</span>
-      </div>
-      <h1 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-primary); margin: 0;" data-i18n="auth_title">
-        DigiSahay Citizen Portal
-      </h1>
-      <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: 4px 0 0 0;" data-i18n="auth_sub">
-        ડિજિટલ નાગરિક સહાય • Secure Citizen Guidance &amp; Vault Access
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
       </p>
     </div>
 
     <!-- Auth Tabs (Login / Register) -->
-<<<<<<< HEAD
     <div style="display: flex; border-bottom: 2px solid var(--color-border); margin-bottom: var(--space-md);">
       <button type="button" id="tabLoginBtn" onclick="switchAuthTab('login')" style="flex: 1; padding: 10px; font-weight: var(--font-weight-bold); font-size: var(--font-size-sm); border: none; background: transparent; cursor: pointer; color: var(--color-primary); border-bottom: 2px solid var(--color-primary); margin-bottom: -2px;">
         Sign In / પ્રવેશ
@@ -49,29 +33,6 @@
     <!-- Dynamic System Notification (Expired / Logged Out / Next) -->
     <div id="systemNotice" style="display: none; padding: 10px 14px; border-radius: var(--radius-md); font-size: var(--font-size-xs); margin-bottom: var(--space-md);"></div>
 
-=======
-    <div style="display: flex; border-bottom: 2px solid var(--color-border); margin-bottom: var(--space-lg);">
-      <button 
-        type="button" 
-        id="tabLoginBtn" 
-        onclick="switchAuthTab('login')" 
-        style="flex: 1; padding: 10px; font-weight: var(--font-weight-bold); font-size: var(--font-size-sm); border: none; background: transparent; cursor: pointer; color: var(--color-primary); border-bottom: 2px solid var(--color-primary); margin-bottom: -2px;"
-        data-i18n="tab_signin"
-      >
-        Citizen Sign In / પ્રવેશ
-      </button>
-      <button 
-        type="button" 
-        id="tabRegisterBtn" 
-        onclick="switchAuthTab('register')" 
-        style="flex: 1; padding: 10px; font-weight: var(--font-weight-bold); font-size: var(--font-size-sm); border: none; background: transparent; cursor: pointer; color: var(--color-text-muted); border-bottom: 2px solid transparent; margin-bottom: -2px;"
-        data-i18n="tab_register"
-      >
-        New Registration / નોંધણી
-      </button>
-    </div>
-
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
     <!-- Alert / Message Banner -->
     <div id="authAlert" style="display: none; padding: 10px 14px; border-radius: var(--radius-md); font-size: var(--font-size-xs); margin-bottom: var(--space-md);"></div>
 
@@ -79,27 +40,13 @@
     <form id="loginForm" onsubmit="handleLogin(event)" style="display: flex; flex-direction: column; gap: var(--space-md);">
       <div class="ds-form-group">
         <label for="loginEmail" class="ds-label">
-<<<<<<< HEAD
           <span>Registered Email / ઈમેઇલ</span> <span class="required">*</span>
         </label>
         <input type="email" id="loginEmail" class="ds-input" placeholder="citizen@example.com" required autocomplete="email">
-=======
-          <span data-i18n="label_email">Citizen Registered Email</span> <span class="required">*</span>
-        </label>
-        <input 
-          type="email" 
-          id="loginEmail" 
-          class="ds-input" 
-          placeholder="your.email@example.com" 
-          required 
-          autocomplete="email"
-        >
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
       </div>
 
       <div class="ds-form-group">
         <label for="loginPassword" class="ds-label">
-<<<<<<< HEAD
           <span>Password / પાસવર્ડ</span> <span class="required">*</span>
         </label>
         <input type="password" id="loginPassword" class="ds-input" placeholder="Enter your password" required autocomplete="current-password">
@@ -123,70 +70,18 @@
           <span>Email Address / ઈમેઇલ</span> <span class="required">*</span>
         </label>
         <input type="email" id="regEmail" class="ds-input" placeholder="citizen@example.com" required autocomplete="email">
-=======
-          <span data-i18n="label_password">Password</span> <span class="required">*</span>
-        </label>
-        <input 
-          type="password" 
-          id="loginPassword" 
-          class="ds-input" 
-          placeholder="Enter your account password" 
-          required 
-          autocomplete="current-password"
-        >
-      </div>
-
-      <button type="submit" id="loginSubmitBtn" class="ds-btn ds-btn-primary ds-btn-lg" style="width: 100%; margin-top: var(--space-xs);">
-        <span class="material-symbols-outlined" style="font-size: 20px;">login</span>
-        <span data-i18n="btn_signin">Sign In to DigiSahay</span>
-      </button>
-    </form>
-
-    <!-- Register Form (Hidden by default) -->
-    <form id="registerForm" onsubmit="handleRegister(event)" style="display: none; flex-direction: column; gap: var(--space-md);">
-      <div class="ds-form-group">
-        <label for="regEmail" class="ds-label">
-          <span data-i18n="label_email">Email Address</span> <span class="required">*</span>
-        </label>
-        <input 
-          type="email" 
-          id="regEmail" 
-          class="ds-input" 
-          placeholder="your.email@example.com" 
-          required 
-          autocomplete="email"
-        >
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
       </div>
 
       <div class="ds-form-group">
         <label for="regPassword" class="ds-label">
-<<<<<<< HEAD
           <span>Create Password (Min 8 characters)</span> <span class="required">*</span>
         </label>
         <input type="password" id="regPassword" class="ds-input" placeholder="At least 8 characters" minlength="8" required autocomplete="new-password">
-=======
-          <span data-i18n="label_reg_password">Create Password (Min 8 characters)</span> <span class="required">*</span>
-        </label>
-        <input 
-          type="password" 
-          id="regPassword" 
-          class="ds-input" 
-          placeholder="Create a strong password" 
-          minlength="8" 
-          required 
-          autocomplete="new-password"
-        >
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
       </div>
 
       <div class="ds-form-group">
         <label for="regLang" class="ds-label">
-<<<<<<< HEAD
           <span>Preferred Language / ભાષા</span>
-=======
-          <span data-i18n="label_pref_lang">Preferred Language</span>
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
         </label>
         <select id="regLang" class="ds-select">
           <option value="en">English</option>
@@ -195,7 +90,6 @@
         </select>
       </div>
 
-<<<<<<< HEAD
       <button type="submit" id="registerSubmitBtn" class="ds-btn ds-btn-saffron ds-btn-lg" style="width: 100%; margin-top: var(--space-2xs); font-weight: 700; color: #000;">
         <span class="material-symbols-outlined" style="font-size: 20px;">person_add</span>
         <span>Create DigiSahay Account</span>
@@ -210,36 +104,6 @@
     <!-- Statutory Notice Footer -->
     <div style="margin-top: var(--space-lg); padding-top: var(--space-sm); border-top: 1px solid var(--color-border); text-align: center; font-size: 11px; color: var(--color-text-muted); line-height: 1.4;">
       DigiSahay is an independent citizen advisory platform and is NOT a government portal. Your account securely saves your document preferences.
-=======
-      <button type="submit" id="registerSubmitBtn" class="ds-btn ds-btn-saffron ds-btn-lg" style="width: 100%; margin-top: var(--space-xs);">
-        <span class="material-symbols-outlined" style="font-size: 20px;">person_add</span>
-        <span data-i18n="btn_register">Register Citizen Account</span>
-      </button>
-    </form>
-
-    <!-- Active User Card (Shown when already logged in) -->
-    <div id="alreadyLoggedInCard" style="display: none; flex-direction: column; gap: var(--space-sm); text-align: center; padding: var(--space-md); background: var(--color-surface-container-low); border-radius: var(--radius-lg); margin-top: var(--space-sm);">
-      <div style="font-size: var(--font-size-sm); color: var(--color-green-text); font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; gap: 6px;">
-        <span class="material-symbols-outlined">check_circle</span>
-        <span>You are currently signed in</span>
-      </div>
-      <div id="loggedInUserEmail" style="font-size: var(--font-size-xs); color: var(--color-text-secondary); font-family: var(--font-family-mono);"></div>
-      <div style="display: flex; gap: var(--space-xs); margin-top: var(--space-xs);">
-        <a href="/documents" class="ds-btn ds-btn-primary ds-btn-sm" style="flex: 1;">
-          <span class="material-symbols-outlined" style="font-size: 16px;">folder_shared</span>
-          <span>Go to Vault</span>
-        </a>
-        <button type="button" class="ds-btn ds-btn-secondary ds-btn-sm" onclick="logoutCitizen()" style="flex: 1;">
-          <span class="material-symbols-outlined" style="font-size: 16px;">logout</span>
-          <span>Sign Out</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Statutory Notice Footer -->
-    <div style="margin-top: var(--space-lg); padding-top: var(--space-sm); border-top: 1px solid var(--color-border); text-align: center; font-size: 11px; color: var(--color-text-muted); line-height: 1.4;">
-      DigiSahay is an independent civic advisory platform and is NOT a government portal. Your account securely stores your document checklist preferences.
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
     </div>
 
   </div>
@@ -250,7 +114,6 @@
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-<<<<<<< HEAD
   initAuthUI();
 });
 
@@ -288,25 +151,6 @@ function showNotice(msg, type) {
     el.style.color = '#1e40af';
   }
   el.textContent = msg;
-=======
-  checkExistingAuth();
-});
-
-function checkExistingAuth() {
-  const token = localStorage.getItem('digisahay_jwt');
-  const userJson = localStorage.getItem('digisahay_user');
-  if (token && userJson) {
-    try {
-      const u = JSON.parse(userJson);
-      document.getElementById('loggedInUserEmail').textContent = u.email;
-      document.getElementById('alreadyLoggedInCard').style.display = 'flex';
-      document.getElementById('loginForm').style.display = 'none';
-      document.getElementById('registerForm').style.display = 'none';
-      document.getElementById('tabLoginBtn').style.display = 'none';
-      document.getElementById('tabRegisterBtn').style.display = 'none';
-    } catch (e) {}
-  }
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
 }
 
 function switchAuthTab(tab) {
@@ -336,21 +180,9 @@ function switchAuthTab(tab) {
 function showAlert(msg, isError) {
   const al = document.getElementById('authAlert');
   al.style.display = 'block';
-<<<<<<< HEAD
   al.style.backgroundColor = isError ? 'var(--color-error-bg)' : 'var(--color-green-bg)';
   al.style.border = isError ? '1px solid var(--color-error-border)' : '1px solid var(--color-green-border)';
   al.style.color = isError ? 'var(--color-error-text)' : 'var(--color-green-text)';
-=======
-  if (isError) {
-    al.style.backgroundColor = 'var(--color-error-bg)';
-    al.style.border = '1px solid var(--color-error-border)';
-    al.style.color = 'var(--color-error-text)';
-  } else {
-    al.style.backgroundColor = 'var(--color-green-bg)';
-    al.style.border = '1px solid var(--color-green-border)';
-    al.style.color = 'var(--color-green-text)';
-  }
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
   al.textContent = msg;
 }
 
@@ -364,11 +196,7 @@ async function handleLogin(e) {
   clearAlert();
   const btn = document.getElementById('loginSubmitBtn');
   btn.disabled = true;
-<<<<<<< HEAD
   btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 20px;">sync</span> Signing in...';
-=======
-  btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 20px; animation: spin 1s linear infinite;">sync</span> Signing in...';
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
 
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
@@ -384,7 +212,6 @@ async function handleLogin(e) {
     if (res.ok && data.success) {
       localStorage.setItem('digisahay_jwt', data.access_token);
       localStorage.setItem('digisahay_user', JSON.stringify(data.user));
-<<<<<<< HEAD
       showAlert('Login successful! Redirecting...', false);
 
       const urlParams = new URLSearchParams(window.location.search);
@@ -394,12 +221,6 @@ async function handleLogin(e) {
       setTimeout(() => {
         window.location.href = destination;
       }, 500);
-=======
-      showAlert('Login successful! Redirecting to Documents Vault...', false);
-      setTimeout(() => {
-        window.location.href = '/documents';
-      }, 1000);
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
     } else {
       showAlert(data.message || 'Invalid email or password', true);
     }
@@ -416,11 +237,7 @@ async function handleRegister(e) {
   clearAlert();
   const btn = document.getElementById('registerSubmitBtn');
   btn.disabled = true;
-<<<<<<< HEAD
   btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 20px;">sync</span> Creating account...';
-=======
-  btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 20px; animation: spin 1s linear infinite;">sync</span> Registering...';
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
 
   const email = document.getElementById('regEmail').value.trim();
   const password = document.getElementById('regPassword').value;
@@ -438,10 +255,7 @@ async function handleRegister(e) {
       showAlert('Account registered successfully! Please sign in with your credentials.', false);
       switchAuthTab('login');
       document.getElementById('loginEmail').value = email;
-<<<<<<< HEAD
       document.getElementById('loginPassword').value = '';
-=======
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
     } else {
       showAlert(data.message || 'Registration failed', true);
     }
@@ -449,27 +263,8 @@ async function handleRegister(e) {
     showAlert('Unable to reach server. Please try again.', true);
   } finally {
     btn.disabled = false;
-<<<<<<< HEAD
     btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 20px;">person_add</span> <span>Create DigiSahay Account</span>';
   }
 }
 </script>
-=======
-    btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 20px;">person_add</span> <span>Register Citizen Account</span>';
-  }
-}
-
-function logoutCitizen() {
-  localStorage.removeItem('digisahay_jwt');
-  localStorage.removeItem('digisahay_user');
-  window.location.reload();
-}
-</script>
-<style>
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-</style>
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
 {% endblock %}

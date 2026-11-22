@@ -102,7 +102,6 @@
     });
   }
 
-<<<<<<< HEAD
   function logoutCitizen() {
     localStorage.removeItem('digisahay_jwt');
     localStorage.removeItem('digisahay_user');
@@ -112,20 +111,13 @@
 
   /**
    * Sync Authenticated Citizen Profile in Header and Sidebar
-=======
-  /**
-   * Sync Authenticated Citizen Profile in Header
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
    */
   function initAuthStatus() {
     const token = localStorage.getItem('digisahay_jwt');
     const userJson = localStorage.getItem('digisahay_user');
     const nameEl = document.getElementById('headerProfileName');
     const metaEl = document.getElementById('headerProfileMeta');
-<<<<<<< HEAD
     const linkEl = document.getElementById('headerProfileLink');
-=======
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
 
     if (token && userJson && nameEl && metaEl) {
       try {
@@ -134,7 +126,6 @@
         const currentLang = localStorage.getItem('digisahay_lang') || 'en';
         const dict = (window.DIGISAHAY_TRANSLATIONS && window.DIGISAHAY_TRANSLATIONS[currentLang]) || {};
         metaEl.textContent = dict.header_profile_meta_signed_in || 'Citizen Account • સક્રિય';
-<<<<<<< HEAD
         if (linkEl) {
           linkEl.href = '/profile';
           linkEl.title = 'View Citizen Profile';
@@ -147,8 +138,6 @@
             el.innerHTML = '<span class="material-symbols-outlined">logout</span><span>Sign Out / બહાર નીકળો</span>';
           }
         });
-=======
->>>>>>> c981506dbd2f314e63b7e90f4ab444ee1eca2d2c
       } catch (e) {}
     }
   }
